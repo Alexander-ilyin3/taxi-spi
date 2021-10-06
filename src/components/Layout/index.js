@@ -6,7 +6,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom"
-import { CssBaseline, ThemeProvider, Typography as Tg } from '@material-ui/core'
+import { CssBaseline, ThemeProvider, Typography as T } from '@material-ui/core'
 
 import Step1 from 'pages/step1'
 import Step2 from 'pages/step2'

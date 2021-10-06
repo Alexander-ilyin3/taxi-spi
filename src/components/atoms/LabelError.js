@@ -1,9 +1,9 @@
-import { Typography as Tg } from '@material-ui/core'
+import { Typography as T } from '@material-ui/core'
 
 const LabelError = ({labelErrorText}) => {
 
   return (
-    <Tg variant='labelErrorText'>{labelErrorText}</Tg>
+    <T variant='labelErrorText'>{labelErrorText}</T>
   )
 }
 

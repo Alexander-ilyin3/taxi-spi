@@ -1,5 +1,5 @@
 import { Box } from "@material-ui/system"
-import { Typography as Tg, useTheme } from '@material-ui/core'
+import { Typography as T, useTheme } from '@material-ui/core'
 
 import { Input } from "components/atoms/Input"
 import { Label } from "components/atoms/InputLabel"
@@ -13,9 +13,9 @@ const InputBox = ({ labelText, labelErrorText, r, error }) => {
     <Box >
       <Label>
         { r && <RequiredStar /> }
-        <Tg variant='h5md'>
+        <T variant='h5md'>
           {labelText}
-        </Tg>
+        </T>
       </Label>
       <Input />
       { error && <LabelError labelErrorText={labelErrorText}/>}
