@@ -1,5 +1,3 @@
-import { createMuiTheme } from '@material-ui/core/styles'
-
 import { palette } from 'mui/themeColors'
 import { typography } from 'mui/fonts'
 import { createTheme } from '@mui/material'
@@ -7,16 +5,16 @@ import { createTheme } from '@mui/material'
  const theme = createTheme({
   palette,
   typography,
+  overrides: {
+    CssBaseline: {
+      "@global": {
+        body: { 
+          backgroundColor: '##FBFBFD' // theme.palette.secondary.backgroundGrey //TODO change the color from theme
+        }
+      }
+    }
+  }
 })
 
-// theme.overrides = {
-//   MuiTextField: {
-//     root: {
-//       color: "red",
-//       border: "1px solid red",
-//       margin: 10
-//     }
-//   }
-// }
 
 export { theme }
