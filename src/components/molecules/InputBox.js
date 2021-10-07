@@ -6,18 +6,18 @@ import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 
-const InputBox = ({ labelText, labelErrorText, r, error }) => {
+const InputBox = ({ labelText, labelErrorText, r, error, disabled }) => {
   const theme = useTheme()
   
   return (
-    <Box >
-      <Label>
+    <Box sx={{width: '100%'}}>
+      <Label sx={{marginBottom: 2}}>
         { r && <RequiredStar /> }
-        <T variant='h5md'>
+        <T variant='h5md' >
           {labelText}
         </T>
       </Label>
-      <Input />
+      <Input disabled={disabled}/>
       { error && <LabelError labelErrorText={labelErrorText}/>}
     </Box>
   )
