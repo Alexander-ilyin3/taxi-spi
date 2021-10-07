@@ -1,7 +1,20 @@
-const { Box } = require("@material-ui/system")
+import { Paper } from '@mui/material'
 
-export const SectionBox = () => {
+export const SectionBox = ({ children }) => {
+  console.log({ children })
+
   return (
-    <Box></Box>
+    <Paper elevation={10} sx={{
+      margin: [10, 10],
+      padding: 10,
+      paddingTop: 7,
+      width: '55%',
+      display: 'flex',
+      flexDirection: "column",
+      gap: [0, 4],
+      borderRadius: 4
+    }}>
+      {children}
+    </Paper>
   )
 }
