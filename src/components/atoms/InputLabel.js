@@ -9,6 +9,7 @@ const Label = styled(InputLabel)(({ theme }) => {
     ...h4,
     marginLeft: 18,
     overflow: 'visible',
+    whiteSpace: 'pre-wrap',
     '&.Mui-disabled ': {
       backgroundColor: lightGrey
     },

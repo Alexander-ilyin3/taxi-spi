@@ -29,9 +29,9 @@ const StepperComponent = () => {
             <StepLabel StepIconComponent={StepIconComponent}
               optional={
                 activeStep >= i ? (
-                  <T variant ="h5sb" style={{color: theme.palette.primary.blue, display: 'flex', justifyContent: 'center', paddingTop: '10px'}}>{label}</T>
+                  <T variant ="h5sb" style={{color: theme.palette.primary.blue, display: 'flex', justifyContent: 'center', textAlign: 'center', paddingTop: '10px'}}>{label}</T>
                 ) : (
-                  <T variant ="h5rg" style={{color: theme.palette.secondary.grey, display: 'flex', justifyContent: 'center', paddingTop: '10px'}}>{label}</T>
+                  <T variant ="h5rg" style={{color: theme.palette.secondary.grey, display: 'flex', justifyContent: 'center', textAlign: 'center', paddingTop: '10px'}}>{label}</T>
                 )
               }
             >

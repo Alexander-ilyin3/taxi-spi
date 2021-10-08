@@ -13,6 +13,7 @@ const Input = styled(InputBase)(({ theme }) => {
     borderRadius: 10,
     paddingLeft: 22,
     // borderColor: grey,
+    fontFamily: 'Poppins',
     ...fieldText,
     '&.Mui-focused': {
       border: `1px solid ${blue}`,
