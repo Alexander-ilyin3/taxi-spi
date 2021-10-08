@@ -10,7 +10,22 @@
 body {
   background-color: '##FBFBFD'; /* //TODO */
 }
+/* //TODO */
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: 'none'; 
+  margin: 0; 
+}
+
+/*
+input[type=number]::before {
+  content: '%';
+  position: absolute;
+  right: 20px;
+  top: 1px;
+} 
+*/
 /* @font-face {
   font-family: "RalewayRegular"; 
   src: url("../fonts/RalewayRegular.ttf") format("truetype"); 
