@@ -6,7 +6,7 @@ export const PageContentWrapper = ({ children }) => {
     <Box sx={{
       display: 'flex',
       flexDirection: 'row',
-      padding: 8,
+      padding: [2, 4, 6, 8],
       justifyContent: 'space-between',
     }}>
       {children}

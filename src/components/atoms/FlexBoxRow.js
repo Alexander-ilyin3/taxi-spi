@@ -7,7 +7,7 @@ export const FlexBoxRow = ({ children, styleProps }) => {
       sx={{
         display: 'flex',
         flexDirection: 'row',
-        gap: 8,
+        gap: [2, 4, 6, 8],
         ...styleProps
       }}
     >
