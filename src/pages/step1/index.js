@@ -1,7 +1,5 @@
 import { Typography as T } from '@material-ui/core'
-import { NextButton } from 'components/atoms/NextAndBackButtons'
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
-import { InputNumber } from 'components/atoms/InputNumber'
 import { SectionBox } from 'components/atoms/SectionBox'
 import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
 import { InputBox } from 'components/molecules/InputBox'
@@ -29,10 +27,9 @@ const Step1 = () => {
               <InputBox disabled />
               <T variant="secondaryText">*Shared Shuttle is not allowed to go to any AirBNB, VRBO or Rental Property</T>
             </CheckBoxLabelBox>
-            <InputBox labelText="Label text" labelErrorText="Field must be filled" error />
             <FlexBoxRow>
-              <InputBox r labelText="Label second text" />
-              <InputBox r labelText="Label 333 text" />
+              <InputBox r labelText="Pickup Location"  labelErrorText="Field must be filled" error />
+              <InputBox r labelText="Destination" labelErrorText="Field must be filled" error />
             </FlexBoxRow>
             <InputNumberBox r labelText="How many people are you travelling with (including yourself)?"></InputNumberBox>
           </SectionBox>
