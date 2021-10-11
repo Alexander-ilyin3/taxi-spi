@@ -70,10 +70,6 @@ const IconVariant = ({ active, completed, icon }) => {
 export const StepIconComponent = (props) => {
   const { active, completed, className, icon } = props;
 
-
-  console.log('step icon props', props)
-
-
   return (
     <StepIconComponentRoot ownerState={{ active }} className={className}>
       <IconVariant active={active} completed={completed} icon={icon}/>
