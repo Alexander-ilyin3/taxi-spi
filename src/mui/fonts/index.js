@@ -23,8 +23,6 @@ class Font {
 
 const poppinsRegular = new Font('Poppins', 'normal', 400, poppinsRegularFont)
 
-console.log({ poppinsRegular })
-
 export const typography = {
   fontFamily: 'Poppins',
   h1: {
@@ -76,6 +74,12 @@ export const typography = {
     color: palette.error.main,
     fontSize: 12,
     fontWeight: 400,
+  },
+  cardLabelText: {
+    color: palette.primary.black,
+    fontSize: 14,
+    fontWeight: 600,
+    fontFamily: 'Poppins'
   }
   // overrides: {
   //   MuiCssBaseline: {
@@ -86,4 +90,3 @@ export const typography = {
   // },
 }
 
-console.log('font ', poppinsRegular)

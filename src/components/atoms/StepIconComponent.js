@@ -47,7 +47,6 @@ const IconVariant = ({ active, completed, icon }) => {
   if (active) {
     return (
       <div style={commonStyles} >
-        {console.log(1)}
         <span style={{ color: theme.palette.primary.white, fontSize: '18px' }}>{icon}</span>
       </div>
     )
@@ -56,7 +55,6 @@ const IconVariant = ({ active, completed, icon }) => {
   if (completed) {
     return (
       <div style={commonStyles}>
-        {console.log(2)}
         <img src="/images/StepCheckmark.svg" alt="checkmark" />
       </div>
     )
@@ -64,7 +62,6 @@ const IconVariant = ({ active, completed, icon }) => {
 
   return (
     <div style={{ ...commonStyles, backgroundColor: grey }} >
-      {console.log(3)}
       <span style={{ color: theme.palette.secondary.darkGrey, fontSize: '18px' }}>{icon}</span>
     </div>
   )

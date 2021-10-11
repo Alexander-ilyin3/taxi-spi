@@ -9,7 +9,6 @@ import NumberFormat from 'react-number-format'
 const Arrow = ({ direction, disabled }) => {
   const theme = useTheme()
   const { palette: { primary: { grey } } } = theme
-  console.log({ grey })
 
   return (
     direction === 'top' ? (
@@ -35,7 +34,7 @@ const ArrowButtons = ({ decrement, increment, disabled }) => {
       display: 'flex',
       flexDirection: 'column',
       right: 5,
-      top: 13,
+      top: 8,
     }}>
       <button
         onClick={increment}
@@ -67,24 +66,23 @@ export const InputNumber = () => {
 
   useEffect(() => {
     if ( value < 1 && value !== '') setValue(1)
-    if ( value === 1) {
+    if ( parseFloat(value) === 1) {
       setDisabledBotArrow(true)
     } else {
       setDisabledBotArrow(false)
     }
-    console.log('num value = ', value)
 
   }, [value])
 
   const increment = () => {
     const num = parseFloat(value)
-    if (isNaN(num)) {console.log('typeof num !== number'); return setValue(1)}
+    if (isNaN(num)) return setValue(1)
     setValue(num + 1)
   }
 
   const decrement = () => {
     const num = parseFloat(value)
-    if (isNaN(num)) {console.log('typeof num !== number'); return setValue(1)}
+    if (isNaN(num)) return setValue(1)
     setValue(num - 1)
   }
 
@@ -99,11 +97,11 @@ export const InputNumber = () => {
         className="foo"
         displayType={'text'}
         allowNegative={false}
-        onValueChange={(v) => console.log({ v })}
+        onValueChange={(v) => {console.log({ v }); setValue(v.value)}}
         onInput={(e) => setValue(e.target.value) }
         customInput={Input}
-        onBlur={(e) => { console.log('blur'); return e.target.value === '' ? setValue(1) : null }}
-        renderText={(v, props) => <Input {...props} value={v}></Input>}
+        onBlur={(e) => { console.log('blur'); return e.target.value === '' ? setValue(1) : null }} 
+        renderText={(v, props) => <Input {...props} value={v}></Input>} //TODO value is set with last letter or sign. checkout "value"
       />
       <ArrowButtons decrement={decrement} increment={increment} disabled={disabledBotArrow} />
     </Box>
