@@ -60,13 +60,12 @@ const ArrowButtons = ({ decrement, increment, disabled }) => {
   )
 }
 
-export const InputNumber = () => {
-  const [value, setValue] = useState(1)
-  const [ disabledBotArrow, setDisabledBotArrow ] = useState(false)
+export const InputNumber = ({ value, setValue }) => {
+  const [disabledBotArrow, setDisabledBotArrow] = useState(false)
 
   useEffect(() => {
-    if ( value < 1 && value !== '') setValue(1)
-    if ( parseFloat(value) === 1) {
+    if (value < 1 && value !== '') setValue(1)
+    if (parseFloat(value) === 1) {
       setDisabledBotArrow(true)
     } else {
       setDisabledBotArrow(false)
@@ -91,16 +90,14 @@ export const InputNumber = () => {
       maxWidth: '164px',
       position: 'relative'
     }}>
-
       <NumberFormat
         value={value}
         className="foo"
         displayType={'text'}
         allowNegative={false}
-        onValueChange={(v) => {console.log({ v }); setValue(v.value)}}
-        onInput={(e) => setValue(e.target.value) }
+        onValueChange={(v) => { console.log({ v }); setValue(v.value) }}
+        onInput={(e) => { return /^\d+$|^$/.test(e.target.value) ? setValue(e.target.value) : null }}
         customInput={Input}
-        onBlur={(e) => { console.log('blur'); return e.target.value === '' ? setValue(1) : null }} 
         renderText={(v, props) => <Input {...props} value={v}></Input>} //TODO value is set with last letter or sign. checkout "value"
       />
       <ArrowButtons decrement={decrement} increment={increment} disabled={disabledBotArrow} />
