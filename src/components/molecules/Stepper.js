@@ -1,9 +1,6 @@
-import { useTheme } from "@material-ui/core"
-import { Box } from "@material-ui/system"
-import { Stepper, Step, StepLabel } from "@mui/material"
+import { Typography as T, useTheme, Box, Stepper, Step, StepLabel } from "@mui/material"
 import { StepIconComponent } from "components/atoms/StepIconComponent"
 import { StepperConnector } from "components/atoms/StepperConnector"
-import { Typography as T } from "@material-ui/core"
 import { useState } from 'react'
 
 const StepperComponent = () => {

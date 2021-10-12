@@ -1,5 +1,4 @@
-import { Card, CardActionArea, Typography as T, useTheme } from "@material-ui/core"
-import { Box } from "@material-ui/system"
+import { Box, Card, CardActionArea, Typography as T, useTheme } from "@mui/material"
 
 export const CarCard = ({ cardData }) => {
   const theme = useTheme()

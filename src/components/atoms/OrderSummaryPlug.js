@@ -1,5 +1,5 @@
-import { Typography as T, useTheme } from "@material-ui/core"
-import { Box } from "@material-ui/system"
+import { Typography as T, useTheme } from "@mui/material"
+import { Box } from "@mui/material"
 
 export const OrderSummaryPlug = () => {
   const theme = useTheme()

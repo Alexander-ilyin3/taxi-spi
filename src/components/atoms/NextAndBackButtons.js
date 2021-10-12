@@ -1,6 +1,6 @@
-import { useTheme } from '@material-ui/core'
+import { useTheme } from '@mui/material'
 import { ButtonBase } from '@mui/material'
-import { Typography as T } from '@material-ui/core'
+import { Typography as T } from '@mui/material'
 
 export const NextButton = () => {
   const theme = useTheme()

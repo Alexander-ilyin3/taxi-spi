@@ -1,4 +1,4 @@
-import { Typography as T, useTheme } from '@material-ui/core'
+import { Typography as T, useTheme } from '@mui/material'
 
 const RequiredStar = () => {
   const theme = useTheme()

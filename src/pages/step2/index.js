@@ -1,4 +1,4 @@
-import { Typography as T } from '@material-ui/core'
+import { Typography as T } from '@mui/material'
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { SectionBox } from 'components/atoms/SectionBox'
 import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'

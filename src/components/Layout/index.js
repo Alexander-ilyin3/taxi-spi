@@ -6,7 +6,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom"
-import { CssBaseline, ThemeProvider, Typography as T } from '@material-ui/core'
+import { CssBaseline, ThemeProvider, Typography as T } from '@mui/material'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import Step1 from 'pages/step1'

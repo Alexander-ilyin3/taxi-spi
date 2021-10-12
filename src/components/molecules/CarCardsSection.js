@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/system"
+import { Box } from "@mui/material"
 import { CarCard } from "components/molecules/CarCard.js"
 import { testCarData } from 'testData/testCarsData'
 

@@ -1,5 +1,4 @@
-import { Box } from "@material-ui/system"
-import { Typography as T, useTheme } from '@material-ui/core'
+import { Box, Typography as T, useTheme } from '@mui/material'
 import { Controller, useFormContext } from "react-hook-form"
 
 import { Label } from "components/atoms/InputLabel"
@@ -15,6 +14,7 @@ const InputNumberBox = ({ labelText, labelErrorText, r, error, name }) => {
     <Controller
       control={control}
       name={name}
+      defaultValue="1"
       render={({
         field: { onChange, value }
       }) => (
@@ -26,7 +26,7 @@ const InputNumberBox = ({ labelText, labelErrorText, r, error, name }) => {
                 {labelText}
               </T>
             </Label>
-            <InputNumber 
+            <InputNumber
               setValue={onChange}
               value={value}
             />

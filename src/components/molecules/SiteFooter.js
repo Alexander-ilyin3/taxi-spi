@@ -1,5 +1,4 @@
-import { Box, useTheme } from "@material-ui/system"
-
+import { Box, useTheme } from "@mui/material"
 
 export const SiteFooter = () => {
   const theme = useTheme()

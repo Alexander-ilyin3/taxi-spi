@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/system"
+import { Box } from "@mui/material"
 
 export const SectionWrapper = ({children}) => {
   return (

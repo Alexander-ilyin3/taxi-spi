@@ -1,8 +1,6 @@
-import { Box } from "@material-ui/system"
-import { FormControlLabel } from "@mui/material"
+import { Box, FormControlLabel, Typography as T } from "@mui/material"
 import { CheckBoxComponent } from "components/atoms/CheckBoxComponent"
 import { Label } from "components/atoms/InputLabel"
-import { Typography as T } from '@material-ui/core'
 import { Controller, useFormContext } from "react-hook-form"
 
 export const CheckBoxLabelBox = ({ labelText, children, name }) => {
@@ -13,7 +11,8 @@ export const CheckBoxLabelBox = ({ labelText, children, name }) => {
     <Controller
       name={name}
       control={control}
-        render={({ field: { onChange, value = true} }) => (
+      defaultValue={false}
+        render={({ field: { onChange, value} }) => (
         <Box
           sx={{
             display: 'flex',

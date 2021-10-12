@@ -1,4 +1,4 @@
-import { Paper, Typography as T } from "@material-ui/core"
+import { Paper, Typography as T } from "@mui/material"
 
 export const OrderSummaryContainer = ({ children }) => {
   console.log({ children })

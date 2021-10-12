@@ -1,5 +1,4 @@
-const { Box } = require("@material-ui/system")
-
+import { Box } from '@mui/material'
 
 export const PageContentWrapper = ({ children }) => {
   return (

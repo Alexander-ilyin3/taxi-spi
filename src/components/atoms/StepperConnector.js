@@ -1,4 +1,4 @@
-import { stepConnectorClasses } from "@material-ui/core";
+import { stepConnectorClasses } from "@mui/material";
 import { StepConnector } from "@mui/material";
 import { styled } from "@mui/material/styles";
 

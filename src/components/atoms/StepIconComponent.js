@@ -1,6 +1,6 @@
-import { useTheme } from "@material-ui/core"
+import { useTheme } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { Typography as T } from "@material-ui/core"
+import { Typography as T } from "@mui/material"
 
 const StepIconComponentRoot = styled('div')(({ theme, ownerState }) => ({ //TODO check if this styles needed
   color: theme.palette.primary.blue,

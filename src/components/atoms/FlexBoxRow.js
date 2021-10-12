@@ -1,5 +1,4 @@
-import { Box } from "@material-ui/system"
-
+import { Box } from "@mui/material"
 
 export const FlexBoxRow = ({ children, styleProps }) => {
   return (

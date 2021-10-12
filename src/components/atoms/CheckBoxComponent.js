@@ -1,6 +1,4 @@
-const { Checkbox } = require("@material-ui/core")
-const { useTheme } = require("@material-ui/system")
-
+import { Checkbox, useTheme } from '@mui/material'
 
 export const CheckBoxComponent = ({onChange, checked}) => {
   const theme = useTheme()

@@ -1,5 +1,4 @@
-import { Box } from "@material-ui/system"
-import { Typography as T, useTheme } from '@material-ui/core'
+import { Box, Typography as T, useTheme } from '@mui/material'
 import { Controller, useFormContext } from "react-hook-form"
 
 import { Input } from "components/atoms/Input"

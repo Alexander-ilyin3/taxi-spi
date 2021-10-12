@@ -1,4 +1,4 @@
-import { Typography as T } from '@material-ui/core'
+import { Typography as T } from '@mui/material'
 
 const LabelError = ({labelErrorText}) => {
 
