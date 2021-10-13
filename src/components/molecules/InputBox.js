@@ -7,7 +7,6 @@ import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 
 const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
-  const theme = useTheme()
   const { control } = useFormContext()
 
   return (
@@ -16,8 +15,11 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
         control={control}
         name={name}
         shouldUnregister={true}
+        defaultValue=''
+        rules={{ validate: (v) => !!v }}
         render={({
-          field: { onChange, value }
+          field: { onChange, value },
+          fieldState: { invalid },
         }) => (
           <Box sx={{ width: '100%' }}>
             <Label sx={{ marginBottom: 2 }}>
@@ -27,7 +29,7 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
               </T>
             </Label>
             <Input disabled={disabled} onChange={onChange} value={value} />
-            {error && <LabelError labelErrorText={labelErrorText} />}
+            {invalid && <LabelError labelErrorText={labelErrorText} />}
           </Box>
         )}
       />
