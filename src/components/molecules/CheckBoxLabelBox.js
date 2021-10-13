@@ -1,18 +1,17 @@
 import { Box, FormControlLabel, Typography as T } from "@mui/material"
 import { CheckBoxComponent } from "components/atoms/CheckBoxComponent"
-import { Label } from "components/atoms/InputLabel"
+import { RequiredStar } from "components/atoms/RequiredStar"
 import { Controller, useFormContext } from "react-hook-form"
 
-export const CheckBoxLabelBox = ({ labelText, children, name }) => {
+export const CheckBoxLabelBox = ({ labelText, children, name, r }) => {
   const { control } = useFormContext()
 
-  console.log('children in checkboxLabel', children)
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={false}
-        render={({ field: { onChange, value} }) => (
+      render={({ field: { onChange, value } }) => (
         <Box
           sx={{
             display: 'flex',
@@ -20,10 +19,20 @@ export const CheckBoxLabelBox = ({ labelText, children, name }) => {
           }}
         >
           <FormControlLabel control={<CheckBoxComponent onChange={onChange} checked={value} />}
-            label={<T variant='h5md'>{labelText}</T>} />
+            label={
+              <Box sx={{position: 'relative'}}>
+                {r && <RequiredStar styles={{left: '-3px'}}/>}
+                <T
+                  sx={r ? { paddingLeft: 1 } : {}}
+                  variant='h5md'>
+                  {labelText}
+                </T>
+              </Box>
+            }
+          />
           <Box
             sx={{
-              marginLeft: 3,
+              marginLeft: 4,
               display: 'flex',
               flexDirection: 'column'
             }}
