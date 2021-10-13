@@ -20,7 +20,6 @@ import { ConsoleFormStateButton } from 'testData/ConsoleFormStateButton'
 const Layout = () => {
 
   const methods = useForm()
-  console.log({ methods })
   return (
     <FormProvider {...methods} >
       <ThemeProvider theme={theme}>
