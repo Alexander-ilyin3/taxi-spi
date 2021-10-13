@@ -2,7 +2,7 @@ import { useTheme } from '@mui/material'
 import { ButtonBase } from '@mui/material'
 import { Typography as T } from '@mui/material'
 
-export const NextButton = () => {
+export const NextButton = ({ onClick }) => {
   const theme = useTheme()
   const { palette: { primary: { blue, white } } } = theme
 
@@ -13,15 +13,15 @@ export const NextButton = () => {
       height: 60,
       fontFamily: 'Poppins',
       borderRadius: '10px',
-      // width: '100%',
-    }}>
-      <T variant='h5sb' sx={{color: white, marginRight: 1}}>Next</T>
+    }}
+      onClick={onClick}>
+      <T variant='h5sb' sx={{ color: white, marginRight: 1 }}>Next</T>
       <img src="images/next-button-icon.svg"></img>
     </ButtonBase>
   )
 }
 
-export const BackButton = () => {
+export const BackButton = ({ onClick }) => {
   const theme = useTheme()
   const { palette: { primary: { blue, white } } } = theme
 
@@ -33,10 +33,10 @@ export const BackButton = () => {
       fontFamily: 'Poppins',
       borderRadius: '10px',
       border: `2px solid ${blue}`,
-      // width: '100%',
-    }}>
+    }}
+      onClick={onClick}>
       <img src="images/back-button-icon.svg"></img>
-      <T variant='h5sb' sx={{color: blue, marginLeft: 1}}>Back</T>
+      <T variant='h5sb' sx={{ color: blue, marginLeft: 1 }}>Back</T>
     </ButtonBase>
   )
 }
