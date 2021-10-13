@@ -1,11 +1,8 @@
 import { Typography as T, useTheme, Box, Stepper, Step, StepLabel } from "@mui/material"
 import { StepIconComponent } from "components/atoms/StepIconComponent"
 import { StepperConnector } from "components/atoms/StepperConnector"
-import { useState } from 'react'
 
-const StepperComponent = () => {
-  const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
-  const [activeStep, setActiveStep] = useState(1)
+const StepperComponent = ({ steps, activeStep }) => {
   const theme = useTheme()
 
   return (
@@ -21,21 +18,21 @@ const StepperComponent = () => {
         alternativeLabel
         connector={<StepperConnector />}
       >
-        {steps.map((label,i) => (
+        {steps.map((label, i) => (
           <Step key={label} >
             <StepLabel StepIconComponent={StepIconComponent}
               optional={
                 activeStep >= i ? (
-                  <T variant ="h5sb" style={{color: theme.palette.primary.blue, display: 'flex', justifyContent: 'center', textAlign: 'center', paddingTop: '10px'}}>{label}</T>
+                  <T variant="h5sb" style={{ color: theme.palette.primary.blue, display: 'flex', justifyContent: 'center', textAlign: 'center', paddingTop: '10px' }}>{label}</T>
                 ) : (
-                  <T variant ="h5rg" style={{color: theme.palette.secondary.grey, display: 'flex', justifyContent: 'center', textAlign: 'center', paddingTop: '10px'}}>{label}</T>
+                  <T variant="h5rg" style={{ color: theme.palette.secondary.grey, display: 'flex', justifyContent: 'center', textAlign: 'center', paddingTop: '10px' }}>{label}</T>
                 )
               }
             >
             </StepLabel>
           </Step>
         ))}
-    </Stepper>
+      </Stepper>
     </Box >
   )
 }

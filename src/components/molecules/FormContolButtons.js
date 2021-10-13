@@ -1,13 +1,13 @@
 import { BackButton, NextButton } from 'components/atoms/NextAndBackButtons'
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 
-export const FormControlButtons = () => {
+export const FormControlButtons = ({ backHandle, nextHandle }) => {
   return (
     <FlexBoxRow styleProps={{
       justifyContent: 'space-between',
     }}>
-      <BackButton />
-      <NextButton />
+      <BackButton onClick={backHandle} />
+      <NextButton onClick={nextHandle} />
     </FlexBoxRow>
   )
 }

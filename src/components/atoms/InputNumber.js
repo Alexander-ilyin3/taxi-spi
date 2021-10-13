@@ -1,6 +1,4 @@
-import { useTheme } from "@material-ui/core"
-import { Box, styled } from "@material-ui/system"
-import { InputBase } from "@mui/material"
+import { InputAdornment, useTheme, Box } from "@mui/material"
 import { Input } from 'components/atoms/Input'
 import { useEffect, useState } from "react"
 import NumberFormat from 'react-number-format'
@@ -92,15 +90,17 @@ export const InputNumber = ({ value, setValue }) => {
     }}>
       <NumberFormat
         value={value}
-        className="foo"
         displayType={'text'}
         allowNegative={false}
-        onValueChange={(v) => { console.log({ v }); setValue(v.value) }}
+        onValueChange={(v) => setValue(v.value) }
         onInput={(e) => { return /^\d+$|^$/.test(e.target.value) ? setValue(e.target.value) : null }}
         customInput={Input}
-        renderText={(v, props) => <Input {...props} value={v}></Input>} //TODO value is set with last letter or sign. checkout "value"
+        renderText={(v, props) => <Input {...props} value={v} endAdornment={(
+          <InputAdornment position="end">
+            <ArrowButtons decrement={decrement} increment={increment} disabled={disabledBotArrow} />
+          </InputAdornment>
+        )}></Input>}
       />
-      <ArrowButtons decrement={decrement} increment={increment} disabled={disabledBotArrow} />
     </Box>
   )
 }

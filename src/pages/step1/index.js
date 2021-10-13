@@ -1,4 +1,3 @@
-import { Typography as T } from '@material-ui/core'
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { SectionBox } from 'components/atoms/SectionBox'
 import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
@@ -13,40 +12,49 @@ import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { useFormContext } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
+import { testDestinationData2, testPickupData2 } from 'testData/testDestinationData'
+import { Typography as T } from '@mui/material'
 
 const Step1 = () => {
 
-  const { register, watch, getValues, formState, unregister, reset } = useFormContext()
+  const { watch, getValues, formState, handleSubmit } = useFormContext()
   const isCustomDestination = watch('isCustomDestination')
+  const onSubmit = (data, e) => console.log('Form Submitted', data, e);
+  const onError = (errors, e) => console.log('error submitting', errors, e);
+  const initialSteps = ['Service Selection', 'Vehicle Selection', 'Select Add-Ons', 'Contact Information', 'Billing Information']
+  const [ steps, setSteps ] = useState(initialSteps)
 
   useEffect(() => {
-    reset({
-      isCustomDestination: false,
-      numberOfPassengers: 1
-    })
-  }, [])
+    const pickupLocation = watch('pickupLocation')
+    const destinationLocation = watch('destinationLocation')
 
-  useEffect(() => {
-    console.log(getValues())
-  }, [formState, getValues])
+    if ( pickupLocation?.isAirport || destinationLocation?.isAirport ) {
+      setSteps(['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information'])
+    } else {
+      setSteps(initialSteps)
+    }
+  }, [formState, watch])
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log(22222222, getValues())
-    }, 5000)
-  }, [])
+  const nextHandle = () => {
+    handleSubmit(onSubmit, onError)()
+    console.log('next clicked')
+  }
+
+  const backHandle = () => {
+    console.log('back clicked')
+  }
 
   return (
     <>
       <SiteHeader />
-      <StepperComponent />
-
+      <StepperComponent activeStep={0} steps={steps}/>
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
             <T variant='h1'> Service Selection </T>
-            <CheckBoxLabelBox labelText={'My Destination/Departure is a AirBNB/VRBO/Rental Property'} name={'isCustomDestination'}>
+            <CheckBoxLabelBox r={isCustomDestination ? true : false} labelText={'My Destination/Departure is a AirBNB/VRBO/Rental Property'} name={'isCustomDestination'}>
               {
                 isCustomDestination ? (
                   <InputBox name={'customDestination'} />
@@ -64,14 +72,17 @@ const Step1 = () => {
                 </>
               ) : (
                 <>
-                  <InputBox r labelText="Pickup Location" labelErrorText="Field must be filled" />
-                  <InputBox r labelText="Destination" labelErrorText="Field must be filled" />
+                  <LocationInputSelect name={'pickupLocation'} autocompleteData={testPickupData2} labelText="Pickup Location" r />
+                  <LocationInputSelect name={'destinationLocation'} autocompleteData={testDestinationData2} labelText="Destination" r />
                 </>
               )}
             </FlexBoxRow>
-            <InputNumberBox r labelText="How many people are you travelling with (including yourself)?" name={'numberOfPassengers'}></InputNumberBox>
+            <InputNumberBox r labelText="How many people are you travelling with (including yourself)?" name={'numberOfPassengers'} labelErrorText={'The field cannot be empty'}></InputNumberBox>
+            <CheckBoxLabelBox labelText={'Make this a Round-Trip Reservation'} name="roadTripReservation">
+              <T variant="secondaryText">Save yourself a travel headache! we’ll pick you from the destination we dropped you off at, and take you to the airport 3 hours before flight’s departure!</T>
+            </CheckBoxLabelBox>
           </SectionBox>
-          <FormControlButtons />
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
         <OrderSummaryContainer >
           <OrderSummaryPlug />
