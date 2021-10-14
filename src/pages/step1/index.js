@@ -1,3 +1,7 @@
+import { useFormContext } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { useDispatch, useStore } from 'react-redux'
+
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { SectionBox } from 'components/atoms/SectionBox'
 import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
@@ -11,8 +15,6 @@ import { OrderSummaryContainer } from 'components/atoms/OrderSummaryContainer'
 import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
-import { useFormContext } from 'react-hook-form'
-import { useEffect, useState } from 'react'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 import { testDestinationData2, testPickupData2 } from 'testData/testDestinationData'
 import { Typography as T } from '@mui/material'
@@ -20,17 +22,24 @@ import { Typography as T } from '@mui/material'
 const Step1 = () => {
 
   const { watch, getValues, formState, handleSubmit } = useFormContext()
+  const { dispatch, getState } = useStore()
+
   const isCustomDestination = watch('isCustomDestination')
-  const onSubmit = (data, e) => console.log('Form Submitted', data, e);
-  const onError = (errors, e) => console.log('error submitting', errors, e);
+  const onSubmit = (data, e) => {
+    console.log('Form Submitted', data, e)
+    dispatch({type: 'SET_STORE', payload: data })
+  }
+
+  const onError = (errors, e) => console.log('error submitting', errors, e)
+
   const initialSteps = ['Service Selection', 'Vehicle Selection', 'Select Add-Ons', 'Contact Information', 'Billing Information']
-  const [ steps, setSteps ] = useState(initialSteps)
+  const [steps, setSteps] = useState(initialSteps)
 
   useEffect(() => {
     const pickupLocation = watch('pickupLocation')
     const destinationLocation = watch('destinationLocation')
 
-    if ( pickupLocation?.isAirport || destinationLocation?.isAirport ) {
+    if (pickupLocation?.isAirport || destinationLocation?.isAirport) {
       setSteps(['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information'])
     } else {
       setSteps(initialSteps)
@@ -49,7 +58,7 @@ const Step1 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={0} steps={steps}/>
+      <StepperComponent activeStep={0} steps={steps} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
