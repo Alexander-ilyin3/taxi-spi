@@ -7,14 +7,22 @@ import { LabelError } from "components/atoms/LabelError"
 import { InputNumber } from "components/atoms/InputNumber"
 
 
-const InputNumberBox = ({ labelText, labelErrorText, r, name }) => {
+const InputNumberBox = ({ labelText, labelErrorText, r, name, selectedCar }) => {
   const { control } = useFormContext()
   return (
     <Controller
       control={control}
       name={name}
       defaultValue="1"
-      rules={{ validate: (v) => r && !!v }}
+      rules={{
+        validate: (v) => {
+          if (selectedCar?.oneSeatAllowed) {
+            return parseFloat(v) === 1
+          } else {
+            return r && !!v
+          }
+        }
+      }}
       render={({
         field: { onChange, value },
         fieldState: { invalid }
@@ -31,7 +39,17 @@ const InputNumberBox = ({ labelText, labelErrorText, r, name }) => {
               setValue={onChange}
               value={value}
             />
-            {invalid && <LabelError labelErrorText={labelErrorText} />}
+            {invalid &&
+              <LabelError
+                labelErrorText={
+                  selectedCar?.oneSeatAllowed ? (
+                    'Only one seat allowed for this type of vehicle'
+                  ) : (
+                    labelErrorText
+                  )
+                }
+              />
+            }
           </Box>
         </>
       )}
