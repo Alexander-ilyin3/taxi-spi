@@ -39,6 +39,7 @@ const ArrowButtons = ({ decrement, increment, disabled }) => {
         style={{
           backgroundColor: '#fff0',
           border: 'none',
+          cursor: 'pointer'
         }}
       >
         <Arrow direction={'top'} disabled={false} />
@@ -49,7 +50,7 @@ const ArrowButtons = ({ decrement, increment, disabled }) => {
         style={{
           backgroundColor: '#fff0',
           border: 'none',
-
+          cursor: 'pointer'
         }}
       >
         <Arrow direction={'bot'} disabled={disabled} />

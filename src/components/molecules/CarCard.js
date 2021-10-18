@@ -1,11 +1,13 @@
 import { Box, Card, CardActionArea, Typography as T, useTheme } from "@mui/material"
 
-export const CarCard = ({ cardData }) => {
+export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
   const theme = useTheme()
-  const { palette: { primary: { grey, blue }, secondary: { lightBlue }} } = theme
+  const { palette: { primary: { grey, blue, white }, secondary: { lightBlue }} } = theme
   const { carName, price, numberOfSeats, picturePath } = cardData
+  const isCarActive = cardData.index === activeCar?.index
 
   const cardClick = () => {
+    setSelectedCar(cardData)
     console.log('card clicked')
   }
 
@@ -15,7 +17,7 @@ export const CarCard = ({ cardData }) => {
       sx={{
         width: '240px',
         // height: '260px',
-        border: `1px solid ${grey}`,
+        border: isCarActive ? `1px solid ${blue}` :`1px solid ${grey}`,
         borderRadius: '10px',
         margin: '20px 10px',
       }}
@@ -63,14 +65,14 @@ export const CarCard = ({ cardData }) => {
           sx={{
             width: '100%',
             height: '46px',
-            backgroundColor: lightBlue,
-            color: blue,
+            backgroundColor: isCarActive ? blue : lightBlue,
+            color: isCarActive ? white : blue,
             display: 'flex',
             justifyContent: 'center',
             textAlign: 'center'
           }}
         >
-          <T sx={{alignSelf: 'center', fontWeight: 600}}>Select Vehicle</T>
+          <T sx={{alignSelf: 'center', fontWeight: 600}}>{isCarActive ? 'Vehicle Selected': 'Select Vehicle'}</T>
         </Box>
       </CardActionArea>
     </Card>

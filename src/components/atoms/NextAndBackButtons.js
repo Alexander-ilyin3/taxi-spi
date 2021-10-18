@@ -21,7 +21,7 @@ export const NextButton = ({ onClick }) => {
   )
 }
 
-export const BackButton = ({ onClick }) => {
+export const BackButton = ({ onClick, disableBackButton }) => {
   const theme = useTheme()
   const { palette: { primary: { blue, white } } } = theme
 
@@ -33,6 +33,8 @@ export const BackButton = ({ onClick }) => {
       fontFamily: 'Poppins',
       borderRadius: '10px',
       border: `2px solid ${blue}`,
+      opacity: `${disableBackButton ? '0' : '1'}`,
+      cursor: `${disableBackButton ? 'default' : 'pointer'}`,
     }}
       onClick={onClick}>
       <img src="images/back-button-icon.svg"></img>
