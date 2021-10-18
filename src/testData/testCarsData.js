@@ -4,6 +4,7 @@ export const testCarData = [
     price: 25,
     numberOfSeats: 8, 
     picturePath: 'images/cars/Shuttle - Local.png',
+    oneSeatAllowed: true
   },
   {
     carName: 'Nissan Pathfinder',
@@ -34,5 +35,6 @@ export const testCarData = [
     price: 25,
     numberOfSeats: 42, 
     picturePath: 'images/cars/Motor Coach.png',
+    oneSeatAllowed: true
   },
 ]
