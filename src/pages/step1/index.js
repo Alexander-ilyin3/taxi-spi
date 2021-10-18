@@ -91,7 +91,7 @@ const Step1 = () => {
               <T variant="secondaryText">Save yourself a travel headache! we’ll pick you from the destination we dropped you off at, and take you to the airport 3 hours before flight’s departure!</T>
             </CheckBoxLabelBox>
           </SectionBox>
-          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} disableBackButton />
         </SectionWrapper>
         <OrderSummaryContainer >
           <OrderSummaryPlug />
