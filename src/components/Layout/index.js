@@ -13,6 +13,7 @@ import { createStore } from 'redux'
 
 import Step1 from 'pages/step1'
 import Step2 from 'pages/step2'
+import Step3 from 'pages/step3'
 import { theme } from 'mui/theme.js'
 import { rootReducer } from 'redux/rootReducer'
 
@@ -33,13 +34,16 @@ const Layout = () => {
             <div>
               <Switch>
                 <Route exact path='/'>
-                  <Redirect to='/step-1' />
+                  <Redirect to='/step-3' />
                 </Route>
                 <Route path="/step-1">
                   <Step1 />
                 </Route>
                 <Route path="/step-2">
                   <Step2 />
+                </Route>
+                <Route path="/step-3">
+                  <Step3 />
                 </Route>
               </Switch>
             </div>

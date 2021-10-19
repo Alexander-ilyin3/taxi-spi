@@ -1,7 +1,92 @@
-import { Paper, Typography as T } from "@mui/material"
+import { Paper, Typography as T, Typography } from "@mui/material"
 import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
+import { FlexBoxRow } from "./FlexBoxRow"
+
+const SummaryDateElement = ({ data: { date, time, label } }) => {
+  const { palette: { primary: { blue } } } = useTheme()
+  const [formattedDate, setFormattedDate] = useState('')
+  const [formattedTime, setFormattedTime] = useState('')
+
+  useEffect(() => {
+    if (date instanceof Date) {
+      setFormattedDate(
+        date.toLocaleString('en', { day: 'numeric' })
+        + ' ' + date.toLocaleString('en', { month: 'long' })
+        + ', ' + date.toLocaleString('en', { year: "numeric" })
+      )
+    }
+
+    if (time instanceof Date) {
+      setFormattedTime(
+        time.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true })
+      )
+    }
+  }, [date, time])
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-start'
+        }}
+      >
+        <img src="Calendar.svg" />
+        <T variant="h5sb" color={blue} sx={{ paddingLeft: 1 }}>{label}</T>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        <T
+          variant="cardLabelText"
+          sx={{
+            paddingLeft: '36px'
+          }}
+        >
+          {formattedDate}
+        </T>
+        <T
+          variant="cardLabelText"
+          sx={{
+            paddingLeft: '36px'
+          }}
+        >
+          {formattedTime}
+        </T>
+      </Box>
+    </Box>
+  )
+}
+
+const SummaryDateComponent = () => {
+  const { watch } = useFormContext()
+
+  const arrivalDate = watch('arrivalDate')
+  const arrivalTime = watch('arrivalTime')
+  const departureDate = watch('departureDate')
+  const departureTime = watch('departureTime')
+  const bookingDate = watch('bookingDate')
+  const bookinglTime = watch('bookinglTime')
+
+  return (
+    <FlexBoxRow>
+      {arrivalDate && (
+        <SummaryDateElement data={{ date: arrivalDate, time: arrivalTime, label: 'Arrival Date' }} />
+      )}
+      {departureDate && (
+        <SummaryDateElement data={{ date: departureDate, time: departureTime, label: 'Departure Date' }} />
+      )}
+      {bookingDate && (
+        <SummaryDateElement data={{ date: bookingDate, time: bookinglTime, label: 'Booking Date' }} />
+      )}
+    </FlexBoxRow>
+  )
+}
 
 export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed }) => {
   const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white } } } = useTheme()
@@ -17,7 +102,6 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed })
     if (selectedCar?.numberOfSeats && numberOfPassengers) {
       const passengerCoefficient = numberOfPassengers / selectedCar.numberOfSeats
       setNumberOfCars(Math.ceil(passengerCoefficient))
-      console.log('number of cars ', numberOfCars)
     }
   }, [selectedCar, numberOfPassengers])
 
@@ -60,6 +144,7 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed })
       borderRadius: 4,
     }}>
       <T variant='h1'>Order Summary</T>
+      <SummaryDateComponent />
       {selectedCar ? (
         oneSeatRuleBroken ? (
           <Box sx={{
@@ -67,7 +152,6 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed })
             width: '100%',
             padding: '26px',
             backgroundColor: lightGrayBlue,
-
           }}
           >
             <T variant='h4' color={warning}>Only one seat allowed for this type of vehicle</T>
