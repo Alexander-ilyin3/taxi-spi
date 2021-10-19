@@ -35,11 +35,11 @@ const theme = createTheme({
           '&.error-Border': {
             // border: `1px solid ${palette.secondary.red}`
           },
-          height: 60,
+          minHeight: 60,
           backgroundColor: palette.primary.white,
           display: 'flex',
           borderRadius: 10,
-          paddingLeft: 22,
+          paddingLeft: 8,
           fontFamily: 'Poppins',
           ...typography.fieldText,
         },
