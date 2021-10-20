@@ -22,12 +22,16 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
           fieldState: { invalid },
         }) => (
           <Box sx={{ width: '100%' }}>
-            <Label sx={{ marginBottom: 2 }}>
-              {r && <RequiredStar />}
-              <T variant='h5md' >
-                {labelText}
-              </T>
-            </Label>
+            {labelText ? (
+              <Label sx={{ marginBottom: 2 }}>
+                {r && <RequiredStar />}
+                <T variant='h5md' >
+                  {labelText}
+                </T>
+              </Label>
+            ) : (
+              null
+            )}
             <Input disabled={disabled} onChange={onChange} value={value} />
             {invalid && <LabelError labelErrorText={labelErrorText} />}
           </Box>

@@ -53,9 +53,13 @@ const theme = createTheme({
           borderRadius: '5px',
           border: `1px solid ${palette.primary.blue}`,
           color: palette.primary.blue,
+          textTransform: 'none',
           '&:disabled':{
             border: `1px solid ${palette.primary.grey}`,
             color: palette.primary.grey,
+          },
+          '&:hover': {
+            backgroundColor: palette.primary.blue,
           }
         },
       }
