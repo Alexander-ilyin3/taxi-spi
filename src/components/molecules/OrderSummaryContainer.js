@@ -119,8 +119,8 @@ const AddOnsContainer = () => {
   )
 }
 
-export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed }) => {
-  const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white } } } = useTheme()
+export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, page6Variant }) => {
+  const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } } } = useTheme()
   const { watch } = useFormContext()
   const numberOfPassengers = watch('numberOfPassengers')
   const [displayingPrice, setDisplayingPrice] = useState()
@@ -164,18 +164,24 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed })
   }, [oneSeatAllowed, numberOfPassengers])
 
   return (
-    <Paper elevation={10} sx={{
-      padding: [2, 4, 6, 8],
-      paddingTop: 7,
-      width: '40%',
+    <Paper elevation={page6Variant ? 0 : 10} sx={{
+      padding: page6Variant ? '30px' : [2, 4, 6, 8],
+      paddingTop: page6Variant ? 4 : 7,
+      width: page6Variant ? '100%' : '40%',
       height: 'fit-content',
       display: 'flex',
       flexDirection: "column",
       gap: [0, 4],
       borderRadius: 4,
+      border: page6Variant ? `1px solid ${grey}` : 'none'
     }}>
-      <T variant='h1'>Order Summary</T>
-      <SummaryDateComponent />
+      {page6Variant ? (
+        <T variant='h2' sx={{ alignSelf: 'center', color: blue }}>Order Summary</T>
+      ) : (
+        <T variant='h1'>Order Summary</T>
+      )}
+      {page6Variant ? null : <SummaryDateComponent />}
+
       {selectedCar ? (
         oneSeatRuleBroken ? (
           <Box sx={{
