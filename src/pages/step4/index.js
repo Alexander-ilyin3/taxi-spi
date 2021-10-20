@@ -38,7 +38,7 @@ const Step4 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={2} steps={steps} />
+      <StepperComponent activeStep={3} steps={steps} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
