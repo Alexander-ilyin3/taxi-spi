@@ -2,7 +2,7 @@ import { Paper, Typography as T, Typography } from "@mui/material"
 import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
-import { FlexBoxRow } from "./FlexBoxRow"
+import { FlexBoxRow } from "components/atoms/FlexBoxRow"
 
 const SummaryDateElement = ({ data: { date, time, label } }) => {
   const { palette: { primary: { blue } } } = useTheme()
@@ -85,6 +85,37 @@ const SummaryDateComponent = () => {
         <SummaryDateElement data={{ date: bookingDate, time: bookinglTime, label: 'Booking Date' }} />
       )}
     </FlexBoxRow>
+  )
+}
+
+const AddOnsContainer = () => {
+  const { watch } = useFormContext()
+  //TODO CHANGE THIS WITH API
+  const [a0, a1, a2, a3, a4, a5, a6, a7] = [
+    { ...watch('Addon-id-0') },
+    { ...watch('Addon-id-1') },
+    { ...watch('Addon-id-2') },
+    { ...watch('Addon-id-3') },
+    { ...watch('Addon-id-4') },
+    { ...watch('Addon-id-5') },
+    { ...watch('Addon-id-6') },
+    { ...watch('Addon-id-7') },
+  ]
+
+  const [displayingAddons, setDisplayingAddons] = useState([])
+
+  useEffect(() => {
+    const toDisplay = [a0, a1, a2, a3, a4, a5, a6, a7].map(addonObj => {
+      return addonObj.addonCount ? { name: addonObj.name, count: addonObj.addonCount } : null
+    }).filter((v) => v)
+    console.log('useEffect 111')
+    // setDisplayingAddons(toDisplay)
+  }, [a0, a1, a2, a3, a4, a5, a6, a7])
+
+  return (
+    displayingAddons.map(addon => {
+      return <T variant="h5sb">{addon.name} (x{addon.count})</T>
+    })
   )
 }
 
@@ -196,6 +227,7 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed })
                 )}
               </T>
             </Box>
+            <AddOnsContainer />
             <Box
               sx={{
                 backgroundColor: blue,
