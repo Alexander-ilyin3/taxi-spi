@@ -12,9 +12,11 @@ import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { AddOnsSection } from 'components/molecules/AddOnsSection'
-import { testAddons } from 'testData/testAddons' 
+import { testAddons } from 'testData/testAddons'
+import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
+import { InputBox } from 'components/molecules/InputBox'
 
-const Step4 = () => {
+const Step5 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
@@ -38,13 +40,34 @@ const Step4 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={3} steps={steps} />
+      <StepperComponent activeStep={4} steps={steps} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
-            <T variant='h1'> Select Add-ons </T>
-            <T variant='h5md' >Have extra luggage or want to start your vacation the second you get off the plane? These add-ons are for you!</T>
-            <AddOnsSection cardsData={cardsData}/>
+            <T variant='h1'> Contact Information </T>
+            <T variant='h5md' >Please enter in address that will match the billing card you are using</T>
+            <FlexBoxRow>
+              <InputBox name={'firstName'} labelText="First Name" r/>
+              <InputBox name={'lastName'} labelText="Last Name" r/>
+            </FlexBoxRow>
+            <FlexBoxRow>
+              <InputBox name={'emailAddress'} labelText="Email Address" r/>
+              <InputBox name={'confirmEmailAddress'} labelText="Confirm Email Address" r/>
+            </FlexBoxRow>
+            <FlexBoxRow>
+              <InputBox name={'mobilePhone'} labelText="Mobile Phone" r/>
+              <InputBox name={'additionalPhone'} labelText="Additional Phone" />
+            </FlexBoxRow>
+            <FlexBoxRow>
+              <InputBox name={'country'} labelText="Country" r/>
+              <InputBox name={'address'} labelText="Address" r/>
+              <InputBox name={'address2'} labelText="Address 2" />
+            </FlexBoxRow>
+            <FlexBoxRow>
+              <InputBox name={'city'} labelText="City" r/>
+              <InputBox name={'state'} labelText="State/Province" r/>
+              <InputBox name={'postalCode'} labelText="ZIP/Postal Code" r/>
+            </FlexBoxRow>
           </SectionBox>
           <FormControlButtons />
         </SectionWrapper>
@@ -57,4 +80,4 @@ const Step4 = () => {
   )
 }
 
-export default Step4
+export default Step5
