@@ -80,6 +80,16 @@ export const typography = {
     fontSize: 14,
     fontWeight: 600,
     fontFamily: 'Poppins'
+  },
+  cardDescription: {
+    color: palette.primary.black,
+    fontSize: 12,
+    fontWeight: 400,
+  },
+  cardPrice: {
+    color: palette.primary.black,
+    fontSize: 14,
+    fontWeight: 700,
   }
   // overrides: {
   //   MuiCssBaseline: {
