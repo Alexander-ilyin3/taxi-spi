@@ -16,6 +16,7 @@ import Step2 from 'pages/step2'
 import Step3 from 'pages/step3'
 import Step4 from 'pages/step4'
 import Step5 from 'pages/step5'
+import Step6 from 'pages/step6'
 
 import { theme } from 'mui/theme.js'
 import { rootReducer } from 'redux/rootReducer'
@@ -53,6 +54,9 @@ const Layout = () => {
                 </Route>
                 <Route path="/step-5">
                   <Step5 />
+                </Route>
+                <Route path="/step-6">
+                  <Step6 />
                 </Route>
               </Switch>
             </div>
