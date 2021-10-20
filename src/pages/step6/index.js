@@ -41,7 +41,7 @@ const Step6 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={4} steps={steps} />
+      <StepperComponent activeStep={5} steps={steps} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
