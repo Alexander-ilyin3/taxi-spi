@@ -17,11 +17,11 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-            border: `1px solid ${palette.primary.grey}`,
+          border: `1px solid ${palette.primary.grey}`,
           '& fieldset': {
             border: 'none'
           },
-          '&:hover' : {
+          '&:hover': {
             '& fieldset': {
               border: 'none'
             }
@@ -42,6 +42,21 @@ const theme = createTheme({
           paddingLeft: 8,
           fontFamily: 'Poppins',
           ...typography.fieldText,
+        },
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          minWidth: '25px',
+          height: '25px',
+          borderRadius: '5px',
+          border: `1px solid ${palette.primary.blue}`,
+          color: palette.primary.blue,
+          '&:disabled':{
+            border: `1px solid ${palette.primary.grey}`,
+            color: palette.primary.grey,
+          }
         },
       }
     }
