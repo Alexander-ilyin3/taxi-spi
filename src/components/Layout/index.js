@@ -14,6 +14,8 @@ import { createStore } from 'redux'
 import Step1 from 'pages/step1'
 import Step2 from 'pages/step2'
 import Step3 from 'pages/step3'
+import Step4 from 'pages/step4'
+
 import { theme } from 'mui/theme.js'
 import { rootReducer } from 'redux/rootReducer'
 
@@ -44,6 +46,9 @@ const Layout = () => {
                 </Route>
                 <Route path="/step-3">
                   <Step3 />
+                </Route>
+                <Route path="/step-4">
+                  <Step4 />
                 </Route>
               </Switch>
             </div>
