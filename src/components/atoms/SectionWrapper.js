@@ -1,6 +1,6 @@
 import { Box } from "@mui/material"
 
-export const SectionWrapper = ({children}) => {
+export const SectionWrapper = ({children, fullWidth}) => {
   return (
     <Box sx={{
       // width: 'auto',
@@ -12,7 +12,9 @@ export const SectionWrapper = ({children}) => {
       flexDirection: "column",
       gap: 8,
       borderRadius: 4,
-      width: '55%',
+      width: fullWidth ? 'none' : '55%',
+      minWidth: fullWidth ? '80%' : 'none',
+      margin: fullWidth ? '0 auto' : 0
     }}>
       {children}
     </Box>
