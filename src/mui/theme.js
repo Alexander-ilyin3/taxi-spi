@@ -23,7 +23,7 @@ const theme = createTheme({
           },
           '&:hover': {
             '& fieldset': {
-              border: 'none'
+              // border: 'none'
             }
           },
           '&.Mui-focused': {
@@ -33,7 +33,10 @@ const theme = createTheme({
             backgroundColor: palette.secondary.lightGrey
           },
           '&.error-Border': {
-            // border: `1px solid ${palette.secondary.red}`
+            border: `1px solid ${palette.secondary.red}`
+          },
+          '&.Mui-error': {
+            border: `1px solid ${palette.secondary.red}`
           },
           minHeight: 60,
           backgroundColor: palette.primary.white,
@@ -54,7 +57,7 @@ const theme = createTheme({
           border: `1px solid ${palette.primary.blue}`,
           color: palette.primary.blue,
           textTransform: 'none',
-          '&:disabled':{
+          '&:disabled': {
             border: `1px solid ${palette.primary.grey}`,
             color: palette.primary.grey,
           },

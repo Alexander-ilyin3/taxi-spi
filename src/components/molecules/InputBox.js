@@ -32,7 +32,7 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
             ) : (
               null
             )}
-            <Input disabled={disabled} onChange={onChange} value={value} />
+            <Input disabled={disabled} onChange={onChange} value={value} error={invalid}/>
             {invalid && <LabelError labelErrorText={labelErrorText} />}
           </Box>
         )}

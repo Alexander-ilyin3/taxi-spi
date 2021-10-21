@@ -21,7 +21,7 @@ const Input = styled(InputBase)(({ theme }) => {
     '&.Mui-disabled ': {
       backgroundColor: lightGrey
     },
-    '&.error-Border': {
+    '&.Mui-error': {
       border: `1px solid ${red}`
     }
   }
