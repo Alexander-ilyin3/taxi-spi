@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 import { useEffect, useState } from 'react'
-import { useDispatch, useStore } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { SectionBox } from 'components/atoms/SectionBox'
@@ -19,16 +19,28 @@ import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 import { testDestinationData2, testPickupData2 } from 'testData/testDestinationData'
 import { Typography as T } from '@mui/material'
 
+import { setStep1Data } from 'redux/actions'
+import { getStep1, getPassengers } from 'redux/selectors'
+import { useHistory } from 'react-router'
+
 const Step1 = () => {
 
   const { watch, getValues, formState, handleSubmit } = useFormContext()
-  const { dispatch, getState } = useStore()
+  const dispatch = useDispatch()
+  const state = useSelector(getStep1)
+  const numberOfPassengers = useSelector(getPassengers)
+  const history = useHistory()
 
   const isCustomDestination = watch('isCustomDestination')
   const onSubmit = (data, e) => {
     console.log('Form Submitted', data, e)
-    dispatch({type: 'SET_STORE', payload: data })
+    dispatch(setStep1Data(data))
+    history.push('step-2')
   }
+
+  useEffect(() => {
+    console.log(state)
+  }, [state])
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
 

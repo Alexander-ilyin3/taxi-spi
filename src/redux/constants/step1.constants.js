@@ -1,0 +1,1 @@
+export const SET_STEP1_DATA = 'SET_STEP1_DATA'
