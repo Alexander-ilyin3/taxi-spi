@@ -38,6 +38,7 @@ const InputNumberBox = ({ labelText, labelErrorText, r, name, selectedCar }) => 
             <InputNumber
               setValue={onChange}
               value={value}
+              error={invalid}
             />
             {invalid &&
               <LabelError

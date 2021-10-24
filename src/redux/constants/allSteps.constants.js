@@ -1,0 +1,7 @@
+export const SET_STEP1_DATA = 'SET_STEP1_DATA'
+export const SET_STEP2_DATA = 'SET_STEP2_DATA'
+export const SET_STEP3_DATA = 'SET_STEP3_DATA'
+export const SET_STEP4_DATA = 'SET_STEP3_DATA'
+export const SET_STEP5_DATA = 'SET_STEP3_DATA'
+export const SET_STEP6_DATA = 'SET_STEP3_DATA'
+export const SET_STEP7_DATA = 'SET_STEP3_DATA'

@@ -15,18 +15,43 @@ import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { CarCardsSection } from 'components/molecules/CarCardsSection'
+import { useDispatch } from 'react-redux'
 
+import { setStep2Data } from 'redux/actions'
+import { getStep1, getPassengers } from 'redux/selectors'
+import { useHistory } from 'react-router'
 
 const Step2 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Select Add-Ons', 'Contact Information', 'Billing Information']
-  const { watch } = useFormContext()
+  const { watch, register, reset } = useFormContext()
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { handleSubmit } = useFormContext()
 
+  const onSubmit = (data, e) => {
+    console.log('Form Submitted', data, e)
+    dispatch(setStep2Data(data))
+    history.push('step-3')
+  }
+
+  const onError = (errors, e) => console.log('error submitting', errors, e)
+
+  const nextHandle = () => {
+    handleSubmit(onSubmit, onError)()
+    console.log('next clicked')
+  }
+
+  const backHandle = () => {
+    console.log('back clicked')
+    history.push('step-1')
+  }
+  
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={1} steps={steps}/>
+      <StepperComponent activeStep={1} steps={steps} />
 
       <PageContentWrapper>
         <SectionWrapper>
@@ -38,7 +63,7 @@ const Step2 = () => {
             <InputNumberBox r labelText="Number of passengers" name={'numberOfPassengers'} labelErrorText={'The field cannot be empty'} selectedCar={selectedCar}></InputNumberBox>
             <CarCardsSection />
           </SectionBox>
-          <FormControlButtons />
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
         <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed}>
           <OrderSummaryPlug />

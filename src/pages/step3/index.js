@@ -13,6 +13,9 @@ import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { SubSection } from 'components/molecules/SubSection'
 import { NotesSection } from 'components/molecules/NotesSection'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
+import { setStep3Data } from 'redux/actions'
 
 const Step3 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
@@ -27,7 +30,29 @@ const Step3 = () => {
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
 
-  const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: true, departureIsAirport: true } //TODO test data
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { handleSubmit } = useFormContext()
+
+  const onSubmit = (data, e) => {
+    console.log('Form Submitted', data, e)
+    dispatch(setStep3Data(data))
+    history.push('step-4')
+  }
+
+  const onError = (errors, e) => console.log('error submitting', errors, e)
+
+  const nextHandle = () => {
+    handleSubmit(onSubmit, onError)()
+    console.log('next clicked')
+  }
+
+  const backHandle = () => {
+    console.log('back clicked')
+    history.push('step-2')
+  }
+
+  const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: false, departureIsAirport: false } //TODO test data
 
   return (
     <>
@@ -40,7 +65,7 @@ const Step3 = () => {
             <SubSection arrival={arrivalIsAirport} departure={departureIsAirport} />
             <NotesSection />
           </SectionBox>
-          <FormControlButtons />
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
         <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed}>
           <OrderSummaryPlug />

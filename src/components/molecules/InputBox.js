@@ -6,7 +6,7 @@ import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 
-const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
+const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, couponHeight }) => {
   const { control } = useFormContext()
 
   return (
@@ -16,12 +16,13 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
         name={name}
         shouldUnregister={true}
         defaultValue=''
-        rules={{ validate: (v) => !!v }}
+        rules={{ validate: (v) => { console.log(name, !!v, !r, 'result ' + !!v && !r); return (r && !!v) } }}
         render={({
           field: { onChange, value },
           fieldState: { invalid },
         }) => (
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ width: '100%',/* ...(couponHeight ? { height: '2px'} : {} )*/ }}>
+            {console.log('lableText is - ', labelText)}
             {labelText ? (
               <Label sx={{ marginBottom: 2 }}>
                 {r && <RequiredStar />}
@@ -32,19 +33,24 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name }) => {
             ) : (
               null
             )}
-            <Input disabled={disabled} onChange={onChange} value={value} />
+            <Input disabled={disabled} onChange={onChange} value={value} error={invalid} />
+            {console.log('is invalid - ', invalid)}
             {invalid && <LabelError labelErrorText={labelErrorText} />}
           </Box>
         )}
       />
     ) : (
       <Box sx={{ width: '100%' }}>
-        <Label sx={{ marginBottom: 2 }}>
-          {r && <RequiredStar />}
-          <T variant='h5md' >
-            {labelText}
-          </T>
-        </Label>
+        {labelText ? (
+          <Label sx={{ marginBottom: 2 }}>
+            {r && <RequiredStar />}
+            <T variant='h5md' >
+              {labelText}
+            </T>
+          </Label>
+        ) : (
+          null
+        )}
         <Input disabled={disabled} />
         {error && <LabelError labelErrorText={labelErrorText} />}
       </Box>

@@ -20,15 +20,18 @@ import Step6 from 'pages/step6'
 import Step7 from 'pages/step7'
 
 import { theme } from 'mui/theme.js'
-import { rootReducer } from 'redux/rootReducer'
+import { rootReducer } from 'redux/reducers/rootReducer'
 
 /* TEST COMPONENT //TODO */
 import { ConsoleFormStateButton } from 'testData/ConsoleFormStateButton'
 /* TEST COMPONENT //TODO */
 
 const Layout = () => {
-  const store = createStore(rootReducer)
-  const methods = useForm()
+  const store = createStore(
+    rootReducer, /* preloadedState, */
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+  const methods = useForm({ shouldFocusError: true })
 
   return (
     <Provider store={store}>

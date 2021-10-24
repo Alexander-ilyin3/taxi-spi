@@ -6,7 +6,7 @@ import { InputBox } from 'components/molecules/InputBox'
 
 export const CouponSection = () => {
   const { palette: { primary: { blue, white } } } = useTheme()
-  
+
   return (
     <Box
       sx={{
@@ -14,6 +14,7 @@ export const CouponSection = () => {
         maxWidth: '60%',
         alignItems: 'center',
         gap: 2,
+        height: '54px',
       }}
     >
       <Label
@@ -29,6 +30,7 @@ export const CouponSection = () => {
         >Coupon Code</T>
       </Label>
       <InputBox
+        couponHeight
         name="couponCode"
       >
       </InputBox>
@@ -42,7 +44,7 @@ export const CouponSection = () => {
           fontWeight: 600,
           borderRadius: '10px',
         }}
-      ><T variant="h3" sx={{}} ></T> Apply</Button>
+      ><T variant="h5sb" sx={{ color: white }} >Apply</T> </Button>
 
     </Box>
   )
