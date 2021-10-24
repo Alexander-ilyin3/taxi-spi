@@ -1,5 +1,6 @@
 import { Box, FormControlLabel, Typography as T } from "@mui/material"
 import { CheckBoxComponent } from "components/atoms/CheckBoxComponent"
+import { LabelError } from "components/atoms/LabelError"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { Controller, useFormContext } from "react-hook-form"
 
@@ -11,7 +12,12 @@ export const CheckBoxLabelBox = ({ labelText, children, name, r }) => {
       name={name}
       control={control}
       defaultValue={false}
-      render={({ field: { onChange, value } }) => (
+      shouldUnregister={true}
+      rules={{ required: r }}
+      render={({
+        field: { onChange, value },
+        fieldState: { invalid }
+      }) => (
         <Box
           sx={{
             display: 'flex',
@@ -20,8 +26,8 @@ export const CheckBoxLabelBox = ({ labelText, children, name, r }) => {
         >
           <FormControlLabel control={<CheckBoxComponent onChange={onChange} checked={value} />}
             label={
-              <Box sx={{position: 'relative'}}>
-                {r && <RequiredStar styles={{left: '-3px'}}/>}
+              <Box sx={{ position: 'relative' }}>
+                {r && <RequiredStar styles={{ left: '-3px' }} />}
                 <T
                   sx={r ? { paddingLeft: 1 } : {}}
                   variant='h5md'>
@@ -38,6 +44,7 @@ export const CheckBoxLabelBox = ({ labelText, children, name, r }) => {
             }}
           >
             {children}
+            {invalid && <LabelError labelErrorText={''} />}
           </Box>
         </Box>
       )}
