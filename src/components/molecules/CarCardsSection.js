@@ -22,7 +22,7 @@ export const CarCardsSection = ({ setSelectedCar }) => {
             flexDirection: 'row',
             flexWrap: 'wrap',
             // gap: 2,
-            justifyContent: 'space-between'
+            justifyContent: 'space-evenly'
           }}
         >
           {cardsData.map((data, i) => {

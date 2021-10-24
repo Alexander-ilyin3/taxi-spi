@@ -1,8 +1,22 @@
 import { Box, Card, CardActionArea, Typography as T, useTheme } from "@mui/material"
+import { makeStyles } from '@mui/styles'
+
+const useStyles = makeStyles(({ palette: { primary: { grey, blue, white }, secondary: { lightBlue } } }) => ({
+  carCard: {
+    minWidth: '230px',
+    border: `1px solid ${grey}`,
+    borderRadius: '10px',
+    margin: '20px 10px',
+    flexBasis: '30%'
+  },
+  carCardActive: {
+    border: `1px solid ${blue}`
+  }
+}))
 
 export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
   const theme = useTheme()
-  const { palette: { primary: { grey, blue, white }, secondary: { lightBlue }} } = theme
+  const { palette: { primary: { grey, blue, white }, secondary: { lightBlue } } } = theme
   const { carName, price, numberOfSeats, picturePath } = cardData
   const isCarActive = cardData.index === activeCar?.index
 
@@ -11,16 +25,12 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
     console.log('card clicked')
   }
 
+  const classes = useStyles()
+
   return (
     <Card
       elevation={0}
-      sx={{
-        width: '240px',
-        // height: '260px',
-        border: isCarActive ? `1px solid ${blue}` :`1px solid ${grey}`,
-        borderRadius: '10px',
-        margin: '20px 10px',
-      }}
+      className={isCarActive ? [classes.carCard, classes.carCardActive].join(' ') : classes.carCard}
     >
       <CardActionArea onClick={cardClick}
         sx={{
@@ -49,16 +59,16 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
             display: 'flex',
             justifyContent: 'space-between',
             width: '100%',
-            padding: '20px', 
+            padding: '20px',
           }}
         >
           <Box
-            sx={{display: 'flex', flexDirection: 'row'}}
+            sx={{ display: 'flex', flexDirection: 'row' }}
           >
-            <img src={'images/Person.svg'} style={{marginRight: '10px', marginTop: '-3px'}}></img><span>{numberOfSeats}&nbsp;{numberOfSeats === 1 ? 'Seat' : 'Seats'}</span>
+            <img src={'images/Person.svg'} style={{ marginRight: '10px', marginTop: '-3px' }}></img><span>{numberOfSeats}&nbsp;{numberOfSeats === 1 ? 'Seat' : 'Seats'}</span>
           </Box>
           <Box>
-            <span style={{fontWeight: 700, fontSize: '14px'}}>${price}</span>
+            <span style={{ fontWeight: 700, fontSize: '14px' }}>${price}</span>
           </Box>
         </Box>
         <Box
@@ -72,7 +82,7 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
             textAlign: 'center'
           }}
         >
-          <T sx={{alignSelf: 'center', fontWeight: 600}}>{isCarActive ? 'Vehicle Selected': 'Select Vehicle'}</T>
+          <T sx={{ alignSelf: 'center', fontWeight: 600 }}>{isCarActive ? 'Vehicle Selected' : 'Select Vehicle'}</T>
         </Box>
       </CardActionArea>
     </Card>
