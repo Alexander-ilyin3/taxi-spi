@@ -1,6 +1,8 @@
 import { Typography as T } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
@@ -13,6 +15,7 @@ import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { AddOnsSection } from 'components/molecules/AddOnsSection'
 import { testAddons } from 'testData/testAddons' 
+import { setStep4Data } from 'redux/actions'
 
 const Step4 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
@@ -33,6 +36,28 @@ const Step4 = () => {
 
   const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: true, departureIsAirport: true } //TODO test data
 
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const { handleSubmit } = useFormContext()
+
+  const onSubmit = (data, e) => {
+    console.log('Form Submitted', data, e)
+    dispatch(setStep4Data(data))
+    history.push('step-5')
+  }
+
+  const onError = (errors, e) => console.log('error submitting', errors, e)
+
+  const nextHandle = () => {
+    handleSubmit(onSubmit, onError)()
+    console.log('next clicked')
+  }
+
+  const backHandle = () => {
+    console.log('back clicked')
+    history.push('step-3')
+  }
+
   const cardsData = testAddons
   console.log(cardsData[0].src)
   return (
@@ -46,7 +71,7 @@ const Step4 = () => {
             <T variant='h5md' >Have extra luggage or want to start your vacation the second you get off the plane? These add-ons are for you!</T>
             <AddOnsSection cardsData={cardsData}/>
           </SectionBox>
-          <FormControlButtons />
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
         <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed}>
           <OrderSummaryPlug />
