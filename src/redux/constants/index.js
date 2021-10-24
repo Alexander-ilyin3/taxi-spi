@@ -1,1 +1,9 @@
-export { SET_STEP1_DATA } from './step1.constants'
+export {
+  SET_STEP1_DATA,
+  SET_STEP2_DATA,
+  SET_STEP3_DATA,
+  SET_STEP4_DATA,
+  SET_STEP5_DATA,
+  SET_STEP6_DATA,
+  SET_STEP7_DATA,
+} from './allSteps.constants'
