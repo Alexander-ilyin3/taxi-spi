@@ -18,6 +18,7 @@ import { SiteFooter } from 'components/molecules/SiteFooter'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 import { testDestinationData2, testPickupData2 } from 'testData/testDestinationData'
 import { Typography as T } from '@mui/material'
+import { locations } from 'api/locationsApi'
 
 import { setStep1Data } from 'redux/actions'
 import { getStep1, getPassengers } from 'redux/selectors'
@@ -41,6 +42,12 @@ const Step1 = () => {
   useEffect(() => {
     console.log(state)
   }, [state])
+
+  useEffect(() => {
+    return (async() => {
+      console.log(await locations.getLocations())
+    })()
+  }, [])
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
 
