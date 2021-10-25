@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Link,
@@ -42,7 +42,7 @@ const Layout = () => {
             <div>
               <Switch>
                 <Route exact path='/'>
-                  <Redirect to='/step-3' />
+                  <Redirect to='/step-1' />
                 </Route>
                 <Route path="/step-1">
                   <Step1 />
