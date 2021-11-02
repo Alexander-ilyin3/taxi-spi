@@ -6,7 +6,7 @@ import { useHistory } from 'react-router'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import { StepperComponent } from 'components/molecules/Stepper'
+import StepperComponent  from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'

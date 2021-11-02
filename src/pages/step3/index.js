@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import { StepperComponent } from 'components/molecules/Stepper'
+import StepperComponent  from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'
@@ -52,7 +52,7 @@ const Step3 = () => {
     history.push('step-2')
   }
 
-  const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: false, departureIsAirport: false } //TODO test data
+  const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: true, departureIsAirport: true } //TODO test data
 
   return (
     <>

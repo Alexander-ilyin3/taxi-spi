@@ -7,7 +7,7 @@ import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
 import { InputBox } from 'components/molecules/InputBox'
 import { InputNumberBox } from 'components/molecules/InputNumberBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import { StepperComponent } from 'components/molecules/Stepper'
+import StepperComponent from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'
@@ -47,7 +47,7 @@ const Step2 = () => {
     console.log('back clicked')
     history.push('step-1')
   }
-  
+
   return (
     <>
       <SiteHeader />

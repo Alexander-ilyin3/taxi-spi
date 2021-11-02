@@ -5,7 +5,7 @@ import { useTheme } from '@mui/system'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import { StepperComponent } from 'components/molecules/Stepper'
+import StepperComponent  from 'components/molecules/Stepper'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { CongratsWrapper } from 'components/atoms/CongratsWrapper'
