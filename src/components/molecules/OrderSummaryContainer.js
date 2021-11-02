@@ -108,7 +108,6 @@ const AddOnsContainer = () => {
     const toDisplay = [a0, a1, a2, a3, a4, a5, a6, a7].map(addonObj => {
       return addonObj.addonCount ? { name: addonObj.name, count: addonObj.addonCount } : null
     }).filter((v) => v)
-    console.log('useEffect 111')
     // setDisplayingAddons(toDisplay)
   }, [a0, a1, a2, a3, a4, a5, a6, a7])
 
@@ -150,7 +149,6 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, p
 
   useEffect(() => {
     if (displayingPrice && feesCount) {
-      console.log('displayingPrice && feesCount', displayingPrice, feesCount)
       setTotalPrice((displayingPrice + feesCount).toFixed(2))
     }
   }, [displayingPrice, feesCount])

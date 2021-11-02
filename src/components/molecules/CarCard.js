@@ -22,7 +22,6 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
 
   const cardClick = () => {
     setSelectedCar(cardData)
-    console.log('card clicked')
   }
 
   const classes = useStyles()

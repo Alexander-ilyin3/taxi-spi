@@ -10,7 +10,6 @@ const AddonsControlButtons = ({ addonObject, onChange }) => {
 
   useEffect(() => {
     setCount(addonObject.addonCount || 0)
-    console.log({count})
   }, [addonObject])
 
   const increment = () => {
