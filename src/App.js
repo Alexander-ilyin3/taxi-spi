@@ -1,10 +1,12 @@
 import Layout from 'components/Layout/index'
+import { Provider } from 'react-redux'
+import { store } from 'redux/reducers/rootReducer'
 
 function App() {
   return (
-    <div id="App">
+    <Provider store={store}>
       <Layout />
-    </div>
+    </Provider>
   )
 }
 
