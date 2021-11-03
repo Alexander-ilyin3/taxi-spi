@@ -1,10 +1,22 @@
 import { Typography as T, useTheme, Box, Stepper, Step, StepLabel } from "@mui/material"
 import { StepIconComponent } from "components/atoms/StepIconComponent"
 import { StepperConnector } from "components/atoms/StepperConnector"
+import React, { useEffect, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setInitlalSteps } from "redux/actions"
+import { getSteps } from "redux/selectors"
 
-const StepperComponent = ({ steps, activeStep }) => {
+const StepperComponent = ({ activeStep }) => {
   const theme = useTheme()
+  const unMemosteps = useSelector(getSteps)
+  const steps = useMemo(() => unMemosteps)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    if ( !steps.length ) {
+      dispatch(setInitlalSteps())
+    }
+  }, [])
   return (
     <Box sx={{
       paddingTop: 5,
@@ -37,4 +49,4 @@ const StepperComponent = ({ steps, activeStep }) => {
   )
 }
 
-export { StepperComponent }
+export default React.memo(StepperComponent)
