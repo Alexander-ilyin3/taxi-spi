@@ -1,11 +1,14 @@
-import { Box } from "@mui/material"
+import { Box, Typography as T } from "@mui/material"
 import { CarCard } from "components/molecules/CarCard.js"
 import { Controller, useFormContext } from "react-hook-form"
 import { testCarData } from 'testData/testCarsData'
+import { LabelError } from 'components/atoms/LabelError.js'
+import { useTheme } from "@mui/system"
 
 export const CarCardsSection = ({ setSelectedCar }) => {
 
   const { control } = useFormContext()
+  const { palette: { error: { main: error } } } = useTheme()
 
   const cardsData = testCarData
   return (
@@ -13,8 +16,10 @@ export const CarCardsSection = ({ setSelectedCar }) => {
       control={control}
       name="selectedCar"
       defaultValue={null}
+      rules={{ required: true }}
       render={({
-        field: { onChange, value }
+        field: { onChange, value },
+        fieldState: { invalid }
       }) => (
         <Box
           sx={{
@@ -26,8 +31,9 @@ export const CarCardsSection = ({ setSelectedCar }) => {
           }}
         >
           {cardsData.map((data, i) => {
-            return <CarCard key={i} cardData={{...data, index: i}} setSelectedCar={onChange} activeCar={value} />
+            return <CarCard key={i} cardData={{ ...data, index: i }} setSelectedCar={onChange} activeCar={value} />
           })}
+          {invalid && <T variant="h3" color={error} >Please, select a car shown above</T>}
         </Box>
       )}
     />

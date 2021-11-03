@@ -9,25 +9,15 @@ import { LabelError } from "components/atoms/LabelError"
 export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData }) => {
 
   const { control } = useFormContext()
-  const inputRef1 = useRef()
-
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('useEffect focus 1')
-      inputRef1?.current?.focus()
-    }, 5000);
-  }, [])
-
   return (
     <Box width="100%">
       <Controller
         control={control}
         name={name}
         shouldUnregister={true}
-        onFocus={() => { console.log('focused'); inputRef1.current.focus() }}
         rules={{ validate: (v) => r && !!v }}
         render={({
-          field: { onChange, value },
+          field: { onChange, value, ref },
           fieldState: { invalid }
         }) => (<>
           <Label sx={{ marginBottom: 2 }}>
@@ -39,22 +29,20 @@ export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, na
           <Autocomplete
             // inputRef=
             options={autocompleteData}
-            groupBy={(option) => option.group}
+            groupBy={(option) => option.type}
             getOptionLabel={(option) => option.name}
-            onChange={(e, value) => { console.log(5555555, value); onChange(value) }}
+            onChange={(e, value) => onChange(value)}
             value={value || null}
-            renderInput={({ inputProps: { ref }, inputProps, ...params}) => {
-              // console.log(22222222222, params)
-              // console.log( 333, inputProps)
+            renderInput={(params) => {
               return <TextField
-                // inputRef={inputRef}
                 fullWidth
                 variant="outlined"
                 disabled={disabled}
-                value={inputProps.value}
+                value={params.inputProps.value}
                 error={invalid}
                 helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
-                {...{...params, inputProps : { ref: inputRef1, ...inputProps} }}
+                {...params}
+                inputRef={ref}
               />
             }}
           />

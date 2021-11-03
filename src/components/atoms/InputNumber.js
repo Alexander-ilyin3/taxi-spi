@@ -59,7 +59,7 @@ const ArrowButtons = ({ decrement, increment, disabled }) => {
   )
 }
 
-export const InputNumber = ({ value, setValue, error }) => {
+export const InputNumber = ({ value, setValue, error, inputRef }) => {
   const [disabledBotArrow, setDisabledBotArrow] = useState(false)
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export const InputNumber = ({ value, setValue, error }) => {
         onValueChange={(v) => setValue(v.value) }
         onInput={(e) => { return /^\d+$|^$/.test(e.target.value) ? setValue(e.target.value) : null }}
         customInput={Input}
-        renderText={(v, props) => <Input {...props} error={error} value={v} endAdornment={(
+        renderText={(v, props) => <Input {...props} error={error} value={v} inputRef={inputRef} endAdornment={(
           <InputAdornment position="end">
             <ArrowButtons decrement={decrement} increment={increment} disabled={disabledBotArrow} />
           </InputAdornment>
