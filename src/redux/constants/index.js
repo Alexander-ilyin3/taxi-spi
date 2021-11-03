@@ -7,3 +7,11 @@ export {
   SET_STEP6_DATA,
   SET_STEP7_DATA,
 } from './allSteps.constants'
+
+export {
+  SET_STEPS,
+  SET_AXIOS_ERROR,
+  CLEAR_REQUESTS_QUEUE,
+  POP_REQUESTS_QUEUE,
+  PUSH_REQUESTS_QUEUE,
+} from './global.constants'
