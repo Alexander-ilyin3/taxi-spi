@@ -4,6 +4,16 @@ import {
   CLEAR_REQUESTS_QUEUE,
   POP_REQUESTS_QUEUE,
   PUSH_REQUESTS_QUEUE,
+  SET_GLOBAL_STEPS_DATA,
+  SET_VEHICLES,
+  SET_SELECTED_VEHICLE,
+  SET_LOCATION_IS_AIRPORT,
+  SET_DESTINATION_IS_AIRPORT,
+  SET_ADDONS,
+  SET_COUNTRIES,
+  SET_STATES,
+  SET_SELECTED_COUNTRY_AND_STATE,
+  SET_BOOKING_ID,
 } from 'redux/constants'
 
 export const setSteps = (steps) => ({
@@ -45,4 +55,82 @@ export const setAxiosError = (error) => {
   })
 }
 
+export const setGlobalStepsData = (data) => {
+  return ({
+    type: SET_GLOBAL_STEPS_DATA,
+    payload: data
+  })
+}
 
+export const setVehicles = (data) => {
+  return ({
+    type: SET_VEHICLES,
+    payload: data
+  })
+}
+
+export const setSelectedVehicle = (data) => {
+  return ({
+    type: SET_SELECTED_VEHICLE,
+    payload: data
+  })
+}
+
+export const setLocationIsAirport = data => {
+  return ({
+    type: SET_LOCATION_IS_AIRPORT,
+    payload: data
+  })
+}
+
+export const setDestinationIsAirport = data => {
+  return ({
+    type: SET_DESTINATION_IS_AIRPORT,
+    payload: data
+  })
+}
+
+export const setAddons = data => {
+  return ({
+    type: SET_ADDONS,
+    payload: data
+  })
+}
+
+export const setStates = data => {
+  return ({
+    type: SET_STATES,
+    payload: data
+  })
+}
+
+export const setCountries = data => {
+  return ({
+    type: SET_COUNTRIES,
+    payload: data
+  })
+}
+
+export const setSelectedCountryAndState = data => {
+  return ({
+    type: SET_SELECTED_COUNTRY_AND_STATE,
+    payload: data,
+  })
+}
+
+export const clearSelectedCountryAndState = () => {
+  return ({
+    type: SET_SELECTED_COUNTRY_AND_STATE,
+    payload: {
+      country_id: null,
+      state_id: null,
+    }
+  })
+}
+
+export const setBookingId = (data) => {
+  return ({
+    type: SET_BOOKING_ID,
+    payload: data,
+  })
+}

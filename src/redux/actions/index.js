@@ -16,4 +16,13 @@ export {
   popRequestsQueue,
   clearRequestsQueue,
   pushRequestsQueue,
+  setGlobalStepsData,
+  setVehicles,
+  setSelectedVehicle,
+  setLocationIsAirport,
+  setDestinationIsAirport,
+  setAddons,
+  setStates,
+  setCountries,
+  clearSelectedCountryAndState,
 } from './global.actions'

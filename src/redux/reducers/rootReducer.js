@@ -14,7 +14,16 @@ import {
 import {
   pageSteps,
   axiosError,
-  isLoading
+  isLoading,
+  globalStepsData,
+  vehicles,
+  selectedVehicle,
+  isAirportStates,
+  addonList,
+  states,
+  coutries,
+  selectedCountryAndState,
+  bookingId,
 } from './global.reducers'
 
 const rootReducer = combineReducers(
@@ -29,6 +38,15 @@ const rootReducer = combineReducers(
     pageSteps,
     axiosError,
     isLoading,
+    globalStepsData,
+    vehicles,
+    selectedVehicle,
+    isAirportStates,
+    addonList,
+    states,
+    coutries,
+    selectedCountryAndState,
+    bookingId,
   }
 )
 
@@ -36,6 +54,6 @@ export const store = createStore(
   rootReducer,
   // undefined,
   // { pageSteps: [] },
-  composeWithDevTools(applyMiddleware(apiMiddleware)) // (q) => (w) => console.log(111111, q,w))
+  composeWithDevTools(applyMiddleware(apiMiddleware, )) // (q) => (w) => console.log(111111, q,w))
   // composedEnhancer
 )
