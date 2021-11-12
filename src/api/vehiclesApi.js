@@ -1,13 +1,13 @@
 import { instance } from 'api/instance'
 
-export const locations = {
-  getLocations: (data) => {
+export const vehicles = {
+  getVehicles: (data) => {
     // const userAgent = window.navigator.userAgent || "userAgent - undefined";
     return (
       instance
-        .get('locations', { /*...data, device: userAgent*/ })
+        .get('vehicles', { params: { ...data } })
         .then(res => res?.data)
-        // .catch(err => err )
+      // .catch(err => err)
     )
   },
 }
