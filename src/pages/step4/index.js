@@ -51,7 +51,7 @@ const Step4 = () => {
     const mappedForParams = mapAddonsToUpdateSession(data)
     await session.updateSession({ addons: mappedForParams })
 
-    // history.push('step-5')
+    history.push('step-5')
   }
 
   useEffect(() => {
