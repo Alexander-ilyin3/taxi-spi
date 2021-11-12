@@ -9,7 +9,8 @@ import {
 import { CssBaseline, ThemeProvider, Typography as T } from '@mui/material'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import Step1 from 'pages/step1'
 import Step2 from 'pages/step2'
@@ -20,21 +21,27 @@ import Step6 from 'pages/step6'
 import Step7 from 'pages/step7'
 
 import { theme } from 'mui/theme.js'
-import { rootReducer } from 'redux/reducers/rootReducer'
+import { store } from 'redux/reducers/rootReducer'
 
 /* TEST COMPONENT //TODO */
 import { ConsoleFormStateButton } from 'testData/ConsoleFormStateButton'
 /* TEST COMPONENT //TODO */
 
-const Layout = () => {
-  const store = createStore(
-    rootReducer, /* preloadedState, */
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-  const methods = useForm({ shouldFocusError: true })
+import { ErrorPage } from 'components/organisms/ErrorPage'
+import { ErrorRedirect } from 'components/organisms/ErrorRedirect'
+import { PageLoading } from 'components/organisms/PageLoading'
+import { apiMiddleware } from 'api/instance'
+import { useDependenceReduxStateController } from 'components/organisms/DependenceReduxStateController'
 
+// const composed = 
+// const composedEnhancer = applyMiddleware(apiMiddleware, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__)
+
+const Layout = () => {
+
+  const methods = useForm({ shouldFocusError: true })
+  useDependenceReduxStateController()
   return (
-    <Provider store={store}>
+
       <FormProvider {...methods} >
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -65,15 +72,18 @@ const Layout = () => {
                 <Route path="/step-7">
                   <Step7 />
                 </Route>
+                <Route path="/error-page" render={(props) => <ErrorPage {...props} />} />
               </Switch>
             </div>
+            <ErrorRedirect />
+            <PageLoading />
           </Router>
         </ThemeProvider>
         {/* TEST COMPONENT //TODO */}
         <ConsoleFormStateButton />
         {/* TEST COMPONENT //TODO */}
+        {/* <DependenceReduxStateController /> */}
       </FormProvider>
-    </Provider>
   )
 }
 
