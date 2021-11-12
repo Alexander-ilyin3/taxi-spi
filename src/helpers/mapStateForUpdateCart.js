@@ -3,31 +3,36 @@ const rules = [
   { requestType: 'location_details', stateType: '', dataType: '' },
   { requestType: 'destination_id', stateType: 'destinationLocation.location_id', dataType: 'int' },
   { requestType: 'destination_details', stateType: '', dataType: '' },
-  { requestType: 'passenger', stateType: 'numberOfPassengers', dataType: 'int' },
+  { requestType: 'passengers', stateType: 'numberOfPassengers', dataType: 'int' },
   { requestType: 'roundtrip', stateType: 'roadTripReservation', dataType: '1|0' },
-  { requestType: 'vehicle_id', stateType: '', dataType: '' },
-  { requestType: 'booking_date', stateType: '', dataType: '' },
-  { requestType: 'booking_time', stateType: '', dataType: '' },
-  { requestType: 'arrival_flight_airline', stateType: '', dataType: '' },
-  { requestType: 'arrival_flight_number', stateType: '', dataType: '' },
-  { requestType: 'booking_notes', stateType: '', dataType: '' },
-  { requestType: 'departure_date', stateType: '', dataType: '' },
-  { requestType: 'departure_time', stateType: '', dataType: '' },
-  { requestType: 'departure_airline', stateType: '', dataType: '' },
-  { requestType: 'departure_flight_number', stateType: '', dataType: '' },
-  { requestType: 'firstname', stateType: '', dataType: '' },
-  { requestType: 'lastname', stateType: '', dataType: '' },
-  { requestType: 'email', stateType: '', dataType: '' },
-  { requestType: 'phone', stateType: '', dataType: '' },
-  { requestType: 'phone2', stateType: '', dataType: '' },
-  { requestType: 'country_id', stateType: '', dataType: '' },
-  { requestType: 'state_id', stateType: '', dataType: '' },
-  { requestType: 'address', stateType: '', dataType: '' },
-  { requestType: 'address2', stateType: '', dataType: '' },
-  { requestType: 'city', stateType: '', dataType: '' },
-  { requestType: 'zip', stateType: '', dataType: '' },
+  { requestType: 'vehicle_id', stateType: 'selectedCar.vehicleId', dataType: 'int' },
+  { requestType: 'booking_date', stateType: 'bookingDate', dataType: 'date' },
+  { requestType: 'booking_time', stateType: 'bookinglTime', dataType: 'time' },
+
+  // arrivalDate: null, //TODO
+  // arrivalTime: null, //TODO
+  { requestType: 'arrival_flight_airline', stateType: 'arrivalAirline', dataType: 'str' },
+  { requestType: 'arrival_flight_number', stateType: 'arrivalFlightNumber', dataType: 'str' },
+  { requestType: 'booking_notes', stateType: 'bookingDetailsNotes', dataType: 'str' },
+  { requestType: 'departure_date', stateType: 'departureDate', dataType: 'date' },
+  { requestType: 'departure_time', stateType: 'departureTime', dataType: 'time' },
+  { requestType: 'departure_airline', stateType: 'departureAirline', dataType: 'str' },
+  { requestType: 'departure_flight_number', stateType: 'departureFlightNumber', dataType: 'str' },
+
+  { requestType: 'firstname', stateType: 'firstName', dataType: 'str' },
+  { requestType: 'lastname', stateType: 'lastName', dataType: 'str' },
+  { requestType: 'email', stateType: 'emailAddress', dataType: 'str' },
+  { requestType: 'phone', stateType: 'mobilePhone', dataType: 'str' },
+  { requestType: 'phone2', stateType: 'additionalPhone', dataType: 'str' },
+  { requestType: 'country_id', stateType: 'country.country_id', dataType: 'int' },
+  { requestType: 'state_id', stateType: 'state.state_id', dataType: 'int' },
+  { requestType: 'address', stateType: 'address', dataType: 'str' },
+  { requestType: 'address2', stateType: 'address2', dataType: 'str' },
+  { requestType: 'city', stateType: 'city', dataType: 'str' },
+  { requestType: 'zip', stateType: 'postalCode', dataType: 'str' },
+
   { requestType: 'coupon_id', stateType: '', dataType: '' },
-  { requestType: 'addon_id', stateType: '', dataType: '' },
+  { requestType: 'addon_ids', stateType: '', dataType: '' },
 ]
 
 const reduceToNeededType = (value, type) => {
@@ -36,6 +41,12 @@ const reduceToNeededType = (value, type) => {
       return !isNaN(parseFloat(value)) ? parseFloat(value) : undefined
     case '1|0':
       return typeof value === 'boolean' ? value - 0 : undefined
+    case 'date':
+      return value instanceof Date && !isNaN(value) ? value.toLocaleDateString('fr-CA') : undefined
+    case 'time':
+      return value instanceof Date && !isNaN(value) ? value.toLocaleTimeString('ua', { hour: '2-digit', minute: '2-digit' }) : undefined
+    case 'str':
+      return value ? value.toString() : undefined
 
     default:
       return undefined
@@ -71,10 +82,12 @@ export const mapStateToParams = (stateValues) => {
     }
 
 
-    // DEV 
+    //TODO DEV 
     if (
       !ruleObject &&
-        key !== 'isCustomDestination'
+      key !== 'isCustomDestination' &&
+      key !== 'selectedVehicle' &&
+      key !== 'confirmEmailAddress'
     ) {
       throw new Error('No rule specified for ' + key)
     }
