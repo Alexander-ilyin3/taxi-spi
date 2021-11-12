@@ -36,7 +36,10 @@ export const BackButton = ({ onClick, disableBackButton }) => {
       opacity: `${disableBackButton ? '0' : '1'}`,
       cursor: `${disableBackButton ? 'default' : 'pointer'}`,
     }}
-      onClick={onClick}>
+      onClick={onClick}
+      disabled={disableBackButton}
+    >
+
       <img src="images/back-button-icon.svg"></img>
       <T variant='h5sb' sx={{ color: blue, marginLeft: 1 }}>Back</T>
     </ButtonBase>
