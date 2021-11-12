@@ -11,21 +11,23 @@ import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { CongratsWrapper } from 'components/atoms/CongratsWrapper'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { testAddons } from 'testData/testAddons'
+import { useSelector } from 'react-redux'
+import { getBookingId } from 'redux/selectors'
 
 const Step7 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
 
-  useEffect(() => {
-    setValue('numberOfPassengers', "5")
-    setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
-    setValue('arrivalDate', new Date())
-    setValue('arrivalTime', new Date())
-    setValue('departureDate', new Date())
-    setValue('departureTime', new Date())
-  }, [])
-
+  // useEffect(() => {
+  //   setValue('numberOfPassengers', "5")
+  //   setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
+  //   setValue('arrivalDate', new Date())
+  //   setValue('arrivalTime', new Date())
+  //   setValue('departureDate', new Date())
+  //   setValue('departureTime', new Date())
+  // }, [])
+  const bookingId = useSelector(getBookingId)
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
 
@@ -43,7 +45,7 @@ const Step7 = () => {
           <SectionBox>
             <CongratsWrapper>
               <img src="CongratsCkeckmark.svg"></img>
-              <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #12345678</T>
+              <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #{bookingId}</T>
               <T variant='h1'> Your Reservation has been created successfully </T>
               <T variant='h5md' sx={{ textAlign: 'center' }}> Reservation details  have been sent to your email.<br />To print it click here</T>
               <Button

@@ -1,12 +1,12 @@
 import { Typography as T } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import StepperComponent  from 'components/molecules/Stepper'
+import StepperComponent from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'
@@ -17,34 +17,80 @@ import { AddOnsSection } from 'components/molecules/AddOnsSection'
 import { testAddons } from 'testData/testAddons'
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { InputBox } from 'components/molecules/InputBox'
-import { setStep5Data } from 'redux/actions'
+import { CountryStateInputSelect } from 'components/molecules/CountryStateInputSelect'
+import { setCountries, setGlobalStepsData, setStates, setStep5Data } from 'redux/actions'
+import { defaultValues } from 'formDefaultValues'
+import { getStep5 } from 'redux/selectors/step1.selectors'
+import { isEqual } from 'underscore'
+import { useApiCall } from 'helpers/customHooks'
+import { useResetForm } from 'helpers/resetForm'
+import { session } from 'api/sessionApi'
+import { countryAndState } from 'api/countryAndStateApi'
+import { getCountries, getStates, getSelectedCountryAndState } from 'redux/selectors/global.selectors'
+import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
+import { setSelectedCountryAndState, clearSelectedCountryAndState } from 'redux/actions/global.actions'
 
 const Step5 = () => {
-  const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
-  /*//TODO display appropriate step name*/
-  const { watch, formState, setValue } = useFormContext()
+  const { watch, setValue } = useFormContext()
+  const state = useSelector(getStep5, isEqual)
+  const defaults = defaultValues[5]
+  const dispatch = useDispatch()
+  const states = useSelector(getStates)
+  const countries = useSelector(getCountries, isEqual)
+  const dynamicCoutnry = watch('country')
+  const { state_id, country_id } = useSelector(getSelectedCountryAndState, isEqual)
+  // debugger
+  useResetForm({ state, defaults })
 
   useEffect(() => {
-    setValue('numberOfPassengers', "5")
-    setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
-    setValue('arrivalDate', new Date())
-    setValue('arrivalTime', new Date())
-    setValue('departureDate', new Date())
-    setValue('departureTime', new Date())
+    return () => { console.log('CLEAR SELECTED COUNTRY STATE'); return dispatch(clearSelectedCountryAndState()) }
   }, [])
 
-  const selectedCar = watch('selectedCar')
-  const oneSeatAllowed = selectedCar?.oneSeatAllowed
+  const countryToSetActive = useMemo(() => {
+    if (countries.length && country_id) {
+      return countries.find((countryItem, i) => {
+        return Number(countryItem.country_id) === Number(country_id)
+      })
+    }
 
-  const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: true, departureIsAirport: true } //TODO test data
+    return null
+  }, [country_id, countries])
 
-  const dispatch = useDispatch()
+  useEffect(() => {
+    if (countryToSetActive) {
+      setValue('country', { ...countryToSetActive })
+    }
+
+  }, [countryToSetActive])
+
+  const stateToSetActive = useMemo(() => {
+    if (states.length && state_id) {
+      return states.find((stateItem, i) => {
+        return Number(stateItem.state_id) === Number(state_id)
+      })
+    }
+
+    return null
+  }, [state_id, states, country_id])
+
+  useEffect(() => {
+    if (stateToSetActive) {
+      setValue('state', { ...stateToSetActive })
+    }
+
+  }, [stateToSetActive])
+
+  useApiCall({ handler: session.getSession, action: [setGlobalStepsData, setSelectedCountryAndState] })
+  useApiCall({ handler: countryAndState.getCountry, action: setCountries })
+  const { reFetch: reFetchStates } = useApiCall({ handler: countryAndState.getStates, action: setStates, lazy: true })
+
   const history = useHistory()
   const { handleSubmit } = useFormContext()
 
-  const onSubmit = (data, e) => {
-    console.log('Form Submitted', data, e)
-    dispatch(setStep5Data(data))
+  const onSubmit = async (data, e) => {
+    const mappedForParams = mapStateToParams(data)
+    await session.updateSession(mappedForParams)
+
     history.push('step-6')
   }
 
@@ -60,12 +106,17 @@ const Step5 = () => {
     history.push('step-4')
   }
 
-  const cardsData = testAddons
-  console.log(cardsData[0].src)
+  useEffect(() => {
+    if (dynamicCoutnry?.country_id) {
+      setValue('state', null)
+      reFetchStates({ params: { country_id: dynamicCoutnry.country_id } })
+    }
+  }, [dynamicCoutnry])
+
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={4} steps={steps} />
+      <StepperComponent activeStep={4} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
@@ -84,19 +135,19 @@ const Step5 = () => {
               <InputBox name={'additionalPhone'} labelText="Additional Phone" />
             </FlexBoxRow>
             <FlexBoxRow>
-              <InputBox name={'country'} labelText="Country" r />
+              <CountryStateInputSelect labelText="Country" name="country" autocompleteData={countries} r />
               <InputBox name={'address'} labelText="Address" r />
               <InputBox name={'address2'} labelText="Address 2" />
             </FlexBoxRow>
             <FlexBoxRow>
               <InputBox name={'city'} labelText="City" r />
-              <InputBox name={'state'} labelText="State/Province" r />
+              <CountryStateInputSelect labelText="State" name="state" autocompleteData={states} r />
               <InputBox name={'postalCode'} labelText="ZIP/Postal Code" r />
             </FlexBoxRow>
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
-        <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed}>
+        <OrderSummaryContainer /*selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed}*/>
           <OrderSummaryPlug />
         </OrderSummaryContainer>
       </PageContentWrapper>

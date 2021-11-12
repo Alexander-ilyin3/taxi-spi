@@ -1,10 +1,10 @@
 import { Typography as T } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import StepperComponent  from 'components/molecules/Stepper'
+import StepperComponent from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'
@@ -13,19 +13,44 @@ import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { SubSection } from 'components/molecules/SubSection'
 import { NotesSection } from 'components/molecules/NotesSection'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-import { setStep3Data } from 'redux/actions'
+import { setGlobalStepsData, setStep3Data } from 'redux/actions'
+import { getStep3 } from 'redux/selectors/step1.selectors'
+import { isEqual } from 'underscore'
+import { useResetForm } from 'helpers/resetForm'
+import { useApiCall } from 'helpers/customHooks'
+import { session } from 'api/sessionApi'
+import { getDestinationIsAirport, getLocationIsAirport } from 'redux/selectors'
+import { defaultValues } from 'formDefaultValues'
+import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
+
+const getDefaultVariantName = ({ departureIsAirport, arrivalIsAirport }) => {
+  if (departureIsAirport && arrivalIsAirport) {
+    return 'bothIsAirport'
+  } else if (departureIsAirport && !arrivalIsAirport) {
+    return 'destinationIsAirport'
+  } else if (!departureIsAirport && arrivalIsAirport) {
+    return 'locationIsAirport'
+  } else if (!departureIsAirport && !arrivalIsAirport) {
+    return 'noneIsAirport'
+  }
+}
 
 const Step3 = () => {
-  const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
-  /*//TODO display appropriate step name*/
-  const { watch, formState, setValue } = useFormContext()
+  const { watch, formState, setValue, reset } = useFormContext()
+  const [reseted, setReseted] = useState(false)
+  const state = useSelector(getStep3, isEqual)
+  const departureIsAirport = useSelector(getLocationIsAirport)
+  const arrivalIsAirport = useSelector(getDestinationIsAirport)
 
-  useEffect(() => {
-    setValue('numberOfPassengers', "5")
-    setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
-  }, [])
+  const defaultVarianName = getDefaultVariantName({ departureIsAirport, arrivalIsAirport })
+  const defaults = defaultValues[3][defaultVarianName]
+
+  console.log('state for step 3', state, defaults)
+
+  useApiCall({ handler: session.getSession, action: setGlobalStepsData })
+  useResetForm({ state, defaults })
 
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
@@ -34,9 +59,10 @@ const Step3 = () => {
   const history = useHistory()
   const { handleSubmit } = useFormContext()
 
-  const onSubmit = (data, e) => {
-    console.log('Form Submitted', data, e)
-    dispatch(setStep3Data(data))
+  const onSubmit = async (data, e) => {
+    const mappedForParams = mapStateToParams(data)
+    await session.updateSession(mappedForParams)
+
     history.push('step-4')
   }
 
@@ -52,12 +78,12 @@ const Step3 = () => {
     history.push('step-2')
   }
 
-  const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: true, departureIsAirport: true } //TODO test data
+  // if (!reseted) return null //TODO
 
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={2} steps={steps} />
+      <StepperComponent activeStep={2} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>

@@ -1,6 +1,8 @@
 import { useFormContext } from 'react-hook-form'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+import { useSelector } from 'react-redux'
+import { isEqual } from 'underscore'
+import { Typography as T } from '@mui/material'
 
 import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { SectionBox } from 'components/atoms/SectionBox'
@@ -8,7 +10,7 @@ import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
 import { InputBox } from 'components/molecules/InputBox'
 import { InputNumberBox } from 'components/molecules/InputNumberBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import { StepperComponent } from 'components/molecules/Stepper'
+import StepperComponent from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'
@@ -16,54 +18,44 @@ import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
-import { testDestinationData2, testPickupData2 } from 'testData/testDestinationData'
-import { Typography as T } from '@mui/material'
-import { locations } from 'api/locationsApi'
 
-import { setStep1Data } from 'redux/actions'
-import { getStep1, getPassengers } from 'redux/selectors'
-import { useHistory } from 'react-router'
+import { setGlobalStepsData } from 'redux/actions'
+import { getStep1 } from 'redux/selectors'
+
+import { locations } from 'api/locationsApi'
+import { session } from 'api/sessionApi'
+
+import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
+import { useResetForm } from 'helpers/resetForm'
+import { useApiCall } from 'helpers/customHooks'
+import { defaultValues, defaultValuesFor } from 'formDefaultValues'
 
 const Step1 = () => {
 
-  const { watch, getValues, formState, handleSubmit } = useFormContext()
-  const dispatch = useDispatch()
-  const state = useSelector(getStep1)
-  const numberOfPassengers = useSelector(getPassengers)
+  const { watch, handleSubmit, reset } = useFormContext()
   const history = useHistory()
 
+  const defaults = defaultValues[1]
+  const state = useSelector(getStep1, isEqual)
+  // console.log({state})
+  useResetForm({state, defaults})
+
+  // reset()
+
+  const { result: locationsResult = [] } = useApiCall({ handler: locations.getLocations })
+  useApiCall({ handler: session.getSession, action: setGlobalStepsData })
+
   const isCustomDestination = watch('isCustomDestination')
-  const onSubmit = (data, e) => {
-    console.log('Form Submitted', data, e)
-    dispatch(setStep1Data(data))
+
+  const onSubmit = async (data, e) => {
+    const mappedForParams = mapStateToParams(data)
+
+    await session.updateSession(mappedForParams)
+
     history.push('step-2')
   }
 
-  useEffect(() => {
-    console.log(state)
-  }, [state])
-
-  useEffect(() => {
-    return (async() => {
-      console.log(await locations.getLocations())
-    })()
-  }, [])
-
   const onError = (errors, e) => console.log('error submitting', errors, e)
-
-  const initialSteps = ['Service Selection', 'Vehicle Selection', 'Select Add-Ons', 'Contact Information', 'Billing Information']
-  const [steps, setSteps] = useState(initialSteps)
-
-  useEffect(() => {
-    const pickupLocation = watch('pickupLocation')
-    const destinationLocation = watch('destinationLocation')
-
-    if (pickupLocation?.isAirport || destinationLocation?.isAirport) {
-      setSteps(['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information'])
-    } else {
-      setSteps(initialSteps)
-    }
-  }, [formState, watch])
 
   const nextHandle = () => {
     handleSubmit(onSubmit, onError)()
@@ -77,15 +69,15 @@ const Step1 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={0} steps={steps} />
+      <StepperComponent activeStep={0} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
             <T variant='h1'> Service Selection </T>
-            <CheckBoxLabelBox r={isCustomDestination ? true : false} labelText={'My Destination/Departure is a AirBNB/VRBO/Rental Property'} name={'isCustomDestination'}>
+            <CheckBoxLabelBox labelText={'My Destination/Departure is a AirBNB/VRBO/Rental Property'} name={'isCustomDestination'}>
               {
                 isCustomDestination ? (
-                  <InputBox name={'customDestination'} />
+                  <InputBox name={'customDestination'} r />
                 ) : (
                   <InputBox disabled />
                 )
@@ -100,8 +92,8 @@ const Step1 = () => {
                 </>
               ) : (
                 <>
-                  <LocationInputSelect name={'pickupLocation'} autocompleteData={testPickupData2} labelText="Pickup Location" r />
-                  <LocationInputSelect name={'destinationLocation'} autocompleteData={testDestinationData2} labelText="Destination" r />
+                  <LocationInputSelect name={'pickupLocation'} autocompleteData={locationsResult} labelText="Pickup Location" r />
+                  <LocationInputSelect name={'destinationLocation'} autocompleteData={locationsResult} labelText="Destination" r />
                 </>
               )}
             </FlexBoxRow>

@@ -19,20 +19,23 @@ import { FlexBoxRow } from 'components/atoms/FlexBoxRow'
 import { InputBox } from 'components/molecules/InputBox'
 import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
 import { setStep6Data } from 'redux/actions'
+import { PaymentRadioSection } from 'components/organisms/PaymentRadioSection'
+import { booking } from 'api/bookingApi'
+import { setBookingId } from 'redux/actions/global.actions'
 
 const Step6 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
 
-  useEffect(() => {
-    setValue('numberOfPassengers', "5")
-    setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
-    setValue('arrivalDate', new Date())
-    setValue('arrivalTime', new Date())
-    setValue('departureDate', new Date())
-    setValue('departureTime', new Date())
-  }, [])
+  // useEffect(() => {
+  //   setValue('numberOfPassengers', "5")
+  //   setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
+  //   setValue('arrivalDate', new Date())
+  //   setValue('arrivalTime', new Date())
+  //   setValue('departureDate', new Date())
+  //   setValue('departureTime', new Date())
+  // }, [])
 
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
@@ -43,10 +46,16 @@ const Step6 = () => {
   const history = useHistory()
   const { handleSubmit } = useFormContext()
 
-  const onSubmit = (data, e) => {
-    console.log('Form Submitted', data, e)
-    dispatch(setStep6Data(data))
-    history.push('step-7')
+  const onSubmit = async (data, e) => {
+    // console.log('Form Submitted', data, e)
+    // dispatch(setStep6Data(data))
+    const response = await booking.submit()
+
+    if ( response?.booking_id ) {
+      console.log('response?.booking_id', response?.booking_id)
+      dispatch(setBookingId(response.booking_id))
+      history.push('step-7')
+    }
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
@@ -76,7 +85,8 @@ const Step6 = () => {
               <OrderSummaryPlug />
             </OrderSummaryContainer>
             <CouponSection />
-            <FlexBoxRow>
+            <PaymentRadioSection />
+            {/* <FlexBoxRow>
               <InputBox name={'nameOnCard'} labelText="Name (as it appears on card)" r />
               <InputBox name={'cardNumber'} labelText="Card Number" r />
             </FlexBoxRow>
@@ -84,7 +94,7 @@ const Step6 = () => {
               <InputBox name={'cardExpMonth'} labelText="Exp. Month" r />
               <InputBox name={'cardExpYear'} labelText="Exp. Year" r />
               <InputBox name={'cvcCode'} labelText="CVC" r />
-            </FlexBoxRow>
+            </FlexBoxRow> */}
             <CheckBoxLabelBox labelText={'I Agree to the SJD Taxi Terms & Conditions'} name="termsAndCondition" r>
               <T variant="secondaryText">View Our Terms &amp; Conditions</T>
             </CheckBoxLabelBox>
