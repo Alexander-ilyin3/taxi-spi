@@ -19,7 +19,7 @@ export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
         name={name}
         defaultValue={null}
         shouldUnregister={true}
-        rules={{ required: true, validate: { minDate: (value) => value > new Date() } }}
+        rules={{ required: true, validate: { minDate: (value) => value > new Date().setHours(0,0,0,0) } }}
         render={({
           field: { onChange, value },
           fieldState: { invalid },
@@ -27,7 +27,7 @@ export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
           return <MuiDatePicker
             onChange={onChange}
             ignoreInvalidInputs
-            value={value}
+            value={value || null}
             minDate={new Date()}
             renderInput={(params) => (
               <Box sx={{ width: '100%' }}>

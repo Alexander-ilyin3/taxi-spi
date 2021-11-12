@@ -26,7 +26,8 @@ export const TimePicker = ({ name, r, labelErrorText, labelText }) => {
         }) => (
           <MuiTimePicker
             onChange={onChange}
-            value={value}
+            value={value || null}
+            // ignoreInvalidInputs
             onError={(e) => setValidTime(!e)}
             renderInput={(params) => (
               <Box sx={{ width: '100%' }}>
@@ -39,9 +40,10 @@ export const TimePicker = ({ name, r, labelErrorText, labelText }) => {
                 <TextField
                   fullWidth
                   variant="outlined"
-                  value={params.inputProps.value}
                   helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
                   {...params}
+                  value={params.inputProps.value}
+                  error={invalid}
                 />
               </Box>
             )}

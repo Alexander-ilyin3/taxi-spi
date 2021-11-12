@@ -3,6 +3,10 @@ import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
+import { pickFirst } from "helpers/orderSummaryHelpers"
+import { useSelector } from "react-redux"
+import { getNumberOfPassengers } from "redux/selectors"
+import { isEqual } from "underscore"
 
 const SummaryDateElement = ({ data: { date, time, label } }) => {
   const { palette: { primary: { blue } } } = useTheme()
@@ -66,6 +70,12 @@ const SummaryDateElement = ({ data: { date, time, label } }) => {
 const SummaryDateComponent = () => {
   const { watch } = useFormContext()
 
+
+
+
+
+
+  
   const arrivalDate = watch('arrivalDate')
   const arrivalTime = watch('arrivalTime')
   const departureDate = watch('departureDate')
@@ -121,7 +131,11 @@ const AddOnsContainer = () => {
 export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, page6Variant }) => {
   const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } } } = useTheme()
   const { watch } = useFormContext()
-  const numberOfPassengers = watch('numberOfPassengers')
+
+  //redux values -------
+  const numberOfPassengersRedux = useSelector(getNumberOfPassengers, isEqual)
+  //redux values -------
+  const numberOfPassengers = pickFirst([watch('numberOfPassengers'), numberOfPassengersRedux])
   const [displayingPrice, setDisplayingPrice] = useState()
   const [numberOfCars, setNumberOfCars] = useState()
   const [feesCount, setFeesCount] = useState()

@@ -4,13 +4,48 @@ import { Controller, useFormContext } from "react-hook-form"
 import { testCarData } from 'testData/testCarsData'
 import { LabelError } from 'components/atoms/LabelError.js'
 import { useTheme } from "@mui/system"
+import { useEffect } from "react"
+import { mapStateToParams } from "helpers/mapStateForUpdateCart"
+import { session } from "api/sessionApi"
+import { useSelector } from "react-redux"
+import { getVehicles } from "redux/selectors"
+import { getSelectedVehicle } from "redux/selectors/global.selectors"
 
-export const CarCardsSection = ({ setSelectedCar }) => {
+export const CarCardsSection = () => {
 
   const { control } = useFormContext()
   const { palette: { error: { main: error } } } = useTheme()
+  const { watch, setValue } = useFormContext()
+  const cardsData = useSelector(getVehicles)
 
-  const cardsData = testCarData
+  const activeVehicleId = useSelector(getSelectedVehicle)
+
+  useEffect(() => {
+    if ( activeVehicleId !== null && cardsData.length ) {
+      
+      const carToSetAsActive = cardsData.find((card, i) => {
+        return parseFloat(card.vehicleId) === activeVehicleId
+      })
+      
+      if ( carToSetAsActive ) { 
+        // const i = cardsData.indexOf(carToSetAsActive)
+        setValue('selectedCar', {...carToSetAsActive, price: parseFloat(carToSetAsActive.price)/*, index: i*/}) //TODO hell
+      }
+    }
+  }, [activeVehicleId, cardsData])
+
+  // useEffect(() => {
+  //   console.log('car was changed', selectedCar)
+  //   if (selectedCar) {
+  //     session.updateSession(mapStateToParams({ index: selectedCar.index }))
+  //   }
+  //   // const mappedForParams = mapStateToParams(selectedCar)
+
+  // }, [selectedCar])
+
+
+
+  // console.log('cardsData', 3333333, cardsData)
   return (
     <Controller
       control={control}
@@ -31,7 +66,7 @@ export const CarCardsSection = ({ setSelectedCar }) => {
           }}
         >
           {cardsData.map((data, i) => {
-            return <CarCard key={i} cardData={{ ...data, index: i }} setSelectedCar={onChange} activeCar={value} />
+            return <CarCard key={i} cardData={{ ...data/*, index: i*/ }} setSelectedCar={onChange} activeCar={value} />
           })}
           {invalid && <T variant="h3" color={error} >Please, select a car shown above</T>}
         </Box>

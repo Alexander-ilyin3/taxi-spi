@@ -6,7 +6,7 @@ import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 
-export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData }) => {
+export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData }) => {
 
   const { control } = useFormContext()
   return (

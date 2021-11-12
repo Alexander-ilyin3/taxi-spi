@@ -1,14 +1,17 @@
 import { Typography as T, useTheme, Box, Stepper, Step, StepLabel } from "@mui/material"
-import { StepIconComponent } from "components/atoms/StepIconComponent"
-import { StepperConnector } from "components/atoms/StepperConnector"
+import { isEqual } from "underscore"
 import React, { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setInitlalSteps } from "redux/actions"
-import { getSteps } from "redux/selectors"
+
+import { StepIconComponent } from "components/atoms/StepIconComponent"
+import { StepperConnector } from "components/atoms/StepperConnector"
+import { setInitlalSteps, setStepsWithBooking, setStepsWithFlight } from "redux/actions"
+import { getIsAirportStates, getSteps } from "redux/selectors"
 
 const StepperComponent = ({ activeStep }) => {
   const theme = useTheme()
   const unMemosteps = useSelector(getSteps)
+  const isAirportStates = useSelector(getIsAirportStates, isEqual)
   const steps = useMemo(() => unMemosteps)
   const dispatch = useDispatch()
 
@@ -17,6 +20,15 @@ const StepperComponent = ({ activeStep }) => {
       dispatch(setInitlalSteps())
     }
   }, [])
+
+  useEffect(() => {
+    if ( isAirportStates?.destinationIsAirport || isAirportStates?.locationIsAirport ) {
+      dispatch(setStepsWithFlight())
+    } else {
+      dispatch(setStepsWithBooking())
+    }
+  }, [isAirportStates])
+
   return (
     <Box sx={{
       paddingTop: 5,

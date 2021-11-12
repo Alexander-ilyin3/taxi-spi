@@ -4,27 +4,20 @@ import { Button } from "components/atoms/Button"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 
-const AddonsControlButtons = ({ addonObject, onChange }) => {
-  const { palette: { primary: { blue } } } = useTheme()
-  const [ count, setCount ] = useState(null)
+const AddonsControlButtons = ({ value = 0, onChange }) => {
+  // const { palette: { primary: { blue } } } = useTheme()
+  // const [ count, setCount ] = useState(null)
 
-  useEffect(() => {
-    setCount(addonObject.addonCount || 0)
-  }, [addonObject])
+  // useEffect(() => {
+  //   setCount(addonObject.addonCount || 0)
+  // }, [addonObject])
 
   const increment = () => {
-    const count = parseFloat(addonObject.addonCount || 0)
-    onChange({
-      ...addonObject,
-      addonCount: count + 1
-    })
+    onChange(value + 1)
   }
 
   const decrement = () => {
-    onChange({
-      ...addonObject,
-      addonCount: count - 1
-    })
+    onChange(value - 1)
   }
 
   return (
@@ -37,7 +30,7 @@ const AddonsControlButtons = ({ addonObject, onChange }) => {
       <Button
         style={{ fontWeight: 500 }}
         onClick={decrement}
-        disabled={!count}
+        disabled={!value}
       > - </Button>
       <T variant='cardPrice'
         sx={{
@@ -45,7 +38,7 @@ const AddonsControlButtons = ({ addonObject, onChange }) => {
           marginRight: 2,
         }}
       >
-        {count}
+        {value}
       </T>
       <Button
         style={{ fontWeight: 500 }}
@@ -55,10 +48,10 @@ const AddonsControlButtons = ({ addonObject, onChange }) => {
   )
 }
 
-export const AddOnsItemWrapper = ({ addonObject, onChange }) => {
+export const AddOnsItemWrapper = ({ addonObject, onChange, value }) => {
 
   const { name, src, price, description, onlyForPrivatTransfers } = addonObject
-  const { palette: { primary: { blue, grey } }} = useTheme()
+  const { palette: { primary: { blue, grey } } } = useTheme()
   const { control } = useFormContext()
 
   return (
@@ -83,7 +76,7 @@ export const AddOnsItemWrapper = ({ addonObject, onChange }) => {
           height: '100%',
           display: 'flex',
           flexDirection: 'row',
-          border: `${addonObject.addonCount ? '2px solid '+ blue : '2px solid #ffffff00'}`,
+          border: `${addonObject.addonCount ? '2px solid ' + blue : '2px solid #ffffff00'}`,
           backgroundColor: `${addonObject.addonCount ? blue + '09' : 'none'}`,
           boxSizing: 'border-box',
         }}
@@ -121,7 +114,7 @@ export const AddOnsItemWrapper = ({ addonObject, onChange }) => {
             }}
           >
             <T variant='cardPrice' >${price}</T>
-            <AddonsControlButtons addonObject={addonObject} onChange={onChange} />
+            <AddonsControlButtons value={value} onChange={onChange} />
           </Box>
         </Box>
       </Card>
