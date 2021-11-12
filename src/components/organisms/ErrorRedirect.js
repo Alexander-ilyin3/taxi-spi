@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux"
 import { Redirect } from "react-router"
+import { isEqual } from "underscore"
+
 import { getAxiosError } from "redux/selectors"
 
 export const ErrorRedirect = () => {
