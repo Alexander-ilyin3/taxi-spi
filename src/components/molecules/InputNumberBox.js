@@ -24,7 +24,7 @@ const InputNumberBox = ({ labelText, labelErrorText, r, name, selectedCar }) => 
         }
       }}
       render={({
-        field: { onChange, value },
+        field: { onChange, value, ref },
         fieldState: { invalid }
       }) => (
         <>
@@ -36,6 +36,7 @@ const InputNumberBox = ({ labelText, labelErrorText, r, name, selectedCar }) => 
               </T>
             </Label>
             <InputNumber
+              inputRef={ref}
               setValue={onChange}
               value={value}
               error={invalid}

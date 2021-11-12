@@ -1,5 +1,7 @@
 import { Box, Card, CardActionArea, Typography as T, useTheme } from "@mui/material"
 import { makeStyles } from '@mui/styles'
+import { useSelector } from "react-redux"
+import { getSelectedVehicle } from "redux/selectors/global.selectors"
 
 const useStyles = makeStyles(({ palette: { primary: { grey, blue, white }, secondary: { lightBlue } } }) => ({
   carCard: {
@@ -17,12 +19,13 @@ const useStyles = makeStyles(({ palette: { primary: { grey, blue, white }, secon
 export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
   const theme = useTheme()
   const { palette: { primary: { grey, blue, white }, secondary: { lightBlue } } } = theme
-  const { carName, price, numberOfSeats, picturePath } = cardData
-  const isCarActive = cardData.index === activeCar?.index
-
+  const { carName, price, numberOfSeats, picturePath, vehicleId } = cardData
+  // const activeVehicleId = useSelector(getSelectedVehicle)
+  // console.log(1111, cardData, activeVehicleId)
+  const isCarActive = String(vehicleId) === String(activeCar?.vehicleId)
+  
   const cardClick = () => {
     setSelectedCar(cardData)
-    console.log('card clicked')
   }
 
   const classes = useStyles()
@@ -45,13 +48,15 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
         <Box
           sx={{
             width: '100%',
-            height: '50%',
+            minHeight: '150px',
             display: 'flex',
             marginBottom: '30px',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            backgroundImage: `url(${picturePath})`,
+            backgroundSize: 'cover',
           }}
         >
-          <img src={picturePath}></img>
+          {/* <img src={picturePath}></img> */}
         </Box>
         <T variant="cardLabelText">{carName}</T>
         <Box

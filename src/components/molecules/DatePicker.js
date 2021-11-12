@@ -11,11 +11,6 @@ import { RequiredStar } from "components/atoms/RequiredStar"
 
 export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
   const { control } = useFormContext()
-  const [ validDate, setValidDate ] = useState(true)
-
-  useEffect(() => {
-    console.log({validDate})
-  }, [validDate])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -24,17 +19,15 @@ export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
         name={name}
         defaultValue={null}
         shouldUnregister={true}
-        rules={{ validate: (value) => validDate, required: true }}//{console.log('value', value); /\d{2}\/\d{2}\/\d{4}/.test(value)} }}
+        rules={{ required: true, validate: { minDate: (value) => value > new Date().setHours(0,0,0,0) } }}
         render={({
           field: { onChange, value },
-          fieldState: { invalid }
+          fieldState: { invalid },
         }) => {
           return <MuiDatePicker
             onChange={onChange}
             ignoreInvalidInputs
-            // error={true}
-            onError={(e) => setValidDate(!e)}
-            value={value}
+            value={value || null}
             minDate={new Date()}
             renderInput={(params) => (
               <Box sx={{ width: '100%' }}>
@@ -46,11 +39,11 @@ export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
                 </Label>
                 <TextField
                   fullWidth
-                  error={true}
                   variant="outlined"
-                  value={params.inputProps.value}
-                  helperText={invalid && <LabelError labelErrorText={'Please, enter a valid date'} />}
+                  helperText={(invalid) && <LabelError labelErrorText={'Please, enter a valid date'} />}
                   {...params}
+                  value={params.inputProps.value}
+                  error={invalid}
                 />
               </Box>
             )}

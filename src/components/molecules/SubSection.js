@@ -40,8 +40,8 @@ const SubSectionRenderHelper = ({ departure, arrival }) => {
     >
       <T variant='h4' sx={{ color: blue }}>{departure ? 'DEPARTURE' : 'ARRIVAL'} FLIGHT DETAILS</T>
       <FlexBoxRow>
-        <DatePicker r name={departure ? 'departureDate' : 'arrivalDate'} labelText={departure ? 'Departure Date' : 'Arrival Date'} />
-        <TimePicker r name={departure ? 'departureTime' : 'arrivalTime'} labelText={departure ? 'Departure Time' : 'Arrival Time'} />
+        <DatePicker r name={departure ? 'departureDate' : 'bookingDate'} labelText={departure ? 'Departure Date' : 'Arrival Date'} />
+        <TimePicker r name={departure ? 'departureTime' : 'bookinglTime'} labelText={departure ? 'Departure Time' : 'Arrival Time'} />
       </FlexBoxRow>
       <FlexBoxRow>
         <InputBox r name={departure ? 'departureAirline' : 'arrivalAirline'} labelText="Airline" />

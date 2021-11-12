@@ -25,7 +25,7 @@ const StepIconComponentRoot = styled('div')(({ theme, ownerState }) => ({ //TODO
 
 const StepCheckMark = () => {
   return (
-    <img src="/images/StepCheckmark.svg" alt="checkmark" />
+    <img src="images/StepCheckmark.svg" alt="checkmark" />
   )
 }
 
@@ -55,7 +55,7 @@ const IconVariant = ({ active, completed, icon }) => {
   if (completed) {
     return (
       <div style={commonStyles}>
-        <img src="/images/StepCheckmark.svg" alt="checkmark" />
+        <img src="images/StepCheckmark.svg" alt="checkmark" />
       </div>
     )
   }

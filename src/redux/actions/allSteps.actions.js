@@ -13,32 +13,32 @@ export const setStep1Data = (step1Data) => ({
   payload: step1Data
 })
 
-export const setStep2Data = (step1Data) => ({
+export const setStep2Data = (step2Data) => ({
   type: SET_STEP2_DATA,
-  payload: step1Data
+  payload: step2Data
 })
 
-export const setStep3Data = (step1Data) => ({
+export const setStep3Data = (step3Data) => ({
   type: SET_STEP3_DATA,
-  payload: step1Data
+  payload: step3Data
 })
 
-export const setStep4Data = (step1Data) => ({
+export const setStep4Data = (step4Data) => ({
   type: SET_STEP4_DATA,
-  payload: step1Data
+  payload: step4Data
 })
 
-export const setStep5Data = (step1Data) => ({
+export const setStep5Data = (step5Data) => ({
   type: SET_STEP5_DATA,
-  payload: step1Data
+  payload: step5Data
 })
 
-export const setStep6Data = (step1Data) => ({
+export const setStep6Data = (step6Data) => ({
   type: SET_STEP6_DATA,
-  payload: step1Data
+  payload: step6Data
 })
 
-export const setStep7Data = (step1Data) => ({
+export const setStep7Data = (step7Data) => ({
   type: SET_STEP7_DATA,
-  payload: step1Data
+  payload: step7Data
 })

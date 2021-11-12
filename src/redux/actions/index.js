@@ -7,3 +7,22 @@ export {
   setStep6Data,
   setStep7Data,
 } from './allSteps.actions'
+export {
+  setSteps,
+  setInitlalSteps,
+  setStepsWithBooking,
+  setStepsWithFlight,
+  setAxiosError,
+  popRequestsQueue,
+  clearRequestsQueue,
+  pushRequestsQueue,
+  setGlobalStepsData,
+  setVehicles,
+  setSelectedVehicle,
+  setLocationIsAirport,
+  setDestinationIsAirport,
+  setAddons,
+  setStates,
+  setCountries,
+  clearSelectedCountryAndState,
+} from './global.actions'
