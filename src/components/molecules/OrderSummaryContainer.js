@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
 import { pickFirst } from "helpers/orderSummaryHelpers"
 import { useSelector } from "react-redux"
-import { getNumberOfPassengers } from "redux/selectors"
+import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle } from "redux/selectors"
 import { isEqual } from "underscore"
 
 const SummaryDateElement = ({ data: { date, time, label } }) => {
@@ -75,7 +75,7 @@ const SummaryDateComponent = () => {
 
 
 
-  
+
   const arrivalDate = watch('arrivalDate')
   const arrivalTime = watch('arrivalTime')
   const departureDate = watch('departureDate')
@@ -134,6 +134,10 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, p
 
   //redux values -------
   const numberOfPassengersRedux = useSelector(getNumberOfPassengers, isEqual)
+  const isRoundTrip = useSelector(getIsRoundTrip)
+  const location = useSelector(getLocation)
+  const destination = useSelector(getDestination)
+  const getSelectedVehicle = useSelector(summaryGetSelectedVehicle)
   //redux values -------
   const numberOfPassengers = pickFirst([watch('numberOfPassengers'), numberOfPassengersRedux])
   const [displayingPrice, setDisplayingPrice] = useState()
@@ -222,7 +226,13 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, p
                 padding: '26px'
               }}
             >
-              <T variant="h5sb" sx={{ flexGrow: 2 }}>Round-trip from SJD Airport to Casa Juarez</T>
+              <T
+                variant="h5sb"
+                sx={{ flexGrow: 2 }}
+              >
+                {isRoundTrip ? 'Round-trip' : 'One way trip' + ' '}
+                from {location} to {destination}
+              </T>
               <T variant="h5sb" sx={{ color: blue, flexGrow: 1 }}>${selectedCar.price.toFixed(2)}</T>
             </Box>
             <Box

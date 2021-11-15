@@ -11,7 +11,11 @@ export {
   getSelectedVehicleIdObject,
   getSelectedCountryAndState,
   getBookingId,
+  getIsRoundTrip,
 } from './global.selectors'
 export {
   getNumberOfPassengers,
+  getDestination,
+  getLocation,
+  summaryGetSelectedVehicle,
 } from './orderSummary.selectors'
