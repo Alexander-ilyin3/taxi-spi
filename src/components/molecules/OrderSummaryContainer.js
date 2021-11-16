@@ -3,10 +3,13 @@ import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
-import { bringToFormVehicle, pickFirst } from "helpers/orderSummaryHelpers"
+import { bringToFormVehicle, calculateAddonPrices, findPriceForAddons, pickFirst, reduceToDate } from "helpers/orderSummaryHelpers"
 import { useSelector } from "react-redux"
-import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle } from "redux/selectors"
+import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle, summaryGetSelectedAddons } from "redux/selectors"
 import { isEqual } from "underscore"
+import { getAddons } from "redux/selectors/global.selectors"
+import { getArrivalDate, getArrivalTime, getBookingDate, getBookinglTime, getDepartureDate, getDepartureTime } from "redux/selectors/orderSummary.selectors"
+import { getIsAirportStates, getSteps } from "redux/selectors"
 
 const SummaryDateElement = ({ data: { date, time, label } }) => {
   const { palette: { primary: { blue } } } = useTheme()
@@ -70,61 +73,79 @@ const SummaryDateElement = ({ data: { date, time, label } }) => {
 const SummaryDateComponent = () => {
   const { watch } = useFormContext()
 
+  const isAirportStates = useSelector(getIsAirportStates)
 
+  const locationIsAirport = isAirportStates.locationIsAirport
+  const destinationIsAirport = isAirportStates.destinationIsAirport
+  const nothingIsAirport = !isAirportStates.locationIsAirport && !isAirportStates.destinationIsAirport
 
+  const reduxArrivalDate = reduceToDate(useSelector(getArrivalDate))
+  const reduxArrivalTime = reduceToDate(useSelector(getArrivalTime))
+  const reduxDepartureDate = reduceToDate(useSelector(getDepartureDate))
+  const reduxDepartureTime = reduceToDate(useSelector(getDepartureTime))
+  const reduxBookingDate = reduceToDate(useSelector(getBookingDate))
+  const reduxBookinglTime = reduceToDate(useSelector(getBookinglTime))
 
+  const formArrivalDate = watch('arrivalDate')
+  const formArrivalTime = watch('arrivalTime')
+  const formDepartureDate = watch('departureDate')
+  const formDepartureTime = watch('departureTime')
+  const formBookingDate = watch('bookingDate')
+  const formBookinglTime = watch('bookinglTime')
 
-
-
-  const arrivalDate = watch('arrivalDate')
-  const arrivalTime = watch('arrivalTime')
-  const departureDate = watch('departureDate')
-  const departureTime = watch('departureTime')
-  const bookingDate = watch('bookingDate')
-  const bookinglTime = watch('bookinglTime')
+  const arrivalDate = pickFirst([formArrivalDate, reduxArrivalDate])
+  const arrivalTime = pickFirst([formArrivalTime, reduxArrivalTime])
+  const departureDate = pickFirst([formDepartureDate, reduxDepartureDate])
+  const departureTime = pickFirst([formDepartureTime, reduxDepartureTime])
+  const bookingDate = pickFirst([formBookingDate, reduxBookingDate])
+  const bookinglTime = pickFirst([formBookinglTime, reduxBookinglTime])
 
   return (
     <FlexBoxRow>
-      {arrivalDate && (
+      {bookingDate && nothingIsAirport && (
+        <SummaryDateElement data={{ date: bookingDate, time: bookinglTime, label: 'Booking Date' }} />
+      )}
+      {arrivalDate && locationIsAirport && (
         <SummaryDateElement data={{ date: arrivalDate, time: arrivalTime, label: 'Arrival Date' }} />
       )}
-      {departureDate && (
+      {departureDate && destinationIsAirport && (
         <SummaryDateElement data={{ date: departureDate, time: departureTime, label: 'Departure Date' }} />
-      )}
-      {bookingDate && (
-        <SummaryDateElement data={{ date: bookingDate, time: bookinglTime, label: 'Booking Date' }} />
       )}
     </FlexBoxRow>
   )
 }
 
-const AddOnsContainer = () => {
-  const { watch } = useFormContext()
-  //TODO CHANGE THIS WITH API
-  const [a0, a1, a2, a3, a4, a5, a6, a7] = [
-    { ...watch('Addon-id-0') },
-    { ...watch('Addon-id-1') },
-    { ...watch('Addon-id-2') },
-    { ...watch('Addon-id-3') },
-    { ...watch('Addon-id-4') },
-    { ...watch('Addon-id-5') },
-    { ...watch('Addon-id-6') },
-    { ...watch('Addon-id-7') },
-  ]
+const AddOnsContainer = ({ addonsToDisplay }) => {
+  const { palette: { secondary: { lightBlue, lightGrayBlue }, primary: { blue } } } = useTheme()
 
-  const [displayingAddons, setDisplayingAddons] = useState([])
-
-  useEffect(() => {
-    const toDisplay = [a0, a1, a2, a3, a4, a5, a6, a7].map(addonObj => {
-      return addonObj.addonCount ? { name: addonObj.name, count: addonObj.addonCount } : null
-    }).filter((v) => v)
-    // setDisplayingAddons(toDisplay)
-  }, [a0, a1, a2, a3, a4, a5, a6, a7])
+  console.log(lightBlue, lightGrayBlue)
 
   return (
-    displayingAddons.map(addon => {
-      return <T variant="h5sb">{addon.name} (x{addon.count})</T>
-    })
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: lightBlue,
+        borderRadius: '25px 25px 0 0',
+        padding: '16px 26px',
+        gap: 1
+      }}
+    >
+      {addonsToDisplay.map(addon => {
+        if (!addon?.count) return null
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <T variant="h5sb">{addon.name} (x{addon.count}) </T>
+            <T variant="h5sb" sx={{ color: blue }}>${addon.price || 0}</T>
+          </Box>
+        )
+      })}
+    </Box>
   )
 }
 
@@ -138,12 +159,23 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
   const location = useSelector(getLocation)
   const destination = useSelector(getDestination)
   const reduxSelectedVehicle = bringToFormVehicle(useSelector(summaryGetSelectedVehicle))
+  const reduxAddonList = useSelector(getAddons)
+  const reduxSelectedAddons = useSelector(summaryGetSelectedAddons)
   //redux values -------
+  const formAddons = watch('Addon')
+  const formAddonsWithPrice = findPriceForAddons(formAddons, reduxAddonList)
+
+  const addonsToDisplay = pickFirst([formAddonsWithPrice, reduxSelectedAddons], 'arrays') || []
+
+  console.log(444, 'addonsToDisplay', addonsToDisplay)
   const formSelectedCar = watch('selectedCar')
+
+  const addonSummPrice = calculateAddonPrices(addonsToDisplay)
+
+  console.log(3333333333, addonSummPrice)
+
   const selectedCar = pickFirst([formSelectedCar, reduxSelectedVehicle])
-  console.log('selected car - ', selectedCar)
-  console.log('reduxSelectedVehicle', reduxSelectedVehicle)
-  console.log('propsSelectedCar', formSelectedCar)
+
   const numberOfPassengers = pickFirst([watch('numberOfPassengers'), numberOfPassengersRedux])
   const [displayingPrice, setDisplayingPrice] = useState()
   const [numberOfCars, setNumberOfCars] = useState()
@@ -160,9 +192,9 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
 
   useEffect(() => {
     if (selectedCar?.price && numberOfCars) {
-      setDisplayingPrice(selectedCar.price * numberOfCars)
+      setDisplayingPrice(selectedCar.price * numberOfCars + addonSummPrice)
     }
-  }, [numberOfCars, selectedCar])
+  }, [numberOfCars, selectedCar, addonSummPrice])
 
   useEffect(() => {
     if (displayingPrice) {
@@ -174,7 +206,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
     if (displayingPrice && feesCount) {
       setTotalPrice((displayingPrice + feesCount).toFixed(2))
     }
-  }, [displayingPrice, feesCount])
+  }, [displayingPrice, feesCount, addonSummPrice])
 
   useEffect(() => {
     if (oneSeatAllowed && parseFloat(numberOfPassengers) !== 1 && numberOfPassengers !== '') {
@@ -260,7 +292,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
                 )}
               </T>
             </Box>
-            <AddOnsContainer />
+            <AddOnsContainer addonsToDisplay={addonsToDisplay} />
             <Box
               sx={{
                 backgroundColor: blue,
