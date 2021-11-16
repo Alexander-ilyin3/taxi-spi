@@ -10,6 +10,7 @@ import { isEqual } from "underscore"
 import { getAddons } from "redux/selectors/global.selectors"
 import { getArrivalDate, getArrivalTime, getBookingDate, getBookinglTime, getDepartureDate, getDepartureTime } from "redux/selectors/orderSummary.selectors"
 import { getIsAirportStates, getSteps } from "redux/selectors"
+import { reduceIconPath } from "helpers/reduceIconPath"
 
 const SummaryDateElement = ({ data: { date, time, label } }) => {
   const { palette: { primary: { blue } } } = useTheme()
@@ -40,7 +41,7 @@ const SummaryDateElement = ({ data: { date, time, label } }) => {
           justifyContent: 'flex-start'
         }}
       >
-        <img src="Calendar.svg" />
+        <img src={reduceIconPath("images/Calendar.svg")} />
         <T variant="h5sb" color={blue} sx={{ paddingLeft: 1 }}>{label}</T>
       </Box>
       <Box

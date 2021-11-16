@@ -1,5 +1,6 @@
 import { Box, Card, CardActionArea, Typography as T, useTheme } from "@mui/material"
 import { makeStyles } from '@mui/styles'
+import { reduceIconPath } from "helpers/reduceIconPath"
 import { useSelector } from "react-redux"
 import { getSelectedVehicle } from "redux/selectors/global.selectors"
 
@@ -70,7 +71,7 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
           <Box
             sx={{ display: 'flex', flexDirection: 'row' }}
           >
-            <img src={'images/Person.svg'} style={{ marginRight: '10px', marginTop: '-3px' }}></img><span>{numberOfSeats}&nbsp;{numberOfSeats === 1 ? 'Seat' : 'Seats'}</span>
+            <img src={reduceIconPath('images/Person.svg')} style={{ marginRight: '10px', marginTop: '-3px' }}></img><span>{numberOfSeats}&nbsp;{numberOfSeats === 1 ? 'Seat' : 'Seats'}</span>
           </Box>
           <Box>
             <span style={{ fontWeight: 700, fontSize: '14px' }}>${price}</span>

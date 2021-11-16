@@ -1,6 +1,7 @@
 import { useTheme } from '@mui/material'
 import { ButtonBase } from '@mui/material'
 import { Typography as T } from '@mui/material'
+import { reduceIconPath } from 'helpers/reduceIconPath'
 
 export const NextButton = ({ onClick }) => {
   const theme = useTheme()
@@ -16,7 +17,7 @@ export const NextButton = ({ onClick }) => {
     }}
       onClick={onClick}>
       <T variant='h5sb' sx={{ color: white, marginRight: 1 }}>Next</T>
-      <img src="images/next-button-icon.svg"></img>
+      <img src={reduceIconPath("images/next-button-icon.svg")}></img>
     </ButtonBase>
   )
 }
@@ -40,7 +41,7 @@ export const BackButton = ({ onClick, disableBackButton }) => {
       disabled={disableBackButton}
     >
 
-      <img src="images/back-button-icon.svg"></img>
+      <img src={reduceIconPath("images/back-button-icon.svg")}></img>
       <T variant='h5sb' sx={{ color: blue, marginLeft: 1 }}>Back</T>
     </ButtonBase>
   )

@@ -13,6 +13,7 @@ import { SiteFooter } from 'components/molecules/SiteFooter'
 import { testAddons } from 'testData/testAddons'
 import { useSelector } from 'react-redux'
 import { getBookingId } from 'redux/selectors'
+import { reduceIconPath } from 'helpers/reduceIconPath'
 
 const Step7 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
@@ -44,7 +45,7 @@ const Step7 = () => {
         <SectionWrapper fullWidth>
           <SectionBox>
             <CongratsWrapper>
-              <img src="CongratsCkeckmark.svg"></img>
+              <img src={reduceIconPath("images/CongratsCkeckmark.svg")}></img>
               <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #{bookingId}</T>
               <T variant='h1'> Your Reservation has been created successfully </T>
               <T variant='h5md' sx={{ textAlign: 'center' }}> Reservation details  have been sent to your email.<br />To print it click here</T>

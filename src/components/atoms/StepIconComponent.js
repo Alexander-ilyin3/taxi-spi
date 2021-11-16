@@ -1,6 +1,7 @@
 import { useTheme } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { Typography as T } from "@mui/material"
+import { reduceIconPath } from "helpers/reduceIconPath"
 
 const StepIconComponentRoot = styled('div')(({ theme, ownerState }) => ({ //TODO check if this styles needed
   color: theme.palette.primary.blue,
@@ -55,7 +56,7 @@ const IconVariant = ({ active, completed, icon }) => {
   if (completed) {
     return (
       <div style={commonStyles}>
-        <img src="images/StepCheckmark.svg" alt="checkmark" />
+        <img src={reduceIconPath("images/StepCheckmark.svg")} alt="checkmark" />
       </div>
     )
   }
