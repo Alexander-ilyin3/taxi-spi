@@ -1,3 +1,5 @@
+import { mapSelectedAddonsToForm } from "./mapSelectedAddonsToForm"
+
 const rulesArray = [
   {
     step: 1,
@@ -33,12 +35,12 @@ const rulesArray = [
     ]
   },
 
-  // {
-  //   step: 4,
-  //   rulesData: [
-
-  //   ]
-  // },
+  {
+    step: 4,
+    rulesData: [
+      { requestType: 'addons', stateType: 'Addon', dataType: 'origin', mapFunction: mapSelectedAddonsToForm },
+    ]
+  },
 
   {
     step: 5,
@@ -121,8 +123,10 @@ export const mapToState = (session, step) => {
     const value = getValueWithPath(session, rule.requestType)
     const reducedValue = reduceToType(value, rule.dataType)
 
+    const mappedValue = rule.mapFunction ? rule.mapFunction(reducedValue) : reducedValue
+
     if (value !== undefined) {
-      Object.assign(resultObject, { [key]: reducedValue })
+      Object.assign(resultObject, { [key]: mappedValue })
     }
   })
 

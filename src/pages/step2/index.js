@@ -90,7 +90,7 @@ const Step2 = () => {
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
-        <OrderSummaryContainer selectedCar={selectedCar} >
+        <OrderSummaryContainer >
           <OrderSummaryPlug />
         </OrderSummaryContainer>
       </PageContentWrapper>

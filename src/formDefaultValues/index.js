@@ -38,6 +38,9 @@ export const defaultValues = {
       bookinglTime: null,
     }
   },
+  4: {
+    Addon: {}
+  },
   5: {
     additionalPhone: "",
     address: "",
