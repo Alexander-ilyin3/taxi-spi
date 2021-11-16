@@ -9,8 +9,8 @@ const rules = [
   { requestType: 'booking_date', stateType: 'bookingDate', dataType: 'date' },
   { requestType: 'booking_time', stateType: 'bookinglTime', dataType: 'time' },
 
-  // arrivalDate: null, //TODO
-  // arrivalTime: null, //TODO
+  { requestType: 'booking_date', stateType: 'arrivalDate', dataType: 'date' },
+  { requestType: 'booking_time', stateType: 'arrivalTime', dataType: 'time' },
   { requestType: 'arrival_flight_airline', stateType: 'arrivalAirline', dataType: 'str' },
   { requestType: 'arrival_flight_number', stateType: 'arrivalFlightNumber', dataType: 'str' },
   { requestType: 'booking_notes', stateType: 'bookingDetailsNotes', dataType: 'str' },
