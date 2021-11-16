@@ -18,4 +18,5 @@ export {
   getDestination,
   getLocation,
   summaryGetSelectedVehicle,
+  summaryGetSelectedAddons,
 } from './orderSummary.selectors'

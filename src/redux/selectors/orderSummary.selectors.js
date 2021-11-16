@@ -2,6 +2,15 @@ export const getNumberOfPassengers = state => state?.globalStepsData?.passengers
 export const getLocation = state => state?.globalStepsData?.location?.name || ''
 export const getDestination = state => state?.globalStepsData?.destination?.name || ''
 export const summaryGetSelectedVehicle = state => state?.globalStepsData?.vehicle || {}
+export const summaryGetSelectedAddons = state => state?.globalStepsData?.addons || []
+
+export const getArrivalDate = state => state?.globalStepsData?.booking_date || ''
+export const getArrivalTime = state => state?.globalStepsData?.booking_time || ''
+export const getDepartureDate = state => state?.globalStepsData?.departure_date || ''
+export const getDepartureTime = state => state?.globalStepsData?.departure_time || ''
+export const getBookingDate = state => state?.globalStepsData?.booking_date || ''
+export const getBookinglTime = state => state?.globalStepsData?.booking_time || ''
+
 
 // export const 
 
