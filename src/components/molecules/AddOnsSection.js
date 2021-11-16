@@ -36,7 +36,7 @@ export const AddOnsSection = () => {
             field: { onChange, value },
             fieldState: { invalid }
           }) => (
-            <AddOnsItemWrapper key={i} addonObject={cardData} onChange={(count) => {console.log(count); onChange({ addon_id: cardData.addon_id, count })}} value={value.count} />
+            <AddOnsItemWrapper key={i} addonObject={cardData} onChange={(count) => {console.log(count); onChange({ addon_id: cardData.addon_id, count })}} value={value?.count || 0} />
           )}
         />
       ))

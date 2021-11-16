@@ -1,4 +1,4 @@
-export const getNumberOfPassengers = state => state.passengers 
+export const getNumberOfPassengers = state => state?.globalStepsData?.passengers 
 export const getLocation = state => state?.globalStepsData?.location?.name || ''
 export const getDestination = state => state?.globalStepsData?.destination?.name || ''
 export const summaryGetSelectedVehicle = state => state?.globalStepsData?.vehicle || {}

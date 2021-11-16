@@ -1,6 +1,6 @@
 import { Typography as T } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -24,28 +24,39 @@ import { session } from 'api/sessionApi'
 import { addons } from 'api/addonsApi'
 import { getSelectedVehicleIdObject } from 'redux/selectors'
 import { mapAddonsToUpdateSession } from 'helpers/mapAddonsToUpdateSession'
+import { useResetForm } from 'helpers/resetForm'
 
 const Step4 = () => {
-  const state = useSelector(getStep4, isEqual)
+  const state = useSelector(getStep4)
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
-
+  const [reseted, setReseted] = useState(false)
   const defaults = defaultValues[4]
   const selectedVehicleIdObject = useSelector(getSelectedVehicleIdObject, isEqual)
   // const createAddonsAction = (addonsResult) => {
   //   return setAddons(mapAddonsToState(addonsResult, step1Data.roadTripReservation))
   // }
-
+  console.log(11111111, state)
   const { reFetch: reFecthAddons } = useApiCall({ handler: addons.getAddons, lazy: true, action: setAddons })
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
   // useResetForm({ state, defaults })
+
+  useEffect(() => {
+    if ( !state?.Addon ) return
+
+    for ( const key in state.Addon) {
+      const value = state.Addon[key]
+      setValue(`Addon.${key}`, value )
+      console.log(2222222222, value)
+    }
+  }, [state])
 
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const { handleSubmit } = useFormContext()
+  const { handleSubmit, reset } = useFormContext()
 
   const onSubmit = async (data, e) => {
     const mappedForParams = mapAddonsToUpdateSession(data)
@@ -71,6 +82,13 @@ const Step4 = () => {
     console.log('back clicked')
     history.push('step-3')
   }
+
+  useEffect(() => {
+    reset({})
+    setReseted(true)
+  }, [])
+  
+  if (!reseted) return null //TODO
 
   return (
     <>

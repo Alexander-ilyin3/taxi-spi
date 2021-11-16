@@ -3,14 +3,15 @@ const { useFormContext } = require("react-hook-form")
 
 
 export const ConsoleFormStateButton = () => {
-  const { getValues, formState : { errors } } = useFormContext()
+  const { getValues, formState: { errors } } = useFormContext()
 
   const consoleFormState = () => {
+    // console.log('Form state - ', JSON.stringify(getValues()))
     console.log('Form state - ', getValues())
   }
 
   const consoleErrorState = () => {
-    console.log('Form errors', errors )
+    console.log('Form errors', errors)
   }
 
   const mapStateToPar = () => {

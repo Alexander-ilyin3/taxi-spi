@@ -57,7 +57,7 @@ export const isLoading = (state = [], { type }) => {
 export const globalStepsData = (state, { type, payload }) => {
   switch (type) {
     case SET_GLOBAL_STEPS_DATA:
-      return { ...state, ...payload }
+      return { ...payload }
 
     default:
       return { ...state }

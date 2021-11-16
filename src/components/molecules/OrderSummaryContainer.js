@@ -3,7 +3,7 @@ import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
-import { pickFirst } from "helpers/orderSummaryHelpers"
+import { bringToFormVehicle, pickFirst } from "helpers/orderSummaryHelpers"
 import { useSelector } from "react-redux"
 import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle } from "redux/selectors"
 import { isEqual } from "underscore"
@@ -128,7 +128,7 @@ const AddOnsContainer = () => {
   )
 }
 
-export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, page6Variant }) => {
+export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }) => {
   const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } } } = useTheme()
   const { watch } = useFormContext()
 
@@ -137,8 +137,13 @@ export const OrderSummaryContainer = ({ children, selectedCar, oneSeatAllowed, p
   const isRoundTrip = useSelector(getIsRoundTrip)
   const location = useSelector(getLocation)
   const destination = useSelector(getDestination)
-  const getSelectedVehicle = useSelector(summaryGetSelectedVehicle)
+  const reduxSelectedVehicle = bringToFormVehicle(useSelector(summaryGetSelectedVehicle))
   //redux values -------
+  const formSelectedCar = watch('selectedCar')
+  const selectedCar = pickFirst([formSelectedCar, reduxSelectedVehicle])
+  console.log('selected car - ', selectedCar)
+  console.log('reduxSelectedVehicle', reduxSelectedVehicle)
+  console.log('propsSelectedCar', formSelectedCar)
   const numberOfPassengers = pickFirst([watch('numberOfPassengers'), numberOfPassengersRedux])
   const [displayingPrice, setDisplayingPrice] = useState()
   const [numberOfCars, setNumberOfCars] = useState()
