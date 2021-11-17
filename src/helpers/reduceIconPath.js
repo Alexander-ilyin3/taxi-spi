@@ -3,5 +3,5 @@ export const reduceIconPath = (path) => {
     return path
   }
 
-  return 'https://sjd-taxi.requestumdemo.com/wp-content/plugins/sjd-booking/app/build/images/' + path
+  return 'https://sjd-taxi.requestumdemo.com/wp-content/plugins/sjd-booking/app/build/' + path
 }
