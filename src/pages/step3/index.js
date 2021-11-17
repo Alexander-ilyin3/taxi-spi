@@ -21,7 +21,7 @@ import { isEqual } from 'underscore'
 import { useResetForm } from 'helpers/resetForm'
 import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
-import { getDestinationIsAirport, getLocationIsAirport } from 'redux/selectors'
+import { getDestinationIsAirport, getIsRoundTrip, getLocationIsAirport } from 'redux/selectors'
 import { defaultValues } from 'formDefaultValues'
 import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
 
@@ -42,6 +42,7 @@ const Step3 = () => {
   const [reseted, setReseted] = useState(false)
   const state = useSelector(getStep3, isEqual)
   const departureIsAirport = useSelector(getLocationIsAirport)
+  const isRoundTrip = useSelector(getIsRoundTrip)
   const arrivalIsAirport = useSelector(getDestinationIsAirport)
 
   const defaultVarianName = getDefaultVariantName({ departureIsAirport, arrivalIsAirport })
@@ -88,7 +89,7 @@ const Step3 = () => {
         <SectionWrapper>
           <SectionBox>
             <T variant='h1'> Flight Details </T>
-            <SubSection arrival={arrivalIsAirport} departure={departureIsAirport} />
+            <SubSection arrival={arrivalIsAirport} departure={departureIsAirport || isRoundTrip} />
             <NotesSection />
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
