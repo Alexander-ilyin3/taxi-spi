@@ -29,18 +29,26 @@ import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
 import { useResetForm } from 'helpers/resetForm'
 import { useApiCall } from 'helpers/customHooks'
 import { defaultValues, defaultValuesFor } from 'formDefaultValues'
+import { useEffect } from 'react'
 
 const Step1 = () => {
 
-  const { watch, handleSubmit, reset } = useFormContext()
+  const { watch, handleSubmit, setValue } = useFormContext()
   const history = useHistory()
 
   const defaults = defaultValues[1]
   const state = useSelector(getStep1, isEqual)
   // console.log({state})
-  useResetForm({state, defaults})
+  useResetForm({ state, defaults })
 
+  const locationIsAirport = watch('pickupLocation')?.is_airport === '1' ? true : false
   // reset()
+
+  useEffect(() => {
+    if ( !locationIsAirport ) {
+      setValue('roadTripReservation', false)
+    }
+  }, [locationIsAirport])
 
   const { result: locationsResult = [] } = useApiCall({ handler: locations.getLocations })
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
@@ -98,9 +106,10 @@ const Step1 = () => {
               )}
             </FlexBoxRow>
             <InputNumberBox r labelText="How many people are you travelling with (including yourself)?" name={'numberOfPassengers'} labelErrorText={'The field cannot be empty'}></InputNumberBox>
-            <CheckBoxLabelBox labelText={'Make this a Round-Trip Reservation'} name="roadTripReservation">
-              <T variant="secondaryText">Save yourself a travel headache! we’ll pick you from the destination we dropped you off at, and take you to the airport 3 hours before flight’s departure!</T>
-            </CheckBoxLabelBox>
+            {locationIsAirport &&
+              <CheckBoxLabelBox labelText={'Make this a Round-Trip Reservation'} name="roadTripReservation">
+                <T variant="secondaryText">Save yourself a travel headache! we’ll pick you from the destination we dropped you off at, and take you to the airport 3 hours before flight’s departure!</T>
+              </CheckBoxLabelBox>}
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} disableBackButton />
         </SectionWrapper>
