@@ -12,6 +12,7 @@ export {
   getSelectedCountryAndState,
   getBookingId,
   getIsRoundTrip,
+  getSessionCoupon,
 } from './global.selectors'
 export {
   getNumberOfPassengers,
