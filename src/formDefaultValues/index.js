@@ -54,6 +54,11 @@ export const defaultValues = {
     mobilePhone: "",
     postalCode: "",
     // state: null,
+  },
+  6: {
+    couponCode: "",
+    paymentVariant: null,
+    termsAndCondition: false,
   }
 }
 

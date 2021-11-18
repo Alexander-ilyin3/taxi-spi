@@ -14,3 +14,4 @@ export const getCountries = state => state.coutries || []
 export const getStates = state => state.states || []
 export const getSelectedCountryAndState = state => state.selectedCountryAndState || {}
 export const getBookingId = state => state.bookingId || null
+export const getSessionCoupon = state => state?.globalStepsData?.coupon || null
