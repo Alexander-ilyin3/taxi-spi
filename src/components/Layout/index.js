@@ -80,7 +80,7 @@ const Layout = () => {
           </Router>
         </ThemeProvider>
         {/* TEST COMPONENT //TODO */}
-        <ConsoleFormStateButton />
+        {(process.env.NODE_ENV === 'development') && <ConsoleFormStateButton />}
         {/* TEST COMPONENT //TODO */}
         {/* <DependenceReduxStateController /> */}
       </FormProvider>
