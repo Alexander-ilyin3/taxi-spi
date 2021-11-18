@@ -119,8 +119,6 @@ const SummaryDateComponent = () => {
 const AddOnsContainer = ({ addonsToDisplay }) => {
   const { palette: { secondary: { lightBlue, lightGrayBlue }, primary: { blue } } } = useTheme()
 
-  console.log(lightBlue, lightGrayBlue)
-
   return (
     <Box
       sx={{
@@ -168,12 +166,10 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
 
   const addonsToDisplay = pickFirst([formAddonsWithPrice, reduxSelectedAddons], 'arrays') || []
 
-  console.log(444, 'addonsToDisplay', addonsToDisplay)
   const formSelectedCar = watch('selectedCar')
 
   const addonSummPrice = calculateAddonPrices(addonsToDisplay)
 
-  console.log(3333333333, addonSummPrice)
 
   const selectedCar = pickFirst([formSelectedCar, reduxSelectedVehicle])
 
