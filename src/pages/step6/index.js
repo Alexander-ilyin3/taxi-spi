@@ -6,7 +6,7 @@ import { useHistory } from 'react-router'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import StepperComponent  from 'components/molecules/Stepper'
+import StepperComponent from 'components/molecules/Stepper'
 import { FormControlButtons } from 'components/molecules/FormContolButtons'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContainer'
@@ -21,37 +21,37 @@ import { CheckBoxLabelBox } from 'components/molecules/CheckBoxLabelBox'
 import { setStep6Data } from 'redux/actions'
 import { PaymentRadioSection } from 'components/organisms/PaymentRadioSection'
 import { booking } from 'api/bookingApi'
-import { setBookingId } from 'redux/actions/global.actions'
+import { setBookingId, setGlobalStepsData } from 'redux/actions/global.actions'
+import { useResetForm } from 'helpers/resetForm'
+import { defaultValues } from 'formDefaultValues'
+import { useApiCall } from 'helpers/customHooks'
+import { session } from 'api/sessionApi'
 
 const Step6 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
 
-  // useEffect(() => {
-  //   setValue('numberOfPassengers', "5")
-  //   setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
-  //   setValue('arrivalDate', new Date())
-  //   setValue('arrivalTime', new Date())
-  //   setValue('departureDate', new Date())
-  //   setValue('departureTime', new Date())
-  // }, [])
-
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
+
+  const defaults = defaultValues[6]
 
   const { arrivalIsAirport, departureIsAirport } = { arrivalIsAirport: true, departureIsAirport: true } //TODO test data
 
   const dispatch = useDispatch()
   const history = useHistory()
   const { handleSubmit } = useFormContext()
+  
+  useApiCall({ handler: session.getSession, action: setGlobalStepsData })
+  useResetForm({ defaults })
 
   const onSubmit = async (data, e) => {
     // console.log('Form Submitted', data, e)
     // dispatch(setStep6Data(data))
     const response = await booking.submit()
 
-    if ( response?.booking_id ) {
+    if (response?.booking_id) {
       console.log('response?.booking_id', response?.booking_id)
       dispatch(setBookingId(response.booking_id))
       history.push('step-7')
