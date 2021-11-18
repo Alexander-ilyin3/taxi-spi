@@ -3,6 +3,7 @@ export const getLocation = state => state?.globalStepsData?.location?.name || ''
 export const getDestination = state => state?.globalStepsData?.destination?.name || ''
 export const summaryGetSelectedVehicle = state => state?.globalStepsData?.vehicle || {}
 export const summaryGetSelectedAddons = state => state?.globalStepsData?.addons || []
+export const summaryGetCouponObject = state => state?.globalStepsData?.coupon || {}
 
 export const getArrivalDate = state => state?.globalStepsData?.booking_date || ''
 export const getArrivalTime = state => state?.globalStepsData?.booking_time || ''

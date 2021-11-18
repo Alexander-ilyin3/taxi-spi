@@ -3,9 +3,9 @@ import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
-import { bringToFormVehicle, calculateAddonPrices, findPriceForAddons, pickFirst, reduceToDate } from "helpers/orderSummaryHelpers"
+import { bringToFormVehicle, calculateAddonPrices, countCouponValueObject, findPriceForAddons, mapCouponForDisplay, pickFirst, reduceCouponToFlatValue, reduceToDate } from "helpers/orderSummaryHelpers"
 import { useSelector } from "react-redux"
-import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle, summaryGetSelectedAddons } from "redux/selectors"
+import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle, summaryGetSelectedAddons, summaryGetCouponObject } from "redux/selectors"
 import { isEqual } from "underscore"
 import { getAddons } from "redux/selectors/global.selectors"
 import { getArrivalDate, getArrivalTime, getBookingDate, getBookinglTime, getDepartureDate, getDepartureTime } from "redux/selectors/orderSummary.selectors"
@@ -130,7 +130,7 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
         gap: 1
       }}
     >
-      {addonsToDisplay.map(addon => {
+      {addonsToDisplay.map((addon, i) => {
         if (!addon?.count) return null
         return (
           <Box
@@ -138,6 +138,7 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
               display: 'flex',
               justifyContent: 'space-between',
             }}
+            key={i}
           >
             <T variant="h5sb">{addon.name} (x{addon.count}) </T>
             <T variant="h5sb" sx={{ color: blue }}>${addon.price || 0}</T>
@@ -160,6 +161,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
   const reduxSelectedVehicle = bringToFormVehicle(useSelector(summaryGetSelectedVehicle))
   const reduxAddonList = useSelector(getAddons)
   const reduxSelectedAddons = useSelector(summaryGetSelectedAddons)
+  const couponObject = useSelector(summaryGetCouponObject, isEqual)
   //redux values -------
   const formAddons = watch('Addon')
   const formAddonsWithPrice = findPriceForAddons(formAddons, reduxAddonList)
@@ -179,6 +181,8 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
   const [feesCount, setFeesCount] = useState()
   const [totalPrice, setTotalPrice] = useState()
   const [oneSeatRuleBroken, setOneSeatRuleBroken] = useState()
+  const [couponDisplayingAmount, setCouponDisplayingAmount] = useState()
+  const [flatCouponAmount, setFlatCouponAmount] = useState(0)
 
   useEffect(() => {
     if (selectedCar?.numberOfSeats && numberOfPassengers) {
@@ -188,9 +192,9 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
   }, [selectedCar, numberOfPassengers])
 
   useEffect(() => {
-    if (selectedCar?.price && numberOfCars) {
-      setDisplayingPrice(selectedCar.price * numberOfCars + addonSummPrice)
-    }
+    if (!selectedCar?.price || !numberOfCars) return
+
+    setDisplayingPrice(selectedCar.price * numberOfCars + addonSummPrice)
   }, [numberOfCars, selectedCar, addonSummPrice])
 
   useEffect(() => {
@@ -200,10 +204,10 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
   }, [displayingPrice])
 
   useEffect(() => {
-    if (displayingPrice && feesCount) {
-      setTotalPrice((displayingPrice + feesCount).toFixed(2))
-    }
-  }, [displayingPrice, feesCount, addonSummPrice])
+    if (!displayingPrice || !feesCount) return
+
+    setTotalPrice((displayingPrice - flatCouponAmount + feesCount).toFixed(2))
+  }, [displayingPrice, feesCount, flatCouponAmount])
 
   useEffect(() => {
     if (oneSeatAllowed && parseFloat(numberOfPassengers) !== 1 && numberOfPassengers !== '') {
@@ -212,6 +216,11 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
       setOneSeatRuleBroken(false)
     }
   }, [oneSeatAllowed, numberOfPassengers])
+
+  useEffect(() => {
+    setCouponDisplayingAmount(mapCouponForDisplay(couponObject))
+    setFlatCouponAmount(reduceCouponToFlatValue(couponObject, displayingPrice || 0))
+  }, [couponObject, displayingPrice])
 
   return (
     <Paper elevation={page6Variant ? 0 : 10} sx={{
@@ -302,6 +311,14 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
                 <T variant='h4' color='inherit'>SubTotal</T>
                 <T>${displayingPrice}</T>
               </Box>
+
+              {couponDisplayingAmount && (
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <T variant='h4' color='inherit'>Coupon</T>
+                  <T>- {couponDisplayingAmount}</T>
+                </Box>
+              )}
+
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h4' color='inherit'>Fees (16%)</T>
                 <T>${feesCount?.toFixed(2)}</T>
