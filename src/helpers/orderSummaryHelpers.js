@@ -4,7 +4,7 @@ import { isEqual } from "underscore"
 export const pickFirst = ([value1, value2], type) => {
 
   if (type === 'arrays') {
-    if ( Array.isArray(value1) && value1.length) {
+    if (Array.isArray(value1) && value1.length) {
       return value1
     }
     return value2
@@ -17,7 +17,6 @@ export const pickFirst = ([value1, value2], type) => {
 }
 
 export const bringToFormVehicle = (reduxVehicle) => {
-  console.log({ reduxVehicle })
   if (reduxVehicle && !isEqual(reduxVehicle, {})) {
     return {
       carName: reduxVehicle.name,
@@ -81,7 +80,7 @@ export const findPriceForAddons = (formAddons, reduxAddonList) => {
 
 export const calculateAddonPrices = (addons) => {
   return addons.reduce((prev, next) => {
-    if ( !next.count ) return prev
+    if (!next.count) return prev
     return prev + Number(next.count) * Number(next.price)
   }, 0)
 }
@@ -98,5 +97,33 @@ export const reduceToDate = (value) => {
 
   if (/\d{4}-\d{2}-\d{2}/.test(value)) {
     return new Date(value)
+  }
+}
+
+export const mapCouponForDisplay = ({ amount, coupon_id, discount_type }) => {
+  if (!amount || !coupon_id || !discount_type) return null
+
+  if (discount_type === "percentage") {
+    return amount + '%'
+  } else if (discount_type === "flat") {
+    return '$' + amount
+  }
+}
+
+export const countCouponValueObject = ({ amount, coupon_id, discount_type }) => {
+  if (!amount || !coupon_id || !discount_type) {
+    return { amount: 0, discount_type: 'flat' }
+  }
+
+  return { amount: Number(amount), discount_type }
+}
+
+export const reduceCouponToFlatValue = ({ amount, coupon_id, discount_type }, displayingPrice) => {
+  if (!amount || !coupon_id || !discount_type) return 0
+
+  if (discount_type === 'percentage') {
+    return displayingPrice / 100 * amount
+  } else if (discount_type === 'flat') {
+    return amount
   }
 }
