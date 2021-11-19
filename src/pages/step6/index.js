@@ -26,6 +26,7 @@ import { useResetForm } from 'helpers/resetForm'
 import { defaultValues } from 'formDefaultValues'
 import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
+import { payments } from 'api/paymentApi'
 
 const Step6 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
@@ -42,20 +43,29 @@ const Step6 = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { handleSubmit } = useFormContext()
-  
+
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
   useResetForm({ defaults })
 
   const onSubmit = async (data, e) => {
     // console.log('Form Submitted', data, e)
     // dispatch(setStep6Data(data))
-    const response = await booking.submit()
 
-    if (response?.booking_id) {
-      console.log('response?.booking_id', response?.booking_id)
-      dispatch(setBookingId(response.booking_id))
-      history.push('step-7')
+    const bookingResponse = await booking.submit()
+
+    if (bookingResponse?.booking_id) {
+      console.log('response?.booking_id', bookingResponse?.booking_id)
+      dispatch(setBookingId(bookingResponse.booking_id))
+      // history.push('step-7')
     }
+
+    const paymentsResponse = await payments.submitPaymentMethod({ method: data.paymentVariant })
+
+    if (paymentsResponse !== false) {
+      window.location.assign(paymentsResponse)
+    }
+
+    console.log('submit actions', paymentsResponse)
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
