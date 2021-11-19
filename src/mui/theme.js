@@ -5,6 +5,15 @@ import { createTheme } from '@mui/material'
 const theme = createTheme({
   palette,
   typography,
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 900,
+      md: 1200,
+      lg: 1350,
+      xl: 1536,
+    },
+  },
   components: {
     CssBaseline: {
       "@global": {
@@ -70,7 +79,7 @@ const theme = createTheme({
     MuiCircularProgress: {
       styleOverrides: {
         root: {
-            color: palette.primary.blue
+          color: palette.primary.blue
         }
       }
     }
