@@ -21,15 +21,15 @@ export const PaymentRadioSection = () => {
               label="PayPal"
             />
             <FormControlLabel
-              value="apple_pay"
+              value="stripe"
               control={<Radio />}
-              label="Apple Pay"
+              label="Stripe"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               value="google_pay"
               control={<Radio />}
               label="Google Pay"
-            />
+            /> */}
           </RadioGroup>
         )}
       />

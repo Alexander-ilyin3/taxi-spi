@@ -5,7 +5,7 @@ import { useTheme } from '@mui/system'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
-import StepperComponent  from 'components/molecules/Stepper'
+import StepperComponent from 'components/molecules/Stepper'
 import { SectionWrapper } from 'components/atoms/SectionWrapper'
 import { PageContentWrapper } from 'components/atoms/PageContentWrapper'
 import { CongratsWrapper } from 'components/atoms/CongratsWrapper'
@@ -14,20 +14,18 @@ import { testAddons } from 'testData/testAddons'
 import { useSelector } from 'react-redux'
 import { getBookingId } from 'redux/selectors'
 import { reduceIconPath } from 'helpers/reduceIconPath'
+import { useApiCall } from 'helpers/customHooks'
+import { session } from 'api/sessionApi'
+import { setGlobalStepsData } from 'redux/actions'
+import { useHistory } from 'react-router'
 
 const Step7 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
+  const history = useHistory()
+  useApiCall({ handler: session.getSession, action: setGlobalStepsData })
 
-  // useEffect(() => {
-  //   setValue('numberOfPassengers', "5")
-  //   setValue('selectedCar', { "carName": "Nissan Pathfinder", "price": 25, "numberOfSeats": 1, "picturePath": "images/cars/Nissan Pathfinder.png", "index": 1 }) //TODO test data
-  //   setValue('arrivalDate', new Date())
-  //   setValue('arrivalTime', new Date())
-  //   setValue('departureDate', new Date())
-  //   setValue('departureTime', new Date())
-  // }, [])
   const bookingId = useSelector(getBookingId)
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
@@ -36,6 +34,9 @@ const Step7 = () => {
   const cardsData = testAddons
 
   const { palette: { primary: { blue, white }, secondary: { darkGrey } } } = useTheme()
+  const onClick = () => {
+    history.push('step-1')
+  }
 
   return (
     <>
@@ -61,6 +62,7 @@ const Step7 = () => {
                   borderRadius: '10px',
                   marginTop: 4,
                 }}
+                onClick={onClick}
               >OK</Button>
             </CongratsWrapper>
           </SectionBox>
