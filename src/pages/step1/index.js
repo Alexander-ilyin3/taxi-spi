@@ -82,7 +82,7 @@ const Step1 = () => {
         <SectionWrapper>
           <SectionBox>
             <T variant='h1'> Service Selection </T>
-            <CheckBoxLabelBox labelText={'My Destination/Departure is a AirBNB/VRBO/Rental Property'} name={'isCustomDestination'}>
+            <CheckBoxLabelBox labelText={<>My Destination/&#8203;Departure is a AirBNB/&#8203;VRBO/&#8203;Rental Property</>} name={'isCustomDestination'}>
               {
                 isCustomDestination ? (
                   <InputBox name={'customDestination'} r />

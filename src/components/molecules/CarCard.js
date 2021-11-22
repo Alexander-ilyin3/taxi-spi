@@ -4,18 +4,29 @@ import { reduceIconPath } from "helpers/reduceIconPath"
 import { useSelector } from "react-redux"
 import { getSelectedVehicle } from "redux/selectors/global.selectors"
 
-const useStyles = makeStyles(({ palette: { primary: { grey, blue, white }, secondary: { lightBlue } } }) => ({
-  carCard: {
-    minWidth: '230px',
-    border: `1px solid ${grey}`,
-    borderRadius: '10px',
-    margin: '20px 10px',
-    flexBasis: '30%'
-  },
-  carCardActive: {
-    border: `1px solid ${blue}`
-  }
-}))
+const useStyles = makeStyles(({ palette: { primary: { grey, blue, white }, secondary: { lightBlue } }, breakpoints }) => {
+
+  return ({
+    carCard: {
+      minWidth: '230px',
+
+      border: `1px solid ${grey}`,
+      borderRadius: '10px',
+      margin: '20px 10px',
+      flexBasis: '30%',
+      flexGrow: 1,
+      maxWidth: '330px',
+
+      [breakpoints.down('sm')]: {
+        flexBasis: '100%',
+        maxWidth: '380px',
+      }
+    },
+    carCardActive: {
+      border: `1px solid ${blue}`
+    }
+  })
+})
 
 export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
   const theme = useTheme()
@@ -24,7 +35,7 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
   // const activeVehicleId = useSelector(getSelectedVehicle)
   // console.log(1111, cardData, activeVehicleId)
   const isCarActive = String(vehicleId) === String(activeCar?.vehicleId)
-  
+
   const cardClick = () => {
     setSelectedCar(cardData)
   }

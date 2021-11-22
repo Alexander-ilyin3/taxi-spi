@@ -1,4 +1,5 @@
-import { Paper, Typography as T, Typography } from "@mui/material"
+import { Paper, Typography as T, Typography, Drawer, Button, SwipeableDrawer } from "@mui/material"
+import { makeStyles } from '@mui/styles'
 import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
@@ -11,11 +12,31 @@ import { getAddons } from "redux/selectors/global.selectors"
 import { getArrivalDate, getArrivalTime, getBookingDate, getBookinglTime, getDepartureDate, getDepartureTime } from "redux/selectors/orderSummary.selectors"
 import { getIsAirportStates, getSteps } from "redux/selectors"
 import { reduceIconPath } from "helpers/reduceIconPath"
+import useMediaQuery from '@mui/material/useMediaQuery'
+
+const useStyles = makeStyles(theme => ({
+  mobileTotalButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'fixed',
+    top: '30vh',
+    right: '0',
+    zIndex: '999',
+    height: '58px',
+    width: '100px',
+    fontSize: '12px',
+    borderRadius: '10px 0 0 10px',
+    backgroundColor: theme.palette.primary.blue,
+    color: theme.palette.primary.white
+  },
+}))
 
 const SummaryDateElement = ({ data: { date, time, label } }) => {
-  const { palette: { primary: { blue } } } = useTheme()
+  const { palette: { primary: { blue } }, breakpoints: { down } } = useTheme()
   const [formattedDate, setFormattedDate] = useState('')
   const [formattedTime, setFormattedTime] = useState('')
+
+  const mobile = useMediaQuery(down('sm'))
 
   useEffect(() => {
     if (date instanceof Date) {
@@ -41,7 +62,12 @@ const SummaryDateElement = ({ data: { date, time, label } }) => {
           justifyContent: 'flex-start'
         }}
       >
-        <img src={reduceIconPath("images/Calendar.svg")} />
+        {mobile ? (
+          <img src={reduceIconPath("images/MobileCalendar.svg")} />
+        ) : (
+          <img src={reduceIconPath("images/Calendar.svg")} />
+        )}
+
         <T variant="h5sb" color={blue} sx={{ paddingLeft: 1 }}>{label}</T>
       </Box>
       <Box
@@ -51,7 +77,7 @@ const SummaryDateElement = ({ data: { date, time, label } }) => {
         }}
       >
         <T
-          variant="cardLabelText"
+          variant="dateTimeSummaryText"
           sx={{
             paddingLeft: '36px'
           }}
@@ -59,7 +85,7 @@ const SummaryDateElement = ({ data: { date, time, label } }) => {
           {formattedDate}
         </T>
         <T
-          variant="cardLabelText"
+          variant="dateTimeSummaryText"
           sx={{
             paddingLeft: '36px'
           }}
@@ -102,9 +128,15 @@ const SummaryDateComponent = () => {
   const bookinglTime = pickFirst([formBookinglTime, reduxBookinglTime])
 
   return (
-    <FlexBoxRow>
+    <FlexBoxRow
+      styleProps={{
+        flexWrap: 'wrap',
+        gap: 4,
+        flexDirection: 'row'
+      }}
+    >
       {bookingDate && nothingIsAirport && (
-        <SummaryDateElement data={{ date: bookingDate, time: bookinglTime, label: 'Booking Date' }} />
+        <SummaryDateElement data={{ date: bookingDate, time: bookinglTime, label: <>Booking&nbsp;Date</> }} />
       )}
       {arrivalDate && locationIsAirport && (
         <SummaryDateElement data={{ date: arrivalDate, time: arrivalTime, label: 'Arrival Date' }} />
@@ -150,8 +182,11 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
 }
 
 export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }) => {
-  const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } } } = useTheme()
+  const classes = useStyles()
+  const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } }, breakpoints: { down } } = useTheme()
   const { watch } = useFormContext()
+  const matches = useMediaQuery(down('sm'))
+  console.log(11111111111, matches)
 
   //redux values -------
   const numberOfPassengersRedux = useSelector(getNumberOfPassengers, isEqual)
@@ -222,17 +257,28 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
     setFlatCouponAmount(reduceCouponToFlatValue(couponObject, displayingPrice || 0))
   }, [couponObject, displayingPrice])
 
-  return (
+  const [isMobileTotalOpen, setMobileTotalOpen] = useState(false)
+
+  console.log({ isMobileTotalOpen })
+
+  const RenderTotal = ({ mobileVariant }) => (
     <Paper elevation={page6Variant ? 0 : 10} sx={{
       padding: page6Variant ? '30px' : [2, 4, 6, 8],
       paddingTop: page6Variant ? 4 : 7,
-      width: page6Variant ? '100%' : '40%',
+      // width: page6Variant ? '100%' : '40%',
+      // width: 100%
       height: 'fit-content',
       display: 'flex',
       flexDirection: "column",
-      gap: [0, 4],
+      gap: [2, 4],
       borderRadius: 4,
-      border: page6Variant ? `1px solid ${grey}` : 'none'
+      border: page6Variant ? `1px solid ${grey}` : 'none',
+      // flexGrow: 2,
+      flexBasis: '40%',
+      ...(mobileVariant && {
+        minHeight: '100%',
+        borderRadius: '16px 0 0 16px'
+      })
     }}>
       {page6Variant ? (
         <T variant='h2' sx={{ alignSelf: 'center', color: blue }}>Order Summary</T>
@@ -285,12 +331,12 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
             >
               <T variant="h5sb" sx={{ color: blue, display: 'block' }}>QUANTITY OF PASSENGERS:</T>
               {numberOfPassengers ? (
-                <T variant="cardLabelText">{numberOfPassengers}</T>
+                <T variant="h5sb">{numberOfPassengers}</T>
               ) : (
-                <T variant="cardLabelText" color={warning}>Please enter the number of passengers</T>
+                <T variant="h5sb" color={warning}>Please enter the number of passengers</T>
               )}
               <T variant="h5sb" sx={{ color: blue, display: 'block' }}>VEHICLE SELECTION:</T>
-              <T variant="cardLabelText">
+              <T variant="h5sb">
                 {numberOfCars > 1 ? (
                   `${selectedCar.carName} (x${numberOfCars})`
                 ) : (
@@ -309,23 +355,24 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h4' color='inherit'>SubTotal</T>
-                <T>${displayingPrice}</T>
+                <T variant='h5sb' color='inherit'>${displayingPrice}</T>
               </Box>
 
               {couponDisplayingAmount && (
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <T variant='h4' color='inherit'>Coupon</T>
-                  <T>- {couponDisplayingAmount}</T>
+                  <T variant='h5sb' color='inherit'>- {couponDisplayingAmount}</T>
                 </Box>
               )}
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h4' color='inherit'>Fees (16%)</T>
-                <T>${feesCount?.toFixed(2)}</T>
+                <T variant='h5sb' color='inherit'>${feesCount?.toFixed(2)}</T>
               </Box>
+
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h3' color='inherit'>TOTAL</T>
-                <T>${totalPrice}</T>
+                <T variant='h3' color='inherit'>${totalPrice}</T>
               </Box>
             </Box>
           </Box>
@@ -335,4 +382,61 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
       )}
     </Paper >
   )
+
+  if (matches && !page6Variant) return (
+    <>
+      <Button
+        variant="contained"
+        onClick={() => setMobileTotalOpen(true)}
+        className={classes.mobileTotalButton}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <span>View&nbsp;Order</span>
+          {totalPrice && (
+            <T
+              sx={{
+                fontSize: '14px',
+                display: 'block',
+                textAlign: 'left'
+              }}
+            >
+              ${totalPrice}
+            </T>
+          )}
+
+        </Box>
+        <Box sx={{ paddingLeft: '5px' }}>
+          <img src={reduceIconPath("images/mobileSummaryArrowRight.svg")} alt="checkmark" />
+        </Box>
+      </Button>
+      <SwipeableDrawer
+        anchor="right"
+        open={isMobileTotalOpen}
+        onClose={() => setMobileTotalOpen(false)}
+        onOpen={() => setMobileTotalOpen(true)}
+        hysteresis={0.2}
+        sx={{
+          // width: '80% !important',
+          // backgroundColor: 'green'
+        }}
+      >
+        <Box
+          sx={{
+            // backgroundColor: 'green',
+            width: '90vw',
+            minHeight: '100%'
+          }}
+        >
+          <RenderTotal mobileVariant />
+        </Box>
+      </SwipeableDrawer>
+    </>
+  )
+
+  return <RenderTotal />
 }

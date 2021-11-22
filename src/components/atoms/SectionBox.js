@@ -8,7 +8,7 @@ export const SectionBox = ({ children, addSx }) => {
       paddingTop: 7,
       display: 'flex',
       flexDirection: "column",
-      gap: [0, 4],
+      gap: 4,
       borderRadius: 4,
       ...addSx,
     }}>

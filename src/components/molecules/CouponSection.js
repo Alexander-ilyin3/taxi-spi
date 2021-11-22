@@ -1,4 +1,4 @@
-import { Typography as T } from '@mui/material'
+import { Typography as T, useMediaQuery } from '@mui/material'
 import { Box, useTheme } from '@mui/system'
 import { coupon } from 'api/couponApi'
 import { session } from 'api/sessionApi'
@@ -12,21 +12,23 @@ import { useFormContext } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGlobalStepsData } from 'redux/actions'
 import { getSessionCoupon } from 'redux/selectors'
+import { InputBoxCoupon } from './InputBoxCoupon'
 
 export const CouponSection = () => {
-  const { palette: { primary: { blue, white } } } = useTheme()
+  const { palette: { primary: { blue, white } }, breakpoints: { down } } = useTheme()
   const { watch } = useFormContext()
   const couponValue = watch('couponCode')
   const [errorMessage, setErrorMessage] = useState(null)
   const sessionCoupon = useSelector(getSessionCoupon)
   const dispatch = useDispatch()
+  // const mobile = useMediaQuery(down('sm'))
 
-  console.log({sessionCoupon})
+  console.log({ sessionCoupon })
 
   const checkCoupon = async () => {
     // console.log('couponResponse', couponResponse)
     const couponResponse = await coupon.checkCoupon({ code: couponValue })
-    
+
     console.log('couponResponse', couponResponse)
 
     if (couponResponse && couponResponse.status === 1 && couponResponse.coupon_id) {
@@ -46,14 +48,19 @@ export const CouponSection = () => {
   }
 
   return (
-    <Box>
+    <>
       <Box
         sx={{
           display: 'flex',
-          maxWidth: '60%',
+          // maxWidth: '60%',
           alignItems: 'center',
           gap: 2,
-          height: '54px',
+          flexWrap: 'wrap',
+          // height: '54px',
+          // ...(mobile && {
+          //   flexDirection: 'column',
+          //   alignItems: 'flex-start',
+          // })
         }}
       >
         <Label
@@ -64,49 +71,57 @@ export const CouponSection = () => {
             sx={{
               display: 'block',
               width: 'max-content',
-
             }}
           >Coupon Code</T>
         </Label>
-        <InputBox
-          couponHeight
-          name="couponCode"
-          additionalOnChange={resetError}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 2
+          }}
         >
-        </InputBox>
-        {sessionCoupon ? (
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 1
-            }}
+          <InputBoxCoupon
+            couponHeight
+            name="couponCode"
+            additionalOnChange={resetError}
           >
-            <img src={reduceIconPath("images/CouponCheckmark.svg")}></img>
-            <T
-              variant="h5sb"
+          </InputBoxCoupon>
+          {sessionCoupon ? (
+            <Box
               sx={{
-                color: blue,
+                display: 'flex',
+                gap: 1,
+                alignItems: 'center',
               }}
-            >Applied</T>
-          </Box>
-        ) : (
-          <Button
-            sx={{
-              paddingLeft: 6,
-              paddingRight: 6,
-              height: '100%',
-              backgroundColor: blue,
-              color: white,
-              fontWeight: 600,
-              borderRadius: '10px',
-            }}
-            onClick={checkCoupon}
-          >
-            <T variant="h5sb" sx={{ color: white }} >Apply</T>
-          </Button>
-        )}
+            >
+              <img src={reduceIconPath("images/CouponCheckmark.svg")}></img>
+              <T
+                variant="apply"
+                sx={{
+                  color: blue,
+                }}
+              >Applied</T>
+            </Box>
+          ) : (
+            <Button
+              sx={{
+                paddingLeft: 6,
+                paddingRight: 6,
+                height: '60px',
+                backgroundColor: blue,
+                color: white,
+                fontWeight: 600,
+                borderRadius: '10px',
+              }}
+              onClick={checkCoupon}
+            >
+              <T variant="apply" sx={{ color: white }} >Apply</T>
+            </Button>
+          )}
+        </Box>
       </Box>
       {errorMessage && <LabelError labelErrorText={errorMessage} />}
-    </Box>
+    </>
   )
 }
