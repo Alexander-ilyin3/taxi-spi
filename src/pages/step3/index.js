@@ -88,7 +88,13 @@ const Step3 = () => {
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
-            <T variant='h1'> Flight Details </T>
+            <T variant='h1'>
+              {(departureIsAirport || arrivalIsAirport) ? (
+                'Flight Details'
+              ) : (
+                'Booking Details'
+              )}a
+            </T>
             <SubSection arrival={arrivalIsAirport} departure={departureIsAirport || isRoundTrip} />
             <NotesSection />
           </SectionBox>
