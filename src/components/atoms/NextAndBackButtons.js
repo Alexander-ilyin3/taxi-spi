@@ -10,7 +10,7 @@ export const NextButton = ({ onClick }) => {
   return (
     <ButtonBase sx={{
       background: blue,
-      width: '260px',
+      width: [130, 180, 260],
       height: 60,
       fontFamily: 'Poppins',
       borderRadius: '10px',
@@ -29,7 +29,7 @@ export const BackButton = ({ onClick, disableBackButton }) => {
   return (
     <ButtonBase sx={{
       background: 'none',
-      width: '260px',
+      width: [130, 180, 260],
       height: 60,
       fontFamily: 'Poppins',
       borderRadius: '10px',
