@@ -23,17 +23,17 @@ export const setSteps = (steps) => ({
 
 export const setInitlalSteps = () => ({
   type: SET_STEPS,
-  payload: ['Service Selection', 'Vehicle Selection', 'Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
+  payload: ['Service Selection', 'Vehicle Selection', 'Details', <>Select Add&#8288;-&#8288;ons</>, 'Contact Information', 'Billing Information']
 })
 
 export const setStepsWithBooking = () => ({
   type: SET_STEPS,
-  payload: ['Service Selection', 'Vehicle Selection', 'Booking Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
+  payload: ['Service Selection', 'Vehicle Selection', 'Booking Details', <>Select Add&#8288;-&#8288;ons</>, 'Contact Information', 'Billing Information']
 })
 
 export const setStepsWithFlight = () => ({
   type: SET_STEPS,
-  payload: ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
+  payload: ['Service Selection', 'Vehicle Selection', 'Flight Details', <>Select Add&#8288;-&#8288;ons</>, 'Contact Information', 'Billing Information']
 })
 
 export const clearRequestsQueue = () => ({
