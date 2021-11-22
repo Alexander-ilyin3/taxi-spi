@@ -6,11 +6,11 @@ import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 
-const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additionalOnChange }) => {
+const InputBoxCoupon = ({ labelText, labelErrorText, r, error, name, additionalOnChange }) => {
   const { control } = useFormContext()
 
   return (
-    name ? (
+    // name ? (
       <Controller
         control={control}
         name={name}
@@ -23,7 +23,9 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
         }) => (
           <Box
             sx={{
-              width: '100%',
+              // width: '100%',
+              maxWidth: '160px',
+              minWidth: '100px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between'
@@ -41,7 +43,7 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
             )}
             <Input
               inputRef={ref}
-              disabled={disabled}
+              // disabled={disabled}
               onChange={(v) => { onChange(v); additionalOnChange && additionalOnChange() }}
               value={value}
               error={invalid}
@@ -50,23 +52,23 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
           </Box>
         )}
       />
-    ) : (
-      <Box sx={{ width: '100%' }}>
-        {labelText ? (
-          <Label sx={{ marginBottom: 2 }}>
-            {r && <RequiredStar />}
-            <T variant='h5md' >
-              {labelText}
-            </T>
-          </Label>
-        ) : (
-          null
-        )}
-        <Input disabled={disabled} />
-        {error && <LabelError labelErrorText={labelErrorText} />}
-      </Box>
-    )
+    // ) : (
+    //   <Box sx={{ width: '100%' }}>
+    //     {labelText ? (
+    //       <Label sx={{ marginBottom: 2 }}>
+    //         {r && <RequiredStar />}
+    //         <T variant='h5md' >
+    //           {labelText}
+    //         </T>
+    //       </Label>
+    //     ) : (
+    //       null
+    //     )}
+    //     <Input disabled={disabled} />
+    //     {error && <LabelError labelErrorText={labelErrorText} />}
+    //   </Box>
+    // )
   )
 }
 
-export { InputBox }
+export { InputBoxCoupon }

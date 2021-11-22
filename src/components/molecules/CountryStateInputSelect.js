@@ -10,16 +10,24 @@ export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled
 
   const { control } = useFormContext()
   return (
-    <Box width="100%">
-      <Controller
-        control={control}
-        name={name}
-        shouldUnregister={true}
-        rules={{ validate: (v) => r && !!v }}
-        render={({
-          field: { onChange, value, ref },
-          fieldState: { invalid }
-        }) => (<>
+    // <Box width="100%">
+    <Controller
+      control={control}
+      name={name}
+      shouldUnregister={true}
+      rules={{ validate: (v) => r && !!v }}
+      render={({
+        field: { onChange, value, ref },
+        fieldState: { invalid }
+      }) => (
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between'
+          }}
+        >
           <Label sx={{ marginBottom: 2 }}>
             <T variant='h5md' >
               {r && <RequiredStar />}
@@ -47,9 +55,9 @@ export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled
               />
             }}
           />
-        </>
-        )}
-      />
-    </Box>
+        </Box>
+      )}
+    />
+    // </Box>
   )
 }

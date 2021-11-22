@@ -10,7 +10,13 @@ export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, na
 
   const { control } = useFormContext()
   return (
-    <Box width="100%">
+    <Box width="100%"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
       <Controller
         control={control}
         name={name}
@@ -19,35 +25,36 @@ export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, na
         render={({
           field: { onChange, value, ref },
           fieldState: { invalid }
-        }) => (<>
-          <Label sx={{ marginBottom: 2 }}>
-            <T variant='h5md' >
-              {r && <RequiredStar />}
-              {labelText}
-            </T>
-          </Label>
-          <Autocomplete
-            // inputRef=
-            options={autocompleteData}
-            groupBy={(option) => option.type}
-            getOptionLabel={(option) => option.name}
-            onChange={(e, value) => onChange(value)}
-            isOptionEqualToValue={() => true}
-            value={value || null}
-            renderInput={(params) => {
-              return <TextField
-                fullWidth
-                variant="outlined"
-                disabled={disabled}
-                value={params.inputProps.value}
-                error={invalid}
-                helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
-                {...params}
-                inputRef={ref}
-              />
-            }}
-          />
-        </>
+        }) => (
+          <>
+            <Label sx={{ marginBottom: 2 }}>
+              <T variant='h5md' >
+                {r && <RequiredStar />}
+                {labelText}
+              </T>
+            </Label>
+            <Autocomplete
+              // inputRef=
+              options={autocompleteData}
+              groupBy={(option) => option.type}
+              getOptionLabel={(option) => option.name}
+              onChange={(e, value) => onChange(value)}
+              isOptionEqualToValue={() => true}
+              value={value || null}
+              renderInput={(params) => {
+                return <TextField
+                  fullWidth
+                  variant="outlined"
+                  disabled={disabled}
+                  value={params.inputProps.value}
+                  error={invalid}
+                  helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
+                  {...params}
+                  inputRef={ref}
+                />
+              }}
+            />
+          </>
         )}
       />
     </Box>

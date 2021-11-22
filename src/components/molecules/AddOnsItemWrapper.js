@@ -57,15 +57,14 @@ export const AddOnsItemWrapper = ({ addonObject, onChange, value }) => {
   return (
     <Box
       sx={{
-        flexGrow: '1',
-        maxWidth: '45%',
-        minWidth: '350px',
-
-        // justifySelf: 'center',
-        // paddingLeft: [1, 2, 3, 4],
-        // paddingRight: [1, 2, 3, 4],
-        // paddingBottom: 1,
+        maxWidth: '100%',
+        minWidth: '240px',
         minHeight: '175px',
+        flexBasis: '45%',
+        flexGrow: '1',
+        // maxWidth: '45%',
+        // minWidth: '260px',
+        // minHeight: '175px',
       }}
     >
       <Card
