@@ -41,9 +41,9 @@ const Step3 = () => {
   const { watch, formState, setValue, reset } = useFormContext()
   const [reseted, setReseted] = useState(false)
   const state = useSelector(getStep3, isEqual)
-  const departureIsAirport = useSelector(getLocationIsAirport)
+  const departureIsAirport = useSelector(getDestinationIsAirport)
   const isRoundTrip = useSelector(getIsRoundTrip)
-  const arrivalIsAirport = useSelector(getDestinationIsAirport)
+  const arrivalIsAirport = useSelector(getLocationIsAirport)
 
   const defaultVarianName = getDefaultVariantName({ departureIsAirport, arrivalIsAirport })
   const defaults = defaultValues[3][defaultVarianName]
@@ -93,7 +93,7 @@ const Step3 = () => {
                 'Flight Details'
               ) : (
                 'Booking Details'
-              )}a
+              )}
             </T>
             <SubSection arrival={arrivalIsAirport} departure={departureIsAirport || isRoundTrip} />
             <NotesSection />
