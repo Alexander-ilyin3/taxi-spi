@@ -75,10 +75,10 @@ const SummaryDateComponent = () => {
   const { watch } = useFormContext()
 
   const isAirportStates = useSelector(getIsAirportStates)
-
   const locationIsAirport = isAirportStates.locationIsAirport
   const destinationIsAirport = isAirportStates.destinationIsAirport
   const nothingIsAirport = !isAirportStates.locationIsAirport && !isAirportStates.destinationIsAirport
+  const isRoundTrip = useSelector(getIsRoundTrip)
 
   const reduxArrivalDate = reduceToDate(useSelector(getArrivalDate))
   const reduxArrivalTime = reduceToDate(useSelector(getArrivalTime))
@@ -87,8 +87,8 @@ const SummaryDateComponent = () => {
   const reduxBookingDate = reduceToDate(useSelector(getBookingDate))
   const reduxBookinglTime = reduceToDate(useSelector(getBookinglTime))
 
-  const formArrivalDate = watch('arrivalDate')
-  const formArrivalTime = watch('arrivalTime')
+  const formArrivalDate = watch('bookingDate')
+  const formArrivalTime = watch('bookinglTime')
   const formDepartureDate = watch('departureDate')
   const formDepartureTime = watch('departureTime')
   const formBookingDate = watch('bookingDate')
@@ -109,7 +109,7 @@ const SummaryDateComponent = () => {
       {arrivalDate && locationIsAirport && (
         <SummaryDateElement data={{ date: arrivalDate, time: arrivalTime, label: 'Arrival Date' }} />
       )}
-      {departureDate && destinationIsAirport && (
+      {departureDate && (destinationIsAirport || isRoundTrip) && (
         <SummaryDateElement data={{ date: departureDate, time: departureTime, label: 'Departure Date' }} />
       )}
     </FlexBoxRow>

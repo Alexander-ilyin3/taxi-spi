@@ -19,13 +19,13 @@ export const useDependenceReduxStateController = () => { //TODO make hook with i
 
   const updateIsAirportStates = (state) => {
 
-    if (reduceToBoolean(state?.destination?.is_airport)) {
+    if (reduceToBoolean(state?.location?.is_airport)) {
       dispatch(setLocationIsAirport(true))
     } else {
       dispatch(setLocationIsAirport(false))
     }
 
-    if (reduceToBoolean(state?.location?.is_airport)) {
+    if (reduceToBoolean(state?.destination?.is_airport)) {
       dispatch(setDestinationIsAirport(true))
     } else {
       dispatch(setDestinationIsAirport(false))
