@@ -58,7 +58,22 @@ const theme = createTheme({
       }
     },
     MuiButton: {
+      variants: [
+        {
+          props: { variant: 'addonButtons' },
+          style: {
+            '&:hover': {
+              backgroundColor: 'inherit',
+            },
+            // ":root": {
+              padding: '0',
+              height: '24px',
+            // },
+          }
+        },
+      ],
       styleOverrides: {
+        // ':not(.PrivateTimePickerToolbar-hourMinuteLabel)': {
         root: {
           minWidth: '25px',
           height: '25px',
@@ -73,7 +88,14 @@ const theme = createTheme({
           '&:hover': {
             backgroundColor: palette.primary.blue,
           }
+          // }
         },
+        'PrivateTimePickerToolbar-penIconLandscape': {
+          root: {
+            margin: 'auto auto'
+
+          }
+        }
       }
     },
     MuiCircularProgress: {
@@ -120,13 +142,17 @@ theme.typography = {
     color: palette.primary.black,
 
   },
+  // ':not(.PrivateTimePickerToolbar-hourMinuteLabel)': {
   h3: {
+
     fontSize: 20,
     fontWeight: 700,
     color: palette.primary.black,
     [down('sm')]: {
       fontSize: 14
     }
+
+    // }
   },
   h4: {
     fontSize: 18,
@@ -211,4 +237,46 @@ theme.typography = {
 // }
 // console.log('theme', themeReliedOnProps)
 
-export { theme }
+const defaultMuiTheme = createTheme({
+  ...theme,
+  components: {
+
+    MuiButton: {
+      // variants: {
+
+      // },
+      styleOverrides: {
+        root: {
+          // '& :not(.PrivatePickersToolbar-dateTitleContainer)': {
+          // backgroundColor: 'red'
+          // }
+        }
+
+      }
+    },
+    MuiPaper: {
+      // {
+      // padding: [2, 4, 6, 8],
+      // paddingTop: 7,
+      // display: 'flex',
+      // flexDirection: "column",
+      // gap: 4,
+      borderRadius: 4,
+      // ...addSx,
+      // }
+    }
+  },
+
+  typography: {}
+
+})
+
+// defaultMuiTheme.typography = {
+//   ...defaultMuiTheme.typography,
+//   h3: {
+
+//   }
+// }
+
+
+export { theme, defaultMuiTheme }
