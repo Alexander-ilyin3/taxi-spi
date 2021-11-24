@@ -28,6 +28,7 @@ const AddonsControlButtons = ({ value = 0, onChange }) => {
       }}
     >
       <Button
+        variant="addonButtons"
         style={{ fontWeight: 500 }}
         onClick={decrement}
         disabled={!value}
@@ -41,6 +42,7 @@ const AddonsControlButtons = ({ value = 0, onChange }) => {
         {value}
       </T>
       <Button
+        variant="addonButtons"
         style={{ fontWeight: 500 }}
         onClick={increment}
       > + </Button>
@@ -75,8 +77,8 @@ export const AddOnsItemWrapper = ({ addonObject, onChange, value }) => {
           height: '100%',
           display: 'flex',
           flexDirection: 'row',
-          border: `${addonObject.addonCount ? '2px solid ' + blue : '2px solid #ffffff00'}`,
-          backgroundColor: `${addonObject.addonCount ? blue + '09' : 'none'}`,
+          border: `${value ? '2px solid ' + blue : '2px solid #ffffff00'}`,
+          backgroundColor: `${value ? blue + '09' : 'none'}`,
           boxSizing: 'border-box',
         }}
       >
