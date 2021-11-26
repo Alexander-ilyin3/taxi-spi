@@ -90,7 +90,7 @@ const Step1 = () => {
                   <InputBox disabled />
                 )
               }
-              <T variant="secondaryText">*Shared Shuttle is not allowed to go to any AirBNB, VRBO or Rental Property</T>
+              <T variant="secondaryText" sx={{marginTop: '15px'}}>*Shared Shuttle is not allowed to go to any AirBNB, VRBO or Rental Property</T>
             </CheckBoxLabelBox>
             <FlexBoxRow>
               {isCustomDestination ? (
