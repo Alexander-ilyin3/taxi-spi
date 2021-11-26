@@ -29,7 +29,6 @@ import { session } from 'api/sessionApi'
 import { payments } from 'api/paymentApi'
 
 const Step6 = () => {
-  const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
 
@@ -85,7 +84,7 @@ const Step6 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={5} steps={steps} />
+      <StepperComponent activeStep={5} />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
@@ -111,7 +110,7 @@ const Step6 = () => {
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
-        <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed}>
+        <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed} notshowOnMobile>
           <OrderSummaryPlug />
         </OrderSummaryContainer>
       </PageContentWrapper>
