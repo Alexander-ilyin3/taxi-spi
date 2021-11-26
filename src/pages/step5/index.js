@@ -29,6 +29,8 @@ import { countryAndState } from 'api/countryAndStateApi'
 import { getCountries, getStates, getSelectedCountryAndState } from 'redux/selectors/global.selectors'
 import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
 import { setSelectedCountryAndState, clearSelectedCountryAndState } from 'redux/actions/global.actions'
+import { PhoneInputNumberBox } from 'components/atoms/PhoneInputNumber'
+import { confirmEmailValidate, validateEmail } from 'helpers/validateFunctions'
 
 const Step5 = () => {
   const { watch, setValue } = useFormContext()
@@ -38,6 +40,7 @@ const Step5 = () => {
   const states = useSelector(getStates)
   const countries = useSelector(getCountries, isEqual)
   const dynamicCoutnry = watch('country')
+  const primaryEmail = watch('emailAddress')
   const { state_id, country_id } = useSelector(getSelectedCountryAndState, isEqual)
   // debugger
   useResetForm({ state, defaults })
@@ -127,12 +130,24 @@ const Step5 = () => {
               <InputBox name={'lastName'} labelText="Last Name" r />
             </FlexBoxRow>
             <FlexBoxRow>
-              <InputBox name={'emailAddress'} labelText="Email Address" r />
-              <InputBox name={'confirmEmailAddress'} labelText="Confirm Email Address" r />
+              <InputBox
+                name={'emailAddress'}
+                labelText="Email Address"
+                r
+                validateFunctionObject={{ func: validateEmail, errText: 'Email is not valid' }}
+              />
+              <InputBox
+                name={'confirmEmailAddress'}
+                labelText="Confirm Email Address"
+                r
+                validateFunctionObject={{ func: (v) => confirmEmailValidate(v, primaryEmail), errText: 'The confirm email confirmation does not match' }}
+              />
             </FlexBoxRow>
             <FlexBoxRow>
-              <InputBox name={'mobilePhone'} labelText="Mobile Phone" r />
-              <InputBox name={'additionalPhone'} labelText="Additional Phone" />
+              <PhoneInputNumberBox name={'mobilePhone'} labelText="Mobile Phone" r />
+              <PhoneInputNumberBox name={'additionalPhone'} labelText="Additional Phone" />
+              {/* <InputBox name={'mobilePhone'} labelText="Mobile Phone" r />
+              <InputBox name={'additionalPhone'} labelText="Additional Phone" /> */}
             </FlexBoxRow>
             <FlexBoxRow>
               <CountryStateInputSelect labelText="Country" name="country" autocompleteData={countries} r />
