@@ -6,7 +6,6 @@ export const mapVehiclesToState = (responseVehicles, isRoundTrip) => {
   if (!responseVehicles || !responseVehicles.length) return []
   
   // const isRoundTrip = parseFloat(roundTripNumber) === 0 || parseFloat(roundTripNumber) === 1 ? Boolean(parseFloat(roundTripNumber)) : undefined
-  console.log(111111, 'responseVehicles', responseVehicles, isRoundTrip)
   if (isRoundTrip === undefined) return []
   
 
