@@ -66,8 +66,8 @@ const theme = createTheme({
               backgroundColor: 'inherit',
             },
             // ":root": {
-              padding: '0',
-              height: '24px',
+            padding: '0',
+            height: '24px',
             // },
           }
         },
@@ -117,6 +117,42 @@ const theme = createTheme({
           }
         }
       }
+    },
+    MuiFormControlLabel: {
+      variants: [
+        {
+          props: { variant: 'paymentButtons' },
+          style: {
+            '&.activeBorder': {
+              border: '1px solid ' + palette.primary.blue,
+              backgroundColor: palette.primary.blue + '09',
+            },
+            // '& .Mui-focused': {
+            //   backgroundColor: 'green',
+            // },
+            '& .MuiFormControlLabel-label': {
+              display: 'flex'
+            },
+            '& .Mui-checked': {
+              '& svg': {
+                color: palette.primary.blue,
+              }
+            },
+            '& svg': {
+              color: palette.primary.grey,
+            },
+            // '& label' : {
+              marginRight: '0 !important',
+            // backgroundColor: 'red'
+            // },
+            border: '1px solid ' + palette.primary.grey,
+            borderRadius: 10,
+            padding: 10,
+            marginLeft: 0,
+
+          }
+        },
+      ],
     }
   },
 })
