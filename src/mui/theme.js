@@ -142,7 +142,7 @@ const theme = createTheme({
               color: palette.primary.grey,
             },
             // '& label' : {
-              marginRight: '0 !important',
+            marginRight: '0 !important',
             // backgroundColor: 'red'
             // },
             border: '1px solid ' + palette.primary.grey,
@@ -153,6 +153,34 @@ const theme = createTheme({
           }
         },
       ],
+    },
+    MuiCalendarPicker: {
+      styleOverrides: {
+        root: {
+          // backgroundColor: 'red',
+          '& .Mui-selected': {
+            backgroundColor: palette.secondary.lightGrayBlue
+          },
+          '& .MuiPickersDay-root:hover': {
+            backgroundColor: palette.secondary.lightBlue
+          },
+          '& .Mui-selected': {
+            backgroundColor: palette.primary.blue + '!important',
+            color: palette.primary.white + '!important',
+          },
+          '& .MuiButtonBase-root': {
+          },
+        }
+      }
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          '& .MuiButton-root': {
+            color: palette.primary.white
+          }
+        }
+      }
     }
   },
 })
