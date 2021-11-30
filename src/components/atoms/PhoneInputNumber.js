@@ -1,5 +1,6 @@
 import { InputAdornment, useTheme, Box, Typography as T } from "@mui/material"
 import { Input } from 'components/atoms/Input'
+import { getErrorTextWithMultipleValidateFunc, replaceForPhoneNumber, validateSeveral } from "helpers/validateFunctions"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
 import NumberFormat from 'react-number-format'
@@ -7,24 +8,27 @@ import { Label } from "./InputLabel"
 import { LabelError } from "./LabelError"
 import { RequiredStar } from "./RequiredStar"
 
-export const PhoneInputNumberBox = ({ name, r, labelText }) => {
+export const PhoneInputNumberBox = ({ name, r, labelText, labelErrorText, validateFunctionObject }) => {
   const { control } = useFormContext()
+
+  const validateFuncErrorText = validateFunctionObject?.errText
+
+  const validateFunctions = [
+    v => r && !!v,
+  ]
+
+  if (validateFunctionObject?.func) validateFunctions.push(validateFunctionObject.func)
+
+  const rulesObject = {
+    validate: outV => validateSeveral(outV, validateFunctions),
+  }
 
   return (
     <Controller
       control={control}
       name={name}
       defaultValue=""
-      rules={{
-        minLength: {
-          value: 11,
-          message: "The phone field must be at least 10 characters."
-        },
-        minCharLength: (v) => {
-
-        },
-        validate: (v) => r && !!v
-      }}
+      rules={rulesObject}
       render={({
         field: { onChange, value, ref },
         fieldState: { invalid, error }
@@ -41,30 +45,25 @@ export const PhoneInputNumberBox = ({ name, r, labelText }) => {
               width: '100%',
               position: 'relative'
             }}>
-              <NumberFormat
+              <Input
+                onChange={(e) => onChange(replaceForPhoneNumber(e.target.value))}
+                error={invalid}
                 value={value}
-                displayType={'text'}
-                allowNegative={false}
-                onValueChange={(v) => onChange(v.value)}
-                // onInput={(e) => { return /^\+?\d*$|^$/.test(e.target.value) ? onChange(parseFloat(e.target.value)) : null }}
-                onInput={(e) => !isNaN(parseFloat(e.target.value)) ? onChange(parseFloat(e.target.value) + '') : onChange('')}
-                customInput={Input}
-                prefix={'+'}
-                renderText={(v, props) => (
-                  <Input
-                    {...props}
-                    error={invalid}
-                    value={v}
-                    inputRef={ref}
-                  ></Input>
-                )}
-              />
+                inputRef={ref}
+              ></Input>
             </Box>
-            {invalid &&
+            {invalid && (
               <LabelError
-                labelErrorText={error?.message}
+                labelErrorText={
+                  labelErrorText
+                  ||
+                  getErrorTextWithMultipleValidateFunc(value, {
+                    func: validateFunctionObject?.func,
+                    errText: validateFuncErrorText
+                  })
+                }
               />
-            }
+            )}
           </Box>
         </>
       )}
