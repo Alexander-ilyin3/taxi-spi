@@ -39,7 +39,7 @@ import { useDependenceReduxStateController } from 'components/organisms/Dependen
 const Layout = () => {
 
   const methods = useForm({ shouldFocusError: true })
-  useDependenceReduxStateController()
+  useDependenceReduxStateController(methods)
   return (
 
       <FormProvider {...methods} >
