@@ -33,6 +33,9 @@ const rules = [
 
   { requestType: 'coupon_id', stateType: '', dataType: '' },
   { requestType: 'addon_ids', stateType: '', dataType: '' },
+
+  { requestType: 'custom_location', stateType: 'customDestination', dataType: 'str' },
+  { requestType: 'is_custom_location', stateType: 'isCustomDestination', dataType: '1|0' },
 ]
 
 const reduceToNeededType = (value, type) => {
@@ -53,8 +56,13 @@ const reduceToNeededType = (value, type) => {
   }
 }
 
-export const mapStateToParams = (stateValues) => {
+export const mapStateToParams = (outerStateValues) => {
   const paramObject = {}
+  const stateValues = outerStateValues?.isCustomDestination ? {
+    numberOfPassengers: outerStateValues.numberOfPassengers,
+    customDestination: outerStateValues.customDestination,
+    isCustomDestination: outerStateValues.isCustomDestination
+  } : outerStateValues
 
   for (let key in stateValues) {
     const ruleObject = rules.find(rule => rule.stateType.replace(/(.*)\..*/g, '$1') === key) //TODO several rules for the same stateValues object
