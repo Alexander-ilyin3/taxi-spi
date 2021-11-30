@@ -16,6 +16,14 @@ export const validateSeveral = (v, functionsArray) => {
   }, true)
 }
 
+export const phoneValidate = (phoneValue) => {
+  //YAGNI
+}
+
+export const replaceForPhoneNumber = (value) => {
+  return value.replace(/(?!^\+)[^0-9]/g, '')
+}
+
 export const getErrorTextWithMultipleValidateFunc = (v, { func, errText }) => {
 
   if ( func && func(v) === false ) {
