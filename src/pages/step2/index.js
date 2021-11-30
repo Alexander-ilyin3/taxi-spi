@@ -18,7 +18,7 @@ import { OrderSummaryContainer } from 'components/molecules/OrderSummaryContaine
 import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 
 import { setGlobalStepsData, setSelectedVehicle, setVehicles } from 'redux/actions'
-import { getStep1 } from 'redux/selectors'
+import { getIsCustomDestination, getStep1 } from 'redux/selectors'
 import { getStep2 } from 'redux/selectors/step1.selectors'
 
 import { vehicles } from 'api/vehiclesApi'
@@ -29,6 +29,7 @@ import { mapSessionToVehiclesRequest } from 'helpers/mapSessionToVehiclesRequest
 import { useResetForm } from 'helpers/resetForm'
 import { mapVehiclesToState } from 'helpers/mapVehiclesToState'
 import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
+import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 
 const Step2 = () => {
   const { watch } = useFormContext()
@@ -38,6 +39,7 @@ const Step2 = () => {
 
   const step1Data = useSelector(getStep1, isEqual)
   const state = useSelector(getStep2, isEqual)
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
   // const vehicles = useSelector(getVehicles, isEqual)
   const createVehiclesAction = (vehiclesResult) => {
     return setVehicles(mapVehiclesToState(vehiclesResult, step1Data.roadTripReservation))
@@ -53,7 +55,7 @@ const Step2 = () => {
     const mappedForParams = mapStateToParams(data)
     await session.updateSession(mappedForParams)
     // reset({})
-    history.push('step-3')
+    stepHistoryHelper.next(history, isCustomDestinationRedux)
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
@@ -67,7 +69,7 @@ const Step2 = () => {
   const backHandle = () => {
     console.log('back clicked')
 
-    history.push('step-1')
+    stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 
   useEffect(() => {

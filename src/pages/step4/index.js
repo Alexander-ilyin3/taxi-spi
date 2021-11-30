@@ -22,12 +22,14 @@ import { defaultValues } from 'formDefaultValues'
 import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
 import { addons } from 'api/addonsApi'
-import { getSelectedVehicleIdObject } from 'redux/selectors'
+import { getIsCustomDestination, getSelectedVehicleIdObject } from 'redux/selectors'
 import { mapAddonsToUpdateSession } from 'helpers/mapAddonsToUpdateSession'
 import { useResetForm } from 'helpers/resetForm'
+import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 
 const Step4 = () => {
   const state = useSelector(getStep4)
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
   const [reseted, setReseted] = useState(false)
@@ -60,7 +62,7 @@ const Step4 = () => {
     const mappedForParams = mapAddonsToUpdateSession(data)
     await session.updateSession({ addons: mappedForParams })
 
-    history.push('step-5')
+    stepHistoryHelper.next(history, isCustomDestinationRedux)
   }
 
   useEffect(() => {
@@ -78,7 +80,7 @@ const Step4 = () => {
 
   const backHandle = () => {
     console.log('back clicked')
-    history.push('step-3')
+    stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 
   useEffect(() => {

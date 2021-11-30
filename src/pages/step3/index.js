@@ -21,9 +21,10 @@ import { isEqual } from 'underscore'
 import { useResetForm } from 'helpers/resetForm'
 import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
-import { getDestinationIsAirport, getIsRoundTrip, getLocationIsAirport } from 'redux/selectors'
+import { getDestinationIsAirport, getIsCustomDestination, getIsRoundTrip, getLocationIsAirport } from 'redux/selectors'
 import { defaultValues } from 'formDefaultValues'
 import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
+import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 
 const getDefaultVariantName = ({ departureIsAirport, arrivalIsAirport }) => {
   if (departureIsAirport && arrivalIsAirport) {
@@ -41,6 +42,7 @@ const Step3 = () => {
   const { watch, formState, setValue, reset } = useFormContext()
   const [reseted, setReseted] = useState(false)
   const state = useSelector(getStep3, isEqual)
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
   const departureIsAirport = useSelector(getDestinationIsAirport)
   const isRoundTrip = useSelector(getIsRoundTrip)
   const arrivalIsAirport = useSelector(getLocationIsAirport)
@@ -64,7 +66,7 @@ const Step3 = () => {
     const mappedForParams = mapStateToParams(data)
     await session.updateSession(mappedForParams)
 
-    history.push('step-4')
+    stepHistoryHelper.next(history, isCustomDestinationRedux)
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
@@ -76,7 +78,7 @@ const Step3 = () => {
 
   const backHandle = () => {
     console.log('back clicked')
-    history.push('step-2')
+    stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 
   // if (!reseted) return null //TODO

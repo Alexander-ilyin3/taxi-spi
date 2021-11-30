@@ -31,10 +31,15 @@ import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
 import { setSelectedCountryAndState, clearSelectedCountryAndState } from 'redux/actions/global.actions'
 import { PhoneInputNumberBox } from 'components/atoms/PhoneInputNumber'
 import { confirmEmailValidate, validateEmail } from 'helpers/validateFunctions'
+import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
+import { getIsCustomDestination } from 'redux/selectors'
+import { booking } from 'api/bookingApi'
+import { setBookingId } from 'redux/actions'
 
 const Step5 = () => {
   const { watch, setValue } = useFormContext()
   const state = useSelector(getStep5, isEqual)
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual)
   const defaults = defaultValues[5]
   const dispatch = useDispatch()
   const states = useSelector(getStates)
@@ -94,7 +99,18 @@ const Step5 = () => {
     const mappedForParams = mapStateToParams(data)
     await session.updateSession(mappedForParams)
 
-    history.push('step-6')
+    if (isCustomDestinationRedux) {
+      const bookingResponse = await booking.submit()
+
+      if (bookingResponse?.booking_id) {
+        console.log('response?.booking_id', bookingResponse?.booking_id)
+        dispatch(setBookingId(bookingResponse.booking_id))
+        history.push('step-7')
+      }
+      return
+    }
+
+    stepHistoryHelper.next(history, isCustomDestinationRedux)
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
@@ -106,7 +122,7 @@ const Step5 = () => {
 
   const backHandle = () => {
     console.log('back clicked')
-    history.push('step-4')
+    stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 
   useEffect(() => {

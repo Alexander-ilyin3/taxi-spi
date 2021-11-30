@@ -20,7 +20,7 @@ import { SiteFooter } from 'components/molecules/SiteFooter'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 
 import { setGlobalStepsData } from 'redux/actions'
-import { getStep1 } from 'redux/selectors'
+import { getIsCustomDestination, getStep1 } from 'redux/selectors'
 
 import { locations } from 'api/locationsApi'
 import { session } from 'api/sessionApi'
@@ -30,6 +30,7 @@ import { useResetForm } from 'helpers/resetForm'
 import { useApiCall } from 'helpers/customHooks'
 import { defaultValues, defaultValuesFor } from 'formDefaultValues'
 import { useEffect } from 'react'
+import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 
 const Step1 = () => {
 
@@ -38,6 +39,7 @@ const Step1 = () => {
 
   const defaults = defaultValues[1]
   const state = useSelector(getStep1, isEqual)
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
   // console.log({state})
   useResetForm({ state, defaults })
 
@@ -45,7 +47,7 @@ const Step1 = () => {
   // reset()
 
   useEffect(() => {
-    if ( !locationIsAirport ) {
+    if (!locationIsAirport) {
       setValue('roadTripReservation', false)
     }
   }, [locationIsAirport])
@@ -57,10 +59,11 @@ const Step1 = () => {
 
   const onSubmit = async (data, e) => {
     const mappedForParams = mapStateToParams(data)
+    console.log('mappedForParams:', mappedForParams)
 
     await session.updateSession(mappedForParams)
 
-    history.push('step-2')
+    stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
@@ -77,7 +80,7 @@ const Step1 = () => {
   return (
     <>
       <SiteHeader />
-      <StepperComponent activeStep={0} />
+      <StepperComponent />
       <PageContentWrapper>
         <SectionWrapper>
           <SectionBox>
@@ -113,7 +116,7 @@ const Step1 = () => {
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} disableBackButton />
         </SectionWrapper>
-        <OrderSummaryContainer >
+        <OrderSummaryContainer plugForFirstStep>
           <OrderSummaryPlug />
         </OrderSummaryContainer>
       </PageContentWrapper>
