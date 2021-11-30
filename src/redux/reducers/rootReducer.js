@@ -11,20 +11,23 @@ import {
   step6,
   step7,
 } from './allSteps.reducer'
-import {
-  pageSteps,
-  axiosError,
-  isLoading,
-  globalStepsData,
-  vehicles,
-  selectedVehicle,
-  isAirportStates,
-  addonList,
-  states,
-  coutries,
-  selectedCountryAndState,
-  bookingId,
-} from './global.reducers'
+// import {
+//   pageSteps,
+//   axiosError,
+//   isLoading,
+//   globalStepsData,
+//   vehicles,
+//   selectedVehicle,
+//   isAirportStates,
+//   addonList,
+//   states,
+//   coutries,
+//   selectedCountryAndState,
+//   bookingId,
+//   isCustomDestination,
+// } from './global.reducers'
+
+import * as globalReducers from './global.reducers'
 
 const rootReducer = combineReducers(
   {
@@ -35,18 +38,19 @@ const rootReducer = combineReducers(
     step5,
     step6,
     step7,
-    pageSteps,
-    axiosError,
-    isLoading,
-    globalStepsData,
-    vehicles,
-    selectedVehicle,
-    isAirportStates,
-    addonList,
-    states,
-    coutries,
-    selectedCountryAndState,
-    bookingId,
+    ...globalReducers
+    // pageSteps,
+    // axiosError,
+    // isLoading,
+    // globalStepsData,
+    // vehicles,
+    // selectedVehicle,
+    // isAirportStates,
+    // addonList,
+    // states,
+    // coutries,
+    // selectedCountryAndState,
+    // bookingId,
   }
 )
 

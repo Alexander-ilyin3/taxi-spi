@@ -14,6 +14,7 @@ import {
   SET_STATES,
   SET_SELECTED_COUNTRY_AND_STATE,
   SET_BOOKING_ID,
+  SET_IS_CUSTOM_DESTINATION,
 } from 'redux/constants'
 
 export const setSteps = (steps) => ({
@@ -34,6 +35,11 @@ export const setStepsWithBooking = () => ({
 export const setStepsWithFlight = () => ({
   type: SET_STEPS,
   payload: ['Service Selection', 'Vehicle Selection', 'Flight Details', <>Select Add&#8288;-&#8288;ons</>, 'Contact Information', 'Billing Information']
+})
+
+export const setCustomLocationStepsVariant = () => ({
+  type: SET_STEPS,
+  payload: ['Service Selection', 'Booking Details', 'Contact Information']
 })
 
 export const clearRequestsQueue = () => ({
@@ -58,6 +64,13 @@ export const setAxiosError = (error) => {
 export const setGlobalStepsData = (data) => {
   return ({
     type: SET_GLOBAL_STEPS_DATA,
+    payload: data,
+  })
+}
+
+export const setIsCustomDestination = (data) => {
+  return ({
+    type: SET_IS_CUSTOM_DESTINATION,
     payload: data
   })
 }
