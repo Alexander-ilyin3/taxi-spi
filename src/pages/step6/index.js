@@ -1,7 +1,7 @@
 import { Typography as T } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import { SectionBox } from 'components/atoms/SectionBox'
@@ -27,6 +27,9 @@ import { defaultValues } from 'formDefaultValues'
 import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
 import { payments } from 'api/paymentApi'
+import { getIsCustomDestination } from 'redux/selectors'
+import { isEqual } from 'underscore'
+import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 
 const Step6 = () => {
   /*//TODO display appropriate step name*/
@@ -41,6 +44,7 @@ const Step6 = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
   const { handleSubmit } = useFormContext()
 
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
@@ -76,7 +80,7 @@ const Step6 = () => {
 
   const backHandle = () => {
     console.log('back clicked')
-    history.push('step-5')
+    stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 
   const cardsData = testAddons

@@ -1,12 +1,16 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setDestinationIsAirport, setLocationIsAirport } from "redux/actions"
+import { setIsCustomDestination } from "redux/actions/global.actions"
 import { getGlobalStepsData } from "redux/selectors"
 import { isEqual } from "underscore"
 
-export const useDependenceReduxStateController = () => { //TODO make hook with invoke in layout
+export const useDependenceReduxStateController = (methods) => { //TODO make hook with invoke in layout
   const dispatch = useDispatch()
   const globalStepsState = useSelector(getGlobalStepsData, isEqual)
+  const { watch } = methods
+  const formIsCustomDestination = watch('isCustomDestination')
+
 
   const reduceToBoolean = (value) => {
 
@@ -33,9 +37,28 @@ export const useDependenceReduxStateController = () => { //TODO make hook with i
 
   }
 
+  const setIsAirBnbStepsVariant = (state, formIsCustomDestination) => {
+    if (typeof formIsCustomDestination === 'boolean') {
+      if (formIsCustomDestination === true) {
+        dispatch(setIsCustomDestination(true))
+      } else {
+        dispatch(setIsCustomDestination(false))
+      }
+      return
+    }
+
+    if (state?.custom_location) {
+      dispatch(setIsCustomDestination(true))
+      // dispatch(setCustomLocationStepsVariant())
+    } else {
+      dispatch(setIsCustomDestination(false))
+    }
+  }
+
   useEffect(() => {
     updateIsAirportStates(globalStepsState)
-  }, [globalStepsState])
+    setIsAirBnbStepsVariant(globalStepsState, formIsCustomDestination)
+  }, [globalStepsState, formIsCustomDestination])
 
   // return null
 }

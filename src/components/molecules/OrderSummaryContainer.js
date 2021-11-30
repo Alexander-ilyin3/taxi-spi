@@ -181,7 +181,7 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
   )
 }
 
-export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, notshowOnMobile }) => {
+export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, plugForFirstStep, notshowOnMobile }) => {
   const classes = useStyles()
   const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } }, breakpoints: { down } } = useTheme()
   const { watch } = useFormContext()
@@ -284,9 +284,9 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
       ) : (
         <T variant='h1'>Order Summary</T>
       )}
-      {page6Variant ? null : <SummaryDateComponent />}
+      {page6Variant || plugForFirstStep ? null : <SummaryDateComponent />}
 
-      {selectedCar ? (
+      {selectedCar && !plugForFirstStep ? (
         oneSeatRuleBroken ? (
           <Box sx={{
             borderRadius: '20px',

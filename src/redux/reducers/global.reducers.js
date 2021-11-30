@@ -15,6 +15,7 @@ import {
   SET_STATES,
   SET_SELECTED_COUNTRY_AND_STATE,
   SET_BOOKING_ID,
+  SET_IS_CUSTOM_DESTINATION,
 } from "redux/constants"
 
 export const pageSteps = (state, { type, payload }) => {
@@ -92,6 +93,16 @@ export const isAirportStates = (state = {}, { type, payload }) => {
 
     default:
       return { ...state }
+  }
+}
+
+export const isCustomDestination = (state = false, { type, payload }) => {
+  switch (type) {
+    case SET_IS_CUSTOM_DESTINATION:
+      return payload || false
+
+    default:
+      return state
   }
 }
 
