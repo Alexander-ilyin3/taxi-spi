@@ -11,12 +11,12 @@ export const NextButton = ({ onClick }) => {
     <ButtonBase sx={{
       background: blue,
       width: [130, 180, 260],
-      height: 60,
+      height: [48, 54, 60],
       fontFamily: 'Poppins',
       borderRadius: '10px',
     }}
       onClick={onClick}>
-      <T variant='h5sb' sx={{ color: white, marginRight: 1 }}>Next</T>
+      <T variant='h5sb' sx={{ color: white, marginRight: 1, fontSize: [16, 18] }}>Next</T>
       <img src={reduceIconPath("images/next-button-icon.svg")}></img>
     </ButtonBase>
   )
@@ -30,7 +30,7 @@ export const BackButton = ({ onClick, disableBackButton }) => {
     <ButtonBase sx={{
       background: 'none',
       width: [130, 180, 260],
-      height: 60,
+      height: [48, 54, 60],
       fontFamily: 'Poppins',
       borderRadius: '10px',
       border: `2px solid ${blue}`,
@@ -42,7 +42,7 @@ export const BackButton = ({ onClick, disableBackButton }) => {
     >
 
       <img src={reduceIconPath("images/back-button-icon.svg")}></img>
-      <T variant='h5sb' sx={{ color: blue, marginLeft: 1 }}>Back</T>
+      <T variant='h5sb' sx={{ color: blue, marginLeft: 1, fontSize: [16, 18] }}>Back</T>
     </ButtonBase>
   )
 }

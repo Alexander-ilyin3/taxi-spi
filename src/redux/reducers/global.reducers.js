@@ -30,7 +30,6 @@ export const pageSteps = (state, { type, payload }) => {
 export const axiosError = (state, { type, payload }) => {
   switch (type) {
     case SET_AXIOS_ERROR:
-      console.log('SET AXIOS ERROR ', 7777777777777777)
       return { ...state, text: payload }
 
     default:

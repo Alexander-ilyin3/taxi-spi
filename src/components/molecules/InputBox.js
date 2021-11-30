@@ -5,9 +5,21 @@ import { Input } from "components/atoms/Input"
 import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
+import { getErrorTextWithMultipleValidateFunc, validateSeveral } from 'helpers/validateFunctions'
 
-const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additionalOnChange }) => {
+const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additionalOnChange, validateFunctionObject }) => {
   const { control } = useFormContext()
+  const validateFuncErrorText = validateFunctionObject?.errText
+
+  const validateFunctions = [
+    v => r && !!v,
+  ]
+
+  if (validateFunctionObject?.func) validateFunctions.push(validateFunctionObject.func)
+
+  const rulesObject = {
+    validate: outV => validateSeveral(outV, validateFunctions),
+  }
 
   return (
     name ? (
@@ -16,19 +28,20 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
         name={name}
         shouldUnregister={true}
         defaultValue=''
-        rules={{ validate: (v) => r && !!v }}
+        rules={rulesObject}
         render={({
           field: { onChange, value, ref },
-          fieldState: { invalid },
+          fieldState: { invalid, error },
         }) => (
           <Box
             sx={{
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
             }}
           >
+            {console.log(3333333333, 'ERRORS --- ,', error)}
             {labelText ? (
               <Label sx={{ marginBottom: 2 }}>
                 {r && <RequiredStar />}
@@ -46,7 +59,18 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
               value={value}
               error={invalid}
             />
-            {invalid && <LabelError labelErrorText={labelErrorText} />}
+            {invalid && (
+              <LabelError
+                labelErrorText={
+                  labelErrorText
+                  ||
+                  getErrorTextWithMultipleValidateFunc(value, {
+                    func: validateFunctionObject?.func,
+                    errText: validateFuncErrorText
+                  })
+                }
+              />
+            )}
           </Box>
         )}
       />

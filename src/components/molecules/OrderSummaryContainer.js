@@ -181,12 +181,11 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
   )
 }
 
-export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }) => {
+export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, notshowOnMobile }) => {
   const classes = useStyles()
   const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } }, breakpoints: { down } } = useTheme()
   const { watch } = useFormContext()
   const matches = useMediaQuery(down('sm'))
-  console.log(11111111111, matches)
 
   //redux values -------
   const numberOfPassengersRedux = useSelector(getNumberOfPassengers, isEqual)
@@ -382,6 +381,8 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant }
       )}
     </Paper >
   )
+
+  if (matches && notshowOnMobile) return null
 
   if (matches && !page6Variant) return (
     <>

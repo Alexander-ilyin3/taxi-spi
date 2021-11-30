@@ -48,8 +48,8 @@ const Step7 = () => {
             <CongratsWrapper>
               <img src={reduceIconPath("images/CongratsCkeckmark.svg")}></img>
               <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #{bookingId}</T>
-              <T variant='h1'> Your Reservation has been created successfully </T>
-              <T variant='h5md' sx={{ textAlign: 'center' }}> Reservation details  have been sent to your email.<br />To print it click here</T>
+              <T variant='h1' sx={{ textAlign: 'center' }}> Your Reservation has been created successfully </T>
+              <T variant='h5md' sx={{ textAlign: 'center' }}> Reservation details  have been sent to your email.</T>
               <Button
                 sx={{
                   paddingLeft: 6,

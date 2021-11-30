@@ -56,12 +56,12 @@ const StepperComponent = ({ activeStep }) => {
                 activeStep >= i ? (
                   <T
                     variant="h5sb"
-                    style={{
+                    sx={{
                       color: theme.palette.primary.blue,
                       display: 'flex',
                       justifyContent: 'center',
                       textAlign: 'center',
-                      paddingTop: '10px',
+                      paddingTop: ['10px','26px'],
                       ...(matches && { fontSize: '11px' })
                     }}
                   >
@@ -70,12 +70,12 @@ const StepperComponent = ({ activeStep }) => {
                 ) : (
                   <T
                     variant="h5rg"
-                    style={{
+                    sx={{
                       color: theme.palette.secondary.grey,
                       display: 'flex',
                       justifyContent: 'center',
                       textAlign: 'center',
-                      paddingTop: '10px',
+                      paddingTop: ['10px','26px'],
                       // ...(!matches && {fontSize: '11px'})
                     }}
                   >

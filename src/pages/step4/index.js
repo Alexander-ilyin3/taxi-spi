@@ -36,7 +36,6 @@ const Step4 = () => {
   // const createAddonsAction = (addonsResult) => {
   //   return setAddons(mapAddonsToState(addonsResult, step1Data.roadTripReservation))
   // }
-  console.log(11111111, state)
   const { reFetch: reFecthAddons } = useApiCall({ handler: addons.getAddons, lazy: true, action: setAddons })
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
   // useResetForm({ state, defaults })
@@ -47,7 +46,6 @@ const Step4 = () => {
     for ( const key in state.Addon) {
       const value = state.Addon[key]
       setValue(`Addon.${key}`, value )
-      console.log(2222222222, value)
     }
   }, [state])
 

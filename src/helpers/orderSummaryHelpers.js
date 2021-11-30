@@ -61,7 +61,6 @@ export const findPriceForAddons = (formAddons, reduxAddonList) => {
     }
 
     resultArray.push(formAddon)
-    console.log(44444444, formAddon)
   }
 
   return resultArray

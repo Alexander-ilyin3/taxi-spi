@@ -58,7 +58,22 @@ const theme = createTheme({
       }
     },
     MuiButton: {
+      variants: [
+        {
+          props: { variant: 'addonButtons' },
+          style: {
+            '&:hover': {
+              backgroundColor: 'inherit',
+            },
+            // ":root": {
+            padding: '0',
+            height: '24px',
+            // },
+          }
+        },
+      ],
       styleOverrides: {
+        // ':not(.PrivateTimePickerToolbar-hourMinuteLabel)': {
         root: {
           minWidth: '25px',
           height: '25px',
@@ -73,7 +88,14 @@ const theme = createTheme({
           '&:hover': {
             backgroundColor: palette.primary.blue,
           }
+          // }
         },
+        'PrivateTimePickerToolbar-penIconLandscape': {
+          root: {
+            margin: 'auto auto'
+
+          }
+        }
       }
     },
     MuiCircularProgress: {
@@ -92,6 +114,70 @@ const theme = createTheme({
             // display: 'none'
             backgroundColor: '#ffffff00',
             boxShadow: 'none',
+          }
+        }
+      }
+    },
+    MuiFormControlLabel: {
+      variants: [
+        {
+          props: { variant: 'paymentButtons' },
+          style: {
+            '&.activeBorder': {
+              border: '1px solid ' + palette.primary.blue,
+              backgroundColor: palette.primary.blue + '09',
+            },
+            // '& .Mui-focused': {
+            //   backgroundColor: 'green',
+            // },
+            '& .MuiFormControlLabel-label': {
+              display: 'flex'
+            },
+            '& .Mui-checked': {
+              '& svg': {
+                color: palette.primary.blue,
+              }
+            },
+            '& svg': {
+              color: palette.primary.grey,
+            },
+            // '& label' : {
+            marginRight: '0 !important',
+            // backgroundColor: 'red'
+            // },
+            border: '1px solid ' + palette.primary.grey,
+            borderRadius: 10,
+            padding: 10,
+            marginLeft: 0,
+
+          }
+        },
+      ],
+    },
+    MuiCalendarPicker: {
+      styleOverrides: {
+        root: {
+          // backgroundColor: 'red',
+          '& .Mui-selected': {
+            backgroundColor: palette.secondary.lightGrayBlue
+          },
+          '& .MuiPickersDay-root:hover': {
+            backgroundColor: palette.secondary.lightBlue
+          },
+          '& .Mui-selected': {
+            backgroundColor: palette.primary.blue + '!important',
+            color: palette.primary.white + '!important',
+          },
+          '& .MuiButtonBase-root': {
+          },
+        }
+      }
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          '& .MuiButton-root': {
+            color: palette.primary.white
           }
         }
       }
@@ -120,13 +206,17 @@ theme.typography = {
     color: palette.primary.black,
 
   },
+  // ':not(.PrivateTimePickerToolbar-hourMinuteLabel)': {
   h3: {
+
     fontSize: 20,
     fontWeight: 700,
     color: palette.primary.black,
     [down('sm')]: {
       fontSize: 14
     }
+
+    // }
   },
   h4: {
     fontSize: 18,
@@ -211,4 +301,46 @@ theme.typography = {
 // }
 // console.log('theme', themeReliedOnProps)
 
-export { theme }
+const defaultMuiTheme = createTheme({
+  ...theme,
+  components: {
+
+    MuiButton: {
+      // variants: {
+
+      // },
+      styleOverrides: {
+        root: {
+          // '& :not(.PrivatePickersToolbar-dateTitleContainer)': {
+          // backgroundColor: 'red'
+          // }
+        }
+
+      }
+    },
+    MuiPaper: {
+      // {
+      // padding: [2, 4, 6, 8],
+      // paddingTop: 7,
+      // display: 'flex',
+      // flexDirection: "column",
+      // gap: 4,
+      borderRadius: 4,
+      // ...addSx,
+      // }
+    }
+  },
+
+  typography: {}
+
+})
+
+// defaultMuiTheme.typography = {
+//   ...defaultMuiTheme.typography,
+//   h3: {
+
+//   }
+// }
+
+
+export { theme, defaultMuiTheme }
