@@ -20,7 +20,7 @@ import { SiteFooter } from 'components/molecules/SiteFooter'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 
 import { setGlobalStepsData } from 'redux/actions'
-import { getIsCustomDestination, getStep1 } from 'redux/selectors'
+import { getIsCustomDestination, getIsRoundTrip, getSessionLocations, getStep1 } from 'redux/selectors'
 
 import { locations } from 'api/locationsApi'
 import { session } from 'api/sessionApi'
@@ -31,37 +31,67 @@ import { useApiCall } from 'helpers/customHooks'
 import { defaultValues, defaultValuesFor } from 'formDefaultValues'
 import { useEffect } from 'react'
 import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
+import { bookingEdit } from 'api/bookingEditApi'
+import { getOrderId } from 'helpers/getWindowLocationOrderId'
+import { locationsMatchingSession } from 'helpers/locationsMatchingSession'
 
 const Step1 = () => {
 
-  const { watch, handleSubmit, setValue } = useFormContext()
+  const { watch, handleSubmit, setValue, unregister } = useFormContext()
   const history = useHistory()
+
 
   const defaults = defaultValues[1]
   const state = useSelector(getStep1, isEqual)
-  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
-  // console.log({state})
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual)
   useResetForm({ state, defaults })
 
   const locationIsAirport = watch('pickupLocation')?.is_airport === '1' ? true : false
+  const formLocation = watch('pickupLocation')
+  const formDestination = watch('destinationLocation')
+  const formIsRoadTripReservation = watch('roadTripReservation')
+
+  const sessionLocations = useSelector(getSessionLocations)
+  const sessionIsRoundTrip = useSelector(getIsRoundTrip)
   // reset()
 
   useEffect(() => {
     if (!locationIsAirport) {
       setValue('roadTripReservation', false)
+    } else if (locationIsAirport && sessionIsRoundTrip) {
+      setValue('roadTripReservation', true)
     }
   }, [locationIsAirport])
 
+  const orderId = getOrderId()
+
+  const { result: bookingEditResult } = useApiCall({ handler: bookingEdit.checkout, params: { order_id: orderId } })
   const { result: locationsResult = [] } = useApiCall({ handler: locations.getLocations })
-  useApiCall({ handler: session.getSession, action: setGlobalStepsData })
+  const { reFetch: refetchSession } = useApiCall({ handler: session.getSession, action: setGlobalStepsData, lazy: true })
 
   const isCustomDestination = watch('isCustomDestination')
 
+  useEffect(() => {
+    if (bookingEditResult) refetchSession({})
+  }, [bookingEditResult])
+
   const onSubmit = async (data, e) => {
     const mappedForParams = mapStateToParams(data)
-    console.log('mappedForParams:', mappedForParams)
 
-    await session.updateSession(mappedForParams)
+    const isLocationsMatchingSession = locationsMatchingSession({
+      formDestination,
+      formLocation,
+      ...sessionLocations,
+      sessionIsRoundTrip: sessionIsRoundTrip,
+      formIsRoundTrip: formIsRoadTripReservation,
+    })
+
+
+    if (!isLocationsMatchingSession) {
+      await session.updateSession(mappedForParams)
+    } else {
+      await session.updateSession({ passengers: Number(data.numberOfPassengers) })
+    }
 
     stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
   }
@@ -93,7 +123,7 @@ const Step1 = () => {
                   <InputBox disabled />
                 )
               }
-              <T variant="secondaryText" sx={{marginTop: '15px'}}>*Shared Shuttle is not allowed to go to any AirBNB, VRBO or Rental Property</T>
+              <T variant="secondaryText" sx={{ marginTop: '15px' }}>*Shared Shuttle is not allowed to go to any AirBNB, VRBO or Rental Property</T>
             </CheckBoxLabelBox>
             <FlexBoxRow>
               {isCustomDestination ? (
