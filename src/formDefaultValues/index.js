@@ -4,7 +4,7 @@ export const defaultValues = {
     destinationLocation: null,
     isCustomDestination: false,
     numberOfPassengers: '1',
-    roadTripReservation: false,
+    // roadTripReservation: false,
   },
   3: {
     locationIsAirport: {
