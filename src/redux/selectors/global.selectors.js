@@ -16,3 +16,7 @@ export const getSelectedCountryAndState = state => state.selectedCountryAndState
 export const getBookingId = state => state?.globalStepsData?.booking_id || null
 export const getSessionCoupon = state => state?.globalStepsData?.coupon || null
 export const getIsCustomDestination = state => state?.isCustomDestination || false
+export const getSessionLocations = state => ({
+  sessionLocation: state?.globalStepsData.location || null,
+  sessionDestination: state?.globalStepsData.destination || null
+})
