@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 import { useHistory } from 'react-router'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { isEqual } from 'underscore'
 import { Typography as T } from '@mui/material'
 
@@ -19,8 +19,8 @@ import { OrderSummaryPlug } from 'components/atoms/OrderSummaryPlug'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 
-import { setGlobalStepsData } from 'redux/actions'
-import { getIsCustomDestination, getIsRoundTrip, getSessionLocations, getStep1 } from 'redux/selectors'
+import { setGlobalStepsData, setVehicles, setVehiclesWereFetched } from 'redux/actions'
+import { getIfVehiclesWereFetched, getIsCustomDestination, getIsRoundTrip, getSessionLocations, getStep1, getVehicles } from 'redux/selectors'
 
 import { locations } from 'api/locationsApi'
 import { session } from 'api/sessionApi'
@@ -29,17 +29,23 @@ import { mapStateToParams } from 'helpers/mapStateForUpdateCart'
 import { useResetForm } from 'helpers/resetForm'
 import { useApiCall } from 'helpers/customHooks'
 import { defaultValues, defaultValuesFor } from 'formDefaultValues'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 import { bookingEdit } from 'api/bookingEditApi'
 import { getOrderId } from 'helpers/getWindowLocationOrderId'
 import { locationsMatchingSession } from 'helpers/locationsMatchingSession'
+import { vehicles } from 'api/vehiclesApi'
+import { useTheme } from '@mui/system'
+import { NoVehiclesErrorComponent } from 'components/molecules/NoVehiclesErrorComponent'
+import { GridWrapper } from 'components/atoms/GridWrapper'
+import { mapVehiclesToState } from 'helpers/mapVehiclesToState'
+import { vehiclesWereFetched } from 'redux/reducers/global.reducers'
 
 const Step1 = () => {
 
   const { watch, handleSubmit, setValue, unregister } = useFormContext()
   const history = useHistory()
-
+  const dispatch = useDispatch()
 
   const defaults = defaultValues[1]
   const state = useSelector(getStep1, isEqual)
@@ -53,7 +59,10 @@ const Step1 = () => {
 
   const sessionLocations = useSelector(getSessionLocations)
   const sessionIsRoundTrip = useSelector(getIsRoundTrip)
+  const vehiclesWereFetched = useSelector(getIfVehiclesWereFetched)
   // reset()
+  const [noVehiclesError, setNoVehiclesError] = useState(false)
+  const vehiclesArrayRedux = useSelector(getVehicles, isEqual)
 
   useEffect(() => {
     if (!locationIsAirport) {
@@ -64,15 +73,17 @@ const Step1 = () => {
   }, [locationIsAirport])
 
   const orderId = getOrderId()
+  const step1Data = useSelector(getStep1, isEqual)
 
   const { result: bookingEditResult } = useApiCall({ handler: bookingEdit.checkout, params: { order_id: orderId } })
   const { result: locationsResult = [] } = useApiCall({ handler: locations.getLocations })
   const { reFetch: refetchSession } = useApiCall({ handler: session.getSession, action: setGlobalStepsData, lazy: true })
-
+  const { reFetch: refetchSubmitSession } = useApiCall({ handler: session.updateSession, action: setGlobalStepsData, lazy: true })
+  // const { reFetch: reFecthVehicles, result: vehiclesResult = [] } = useApiCall({ handler: vehicles.getVehicles, lazy: true })
   const isCustomDestination = watch('isCustomDestination')
 
   useEffect(() => {
-    if (bookingEditResult) refetchSession({})
+    if (bookingEditResult || bookingEditResult === 'skip') refetchSession({})
   }, [bookingEditResult])
 
   const onSubmit = async (data, e) => {
@@ -86,15 +97,49 @@ const Step1 = () => {
       formIsRoundTrip: formIsRoadTripReservation,
     })
 
+    console.log({ mappedForParams })
 
     if (!isLocationsMatchingSession) {
-      await session.updateSession(mappedForParams)
+      await refetchSubmitSession({ params: mappedForParams })
     } else {
-      await session.updateSession({ passengers: Number(data.numberOfPassengers) })
+      await refetchSubmitSession({ params: { passengers: Number(data.numberOfPassengers) } })
     }
 
-    stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
+    if (!isCustomDestination) {
+      const vehiclesResponse = await vehicles.getVehicles({
+        pickup_location: data.pickupLocation.location_id,
+        destination: data.destinationLocation.location_id
+      })
+
+      if (vehiclesResponse?.length > 0) {
+        return stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
+        console.log(' -- hooray go to the next step --')
+      }
+
+      setNoVehiclesError(true)
+
+      // return reFecthVehicles({
+      //   params: {
+      //     pickup_location: data.pickupLocation.location_id,
+      //     destination: data.destinationLocation.location_id
+      //   }
+      // })
+    }
   }
+
+  // useEffect(() => {
+  //   console.log(33333333333, vehiclesArrayRedux, vehiclesWereFetched)
+  //   if (!vehiclesWereFetched) return
+  //   dispatch(setVehiclesWereFetched(false))
+
+  //   if (vehiclesArrayRedux.length === 0) {
+  //     return setNoVehiclesError(true)
+  //   }
+
+  //   // history.push('/step-3')
+  //   stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
+
+  // }, [vehiclesWereFetched])
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
 
@@ -125,7 +170,7 @@ const Step1 = () => {
               }
               <T variant="secondaryText" sx={{ marginTop: '15px' }}>*Shared Shuttle is not allowed to go to any AirBNB, VRBO or Rental Property</T>
             </CheckBoxLabelBox>
-            <FlexBoxRow>
+            <GridWrapper columnNumber={2}>
               {isCustomDestination ? (
                 <>
                   <InputBox disabled labelText="Pickup Location" />
@@ -133,11 +178,12 @@ const Step1 = () => {
                 </>
               ) : (
                 <>
-                  <LocationInputSelect name={'pickupLocation'} autocompleteData={locationsResult} labelText="Pickup Location" r />
-                  <LocationInputSelect name={'destinationLocation'} autocompleteData={locationsResult} labelText="Destination" r />
+                  <LocationInputSelect name={'pickupLocation'} autocompleteData={locationsResult} labelText="Pickup Location" r additionalOnChange={() => setNoVehiclesError(false)} />
+                  <LocationInputSelect name={'destinationLocation'} autocompleteData={locationsResult} labelText="Destination" r additionalOnChange={() => setNoVehiclesError(false)} />
                 </>
               )}
-            </FlexBoxRow>
+            </GridWrapper>
+            <NoVehiclesErrorComponent noVehiclesError={noVehiclesError} />
             <InputNumberBox r labelText="How many people are you travelling with (including yourself)?" name={'numberOfPassengers'} labelErrorText={'The field cannot be empty'}></InputNumberBox>
             {locationIsAirport &&
               <CheckBoxLabelBox labelText={'Make this a Round-Trip Reservation'} name="roadTripReservation">
