@@ -258,7 +258,6 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
 
   const [isMobileTotalOpen, setMobileTotalOpen] = useState(false)
 
-  console.log({ isMobileTotalOpen })
 
   const RenderTotal = ({ mobileVariant }) => (
     <Paper elevation={page6Variant ? 0 : 10} sx={{
