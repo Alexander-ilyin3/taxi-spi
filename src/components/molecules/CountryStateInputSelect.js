@@ -20,14 +20,14 @@ export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled
         field: { onChange, value, ref },
         fieldState: { invalid }
       }) => (
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-          }}
-        >
+        <
+          // sx={{
+          //   width: '100%',
+          //   display: 'flex',
+          //   flexDirection: 'column',
+          //   justifyContent: 'space-between'
+          // }}
+          >
           <Label sx={{ marginBottom: 2 }}>
             <T variant='h5md' >
               {r && <RequiredStar />}
@@ -43,19 +43,24 @@ export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled
             isOptionEqualToValue={() => true}
             value={value || null}
             renderInput={(params) => {
-              return <TextField
-                fullWidth
-                variant="outlined"
-                disabled={disabled}
-                value={params.inputProps.value}
-                error={invalid}
-                helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
-                {...params}
-                inputRef={ref}
-              />
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    disabled={disabled}
+                    value={params.inputProps.value}
+                    error={invalid}
+                    // helperText={}
+                    {...params}
+                    inputRef={ref}
+                  />
+                </>
+              )
             }}
           />
-        </Box>
+          <Box> {invalid && <LabelError labelErrorText={labelErrorText} />}</Box>
+        </>
       )}
     />
     // </Box>

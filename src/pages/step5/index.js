@@ -35,6 +35,7 @@ import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 import { getIsCustomDestination } from 'redux/selectors'
 import { booking } from 'api/bookingApi'
 import { setBookingId } from 'redux/actions'
+import { GridWrapper } from 'components/atoms/GridWrapper'
 
 const Step5 = () => {
   const { watch, setValue } = useFormContext()
@@ -141,40 +142,42 @@ const Step5 = () => {
           <SectionBox>
             <T variant='h1'> Contact Information </T>
             <T variant='h5md' >Please enter in address that will match the billing card you are using</T>
-            <FlexBoxRow>
+            <GridWrapper columnNumber={2}>
               <InputBox name={'firstName'} labelText="First Name" r />
               <InputBox name={'lastName'} labelText="Last Name" r />
-            </FlexBoxRow>
-            <FlexBoxRow>
+            </GridWrapper>
+            <GridWrapper columnNumber={2}>
               <InputBox
                 name={'emailAddress'}
                 labelText="Email Address"
                 r
-                validateFunctionObject={{ func: validateEmail, errText: 'Email is not valid' }}
+                // validateFunctionObject={{ func: validateEmail, errText: 'Email is not valid' }}
+                validateFunctionObject={{ notValidEmail: (v) => validateEmail(v) || 'Email is not valid' }}
               />
               <InputBox
                 name={'confirmEmailAddress'}
                 labelText="Confirm Email Address"
                 r
-                validateFunctionObject={{ func: (v) => confirmEmailValidate(v, primaryEmail), errText: 'The confirm email confirmation does not match' }}
+                validateFunctionObject={{ confirmEmailValidate: (v) => confirmEmailValidate(v, primaryEmail) || 'The confirm email confirmation does not match' }}
+              // validateFunctionObject={{ func: (v) => confirmEmailValidate(v, primaryEmail), errText: 'The confirm email confirmation does not match' }}
               />
-            </FlexBoxRow>
-            <FlexBoxRow>
+            </GridWrapper>
+            <GridWrapper columnNumber={2}>
               <PhoneInputNumberBox name={'mobilePhone'} labelText="Mobile Phone" r />
               <PhoneInputNumberBox name={'additionalPhone'} labelText="Additional Phone" />
               {/* <InputBox name={'mobilePhone'} labelText="Mobile Phone" r />
               <InputBox name={'additionalPhone'} labelText="Additional Phone" /> */}
-            </FlexBoxRow>
-            <FlexBoxRow>
+            </GridWrapper>
+            <GridWrapper columnNumber={3}>
               <CountryStateInputSelect labelText="Country" name="country" autocompleteData={countries} r />
               <InputBox name={'address'} labelText="Address" r />
               <InputBox name={'address2'} labelText="Address 2" />
-            </FlexBoxRow>
-            <FlexBoxRow>
+            </GridWrapper>
+            <GridWrapper columnNumber={3}>
               <InputBox name={'city'} labelText="City" r />
               <CountryStateInputSelect labelText="State" name="state" autocompleteData={states} r />
               <InputBox name={'postalCode'} labelText="ZIP/Postal Code" r />
-            </FlexBoxRow>
+            </GridWrapper>
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>

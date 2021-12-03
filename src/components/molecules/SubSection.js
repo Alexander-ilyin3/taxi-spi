@@ -4,6 +4,7 @@ import { DatePicker } from "components/molecules/DatePicker"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
 import { InputBox } from "./InputBox"
 import { TimePicker } from "components/molecules/TimePicker"
+import { GridWrapper } from "components/atoms/GridWrapper"
 
 const BookingDateTime = () => {
   const { palette: { primary: { blue } } } = useTheme()
@@ -43,10 +44,10 @@ const SubSectionRenderHelper = ({ departure, arrival }) => {
         <DatePicker r name={departure ? 'departureDate' : 'bookingDate'} labelText={departure ? 'Departure Date' : 'Arrival Date'} />
         <TimePicker r name={departure ? 'departureTime' : 'bookinglTime'} labelText={departure ? 'Departure Time' : 'Arrival Time'} />
       </FlexBoxRow>
-      <FlexBoxRow>
+      <GridWrapper>
         <InputBox r name={departure ? 'departureAirline' : 'arrivalAirline'} labelText="Airline" />
         <InputBox r name={departure ? 'departureFlightNumber' : 'arrivalFlightNumber'} labelText="Flight Number" />
-      </FlexBoxRow>
+      </GridWrapper>
     </Box>
   )
 }

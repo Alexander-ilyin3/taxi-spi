@@ -8,7 +8,7 @@ export const useApiCall = ({ handler, params, action, lazy }) => {
 
   const request = ({ params }) => {
     const response = handler(params)
-    response.then((data) => {
+    return response.then((data) => {
       if (!data) return
 
       setResult(data)
@@ -36,7 +36,7 @@ export const useApiCall = ({ handler, params, action, lazy }) => {
   }, [])
 
   const reFetch = ({ params }) => {
-    request({ params })
+    return request({ params })
   }
 
   return { reFetch, result }

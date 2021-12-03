@@ -34,7 +34,9 @@ export const PhoneInputNumberBox = ({ name, r, labelText, labelErrorText, valida
         fieldState: { invalid, error }
       }) => (
         <>
-          <Box sx={{ width: '100%' }}>
+          <>
+            {/* sx={{ width: '100%' }} */}
+
             <Label sx={{ marginBottom: 2 }}>
               {r && <RequiredStar />}
               <T variant='h5md' >
@@ -52,19 +54,21 @@ export const PhoneInputNumberBox = ({ name, r, labelText, labelErrorText, valida
                 inputRef={ref}
               ></Input>
             </Box>
-            {invalid && (
-              <LabelError
-                labelErrorText={
-                  labelErrorText
-                  ||
-                  getErrorTextWithMultipleValidateFunc(value, {
-                    func: validateFunctionObject?.func,
-                    errText: validateFuncErrorText
-                  })
-                }
-              />
-            )}
-          </Box>
+            <Box>
+              {invalid && (
+                <LabelError
+                  labelErrorText={
+                    labelErrorText
+                    ||
+                    getErrorTextWithMultipleValidateFunc(value, {
+                      func: validateFunctionObject?.func,
+                      errText: validateFuncErrorText
+                    })
+                  }
+                />
+              )}
+            </Box>
+          </>
         </>
       )}
     />

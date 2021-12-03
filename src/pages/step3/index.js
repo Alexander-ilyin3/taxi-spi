@@ -39,10 +39,10 @@ const getDefaultVariantName = ({ departureIsAirport, arrivalIsAirport }) => {
 }
 
 const Step3 = () => {
-  const { watch, formState, setValue, reset } = useFormContext()
+  const { watch, formState, setValue, reset, setError } = useFormContext()
   const [reseted, setReseted] = useState(false)
   const state = useSelector(getStep3, isEqual)
-  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual)
   const departureIsAirport = useSelector(getDestinationIsAirport)
   const isRoundTrip = useSelector(getIsRoundTrip)
   const arrivalIsAirport = useSelector(getLocationIsAirport)
@@ -50,10 +50,8 @@ const Step3 = () => {
   const defaultVarianName = getDefaultVariantName({ departureIsAirport, arrivalIsAirport })
   const defaults = defaultValues[3][defaultVarianName]
 
-  console.log('state for step 3', state, defaults)
-
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
-  useResetForm({ state, defaults })
+  useResetForm({ state, defaults, keepDirty: true })
 
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
@@ -64,8 +62,15 @@ const Step3 = () => {
 
   const onSubmit = async (data, e) => {
     const mappedForParams = mapStateToParams(data)
-    await session.updateSession(mappedForParams)
+    const sessionResponse = await session.updateSession(mappedForParams)
 
+    if (sessionResponse && sessionResponse.booking_date_error) {
+      setError("bookinglTime", {
+        type: "manual",
+        message: sessionResponse.booking_date_error,
+      })
+      return
+    }
     stepHistoryHelper.next(history, isCustomDestinationRedux)
   }
 

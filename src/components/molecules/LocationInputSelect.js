@@ -6,17 +6,18 @@ import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 
-export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData }) => {
+export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData, additionalOnChange }) => {
 
   const { control } = useFormContext()
   return (
-    <Box width="100%"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}
-    >
+    <
+      // width="100%"
+      //   sx={{
+      //     display: 'flex',
+      //     flexDirection: 'column',
+      //     justifyContent: 'space-between',
+      //   }}
+      >
       <Controller
         control={control}
         name={name}
@@ -38,7 +39,7 @@ export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, na
               options={autocompleteData}
               groupBy={(option) => option.type}
               getOptionLabel={(option) => option.name}
-              onChange={(e, value) => onChange(value)}
+              onChange={(e, value) => { onChange(value); additionalOnChange() }}
               isOptionEqualToValue={() => true}
               value={value || null}
               renderInput={(params) => {
@@ -48,15 +49,15 @@ export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, na
                   disabled={disabled}
                   value={params.inputProps.value}
                   error={invalid}
-                  helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
                   {...params}
                   inputRef={ref}
                 />
               }}
             />
+            <Box>{invalid && <LabelError labelErrorText={labelErrorText} />}</Box>
           </>
         )}
       />
-    </Box>
+    </>
   )
 }

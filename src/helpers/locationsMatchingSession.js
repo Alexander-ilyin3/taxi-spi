@@ -9,8 +9,8 @@ export const locationsMatchingSession = ({
 }) => {
 
   const allValueIsDefined = (
-    !!formDestination?.destination_id
-    && !!sessionDestination?.destination_id
+    !!formDestination?.location_id
+    && !!sessionDestination?.location_id
     && !!formLocation?.location_id
     && !!sessionLocation?.location_id
     && sessionIsRoundTrip !== undefined
@@ -20,10 +20,10 @@ export const locationsMatchingSession = ({
   if (!allValueIsDefined) return false
 
   return (
-    String(formDestination.destination_id) === String(sessionDestination.destination_id)
+    String(formDestination.location_id) === String(sessionDestination.location_id)
     &&
     String(formLocation?.location_id) === String(sessionLocation?.location_id)
-    && 
+    &&
     Boolean(sessionIsRoundTrip) === Boolean(formIsRoundTrip)
   )
 }
