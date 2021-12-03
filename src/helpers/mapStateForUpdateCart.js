@@ -1,7 +1,7 @@
 const rules = [
   { requestType: 'location_id', stateType: 'pickupLocation.location_id', dataType: 'int' },
   { requestType: 'location_details', stateType: '', dataType: '' },
-  { requestType: 'destination_id', stateType: 'destinationLocation.destination_id', dataType: 'int' },
+  { requestType: 'destination_id', stateType: 'destinationLocation.location_id', dataType: 'int' },
   { requestType: 'destination_details', stateType: '', dataType: '' },
   { requestType: 'passengers', stateType: 'numberOfPassengers', dataType: 'int' },
   { requestType: 'roundtrip', stateType: 'roadTripReservation', dataType: '1|0' },
@@ -41,7 +41,7 @@ const rules = [
 const reduceToNeededType = (value, type) => {
   switch (type) {
     case 'int':
-      return !isNaN(parseFloat(value)) ? parseFloat(value) : undefined
+      return !isNaN(Number(value)) ? Number(value) : undefined
     case '1|0':
       return typeof value === 'boolean' ? value - 0 : undefined
     case 'date':
