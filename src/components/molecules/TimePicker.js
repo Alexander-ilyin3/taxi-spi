@@ -26,7 +26,7 @@ export const TimePicker = ({ name, r, labelErrorText, labelText }) => {
         rules={{ validate: (value) => validTime, required: true }}
         render={({
           field: { onChange, value },
-          fieldState: { invalid }
+          fieldState: { invalid, error }
         }) => (
           <ThemeProvider theme={defaultMuiTheme}>
             <MuiTimePicker
@@ -45,7 +45,7 @@ export const TimePicker = ({ name, r, labelErrorText, labelText }) => {
                     <TextField
                       fullWidth
                       variant="outlined"
-                      helperText={invalid && <LabelError labelErrorText={labelErrorText} />}
+                      helperText={(invalid || error?.message) && <LabelError labelErrorText={error?.message} />}
                       {...{ ...params, ...{ inputProps: { ...params.inputProps, placeholder: 'hh:mm am|pm' } } }}
                       value={params.inputProps.value}
                       error={invalid}
