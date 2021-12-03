@@ -7,19 +7,23 @@ import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
 import { getErrorTextWithMultipleValidateFunc, validateSeveral } from 'helpers/validateFunctions'
 
-const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additionalOnChange, validateFunctionObject }) => {
+const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additionalOnChange, validateFunctionObject = {} }) => {
   const { control } = useFormContext()
-  const validateFuncErrorText = validateFunctionObject?.errText
+  // const validateFuncErrorText = validateFunctionObject?.errText
 
-  const validateFunctions = [
-    v => r && !!v,
-  ]
+  // const validateFunctions = [
+  //   v => r && !!v,
+  // ]
 
-  if (validateFunctionObject?.func) validateFunctions.push(validateFunctionObject.func)
 
   const rulesObject = {
-    validate: outV => validateSeveral(outV, validateFunctions),
+    validate: {
+      ...(r && {require111: v => !!v || 'The field is required!'}),
+      ...validateFunctionObject
+    } //outV => validateSeveral(outV, validateFunctions),
   }
+
+  // if (validateFunctionObject) //validateFunctions.push(validateFunctionObject.func)
 
   return (
     name ? (
@@ -33,15 +37,16 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
           field: { onChange, value, ref },
           fieldState: { invalid, error },
         }) => (
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
+          <
+            // sx={{
+            //   width: '100%',
+            //   display: 'flex',
+            //   flexDirection: 'column',
+            //   justifyContent: 'space-between',
+            //   height: 'inherit'
+            // }}
           >
-            {console.log(3333333333, 'ERRORS --- ,', error)}
+            {/* {console.log(3333333333, 'ERRORS --- ,', error)} */}
             {labelText ? (
               <Label sx={{ marginBottom: 2 }}>
                 {r && <RequiredStar />}
@@ -59,23 +64,29 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
               value={value}
               error={invalid}
             />
-            {invalid && (
-              <LabelError
-                labelErrorText={
-                  labelErrorText
-                  ||
-                  getErrorTextWithMultipleValidateFunc(value, {
-                    func: validateFunctionObject?.func,
-                    errText: validateFuncErrorText
-                  })
-                }
-              />
-            )}
-          </Box>
+            <Box>
+              {invalid && (
+                <LabelError
+                  labelErrorText={
+                    error?.message
+                    ||
+                    labelErrorText
+                    // ||
+                    // getErrorTextWithMultipleValidateFunc(value, {
+                    //   func: validateFunctionObject?.func,
+                    //   errText: validateFuncErrorText
+                    // })
+                  }
+                />
+              )}
+            </Box>
+          </>
         )}
       />
     ) : (
-      <Box sx={{ width: '100%' }}>
+      < 
+      // sx={{ width: '100%' }}
+      >
         {labelText ? (
           <Label sx={{ marginBottom: 2 }}>
             {r && <RequiredStar />}
@@ -87,8 +98,8 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
           null
         )}
         <Input disabled={disabled} />
-        {error && <LabelError labelErrorText={labelErrorText} />}
-      </Box>
+        <Box>{error && <LabelError labelErrorText={labelErrorText} />}</Box>
+      </>
     )
   )
 }
