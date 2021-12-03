@@ -20,3 +20,4 @@ export const getSessionLocations = state => ({
   sessionLocation: state?.globalStepsData.location || null,
   sessionDestination: state?.globalStepsData.destination || null
 })
+export const getIfVehiclesWereFetched = state => state.vehiclesWereFetched || false

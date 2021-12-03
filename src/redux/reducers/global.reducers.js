@@ -16,6 +16,7 @@ import {
   SET_SELECTED_COUNTRY_AND_STATE,
   SET_BOOKING_ID,
   SET_IS_CUSTOM_DESTINATION,
+  SET_VEHICLES_WERE_FETCHED
 } from "redux/constants"
 
 export const pageSteps = (state, { type, payload }) => {
@@ -57,7 +58,7 @@ export const isLoading = (state = [], { type }) => {
 export const globalStepsData = (state, { type, payload }) => {
   switch (type) {
     case SET_GLOBAL_STEPS_DATA:
-      return { ...payload }
+      return { ...payload, booking_date: payload.booking_date || '', booking_date: payload.booking_date || ''}
 
     default:
       return { ...state }
@@ -73,6 +74,17 @@ export const vehicles = (state = [], { type, payload }) => {
       return [...state]
   }
 }
+
+export const vehiclesWereFetched = (state = false, { type, payload }) => {
+  switch (type) {
+    case SET_VEHICLES_WERE_FETCHED:
+      return payload
+
+    default:
+      return state 
+  }
+}
+
 
 export const selectedVehicle = (state = null, { type, payload }) => {
   switch (type) {

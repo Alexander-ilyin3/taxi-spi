@@ -15,6 +15,7 @@ import {
   SET_SELECTED_COUNTRY_AND_STATE,
   SET_BOOKING_ID,
   SET_IS_CUSTOM_DESTINATION,
+  SET_VEHICLES_WERE_FETCHED
 } from 'redux/constants'
 
 export const setSteps = (steps) => ({
@@ -78,6 +79,13 @@ export const setIsCustomDestination = (data) => {
 export const setVehicles = (data) => {
   return ({
     type: SET_VEHICLES,
+    payload: data
+  })
+}
+
+export const setVehiclesWereFetched = (data) => {
+  return ({
+    type: SET_VEHICLES_WERE_FETCHED,
     payload: data
   })
 }
