@@ -124,6 +124,9 @@ const Step1 = () => {
       //     destination: data.destinationLocation.location_id
       //   }
       // })
+    } else {
+      setNoVehiclesError(false)
+      return stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
     }
   }
 
