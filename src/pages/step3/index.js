@@ -51,7 +51,7 @@ const Step3 = () => {
   const defaults = defaultValues[3][defaultVarianName]
 
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
-  useResetForm({ state, defaults, keepDirty: true })
+  useResetForm({ state, defaults, keepErrors: true })
 
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed

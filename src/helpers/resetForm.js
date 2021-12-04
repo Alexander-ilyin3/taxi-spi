@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { isEqual } from 'underscore'
 
-export const useResetForm = ({ state, defaults, keepDirty }) => {
+export const useResetForm = ({ state, defaults, keepErrors }) => {
   const { reset } = useFormContext()
 
   // // function deepCompareEquals(a, b) {
@@ -39,7 +39,7 @@ export const useResetForm = ({ state, defaults, keepDirty }) => {
     //   reset(data)
     // }
     console.log(' ------------ refreshing form --------', state)
-    reset({ ...(defaults || {}), ...(state || {}) }, { keepDirty: keepDirty })
+    reset({ ...(defaults || {}), ...(state || {}) }, { keepErrors: keepErrors })
   }, [state, defaults])
 
   // useEffect(() => {
