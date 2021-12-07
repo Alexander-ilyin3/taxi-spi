@@ -3,7 +3,7 @@ import { ButtonBase } from '@mui/material'
 import { Typography as T } from '@mui/material'
 import { reduceIconPath } from 'helpers/reduceIconPath'
 
-export const NextButton = ({ onClick }) => {
+export const NextButton = ({ onClick, nextButtonText }) => {
   const theme = useTheme()
   const { palette: { primary: { blue, white } } } = theme
 
@@ -16,8 +16,8 @@ export const NextButton = ({ onClick }) => {
       borderRadius: '10px',
     }}
       onClick={onClick}>
-      <T variant='h5sb' sx={{ color: white, marginRight: 1, fontSize: [16, 18] }}>Next</T>
-      <img src={reduceIconPath("images/next-button-icon.svg")}></img>
+      <T variant='h5sb' sx={{ color: white, marginRight: 1, fontSize: [16, 18] }}>{nextButtonText || 'Next'}</T>
+      {!nextButtonText && <img src={reduceIconPath("images/next-button-icon.svg")}></img>}
     </ButtonBase>
   )
 }

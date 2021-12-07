@@ -112,7 +112,7 @@ const Step6 = () => {
               <T variant="secondaryText">View Our Terms &amp; Conditions</T>
             </CheckBoxLabelBox>
           </SectionBox>
-          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} nextButtonText={'Complete Reservation'}/>
         </SectionWrapper>
         <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed} notshowOnMobile>
           <OrderSummaryPlug />
