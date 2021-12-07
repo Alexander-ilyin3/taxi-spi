@@ -358,7 +358,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
 
               {couponDisplayingAmount && (
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <T variant='h4' color='inherit'>Coupon</T>
+                  <T variant='h4' color='inherit'>Coupon Discount {couponObject?.coupon_id ? `(#${couponObject.coupon_id})` : ''}</T>
                   <T variant='h5sb' color='inherit'>- {couponDisplayingAmount}</T>
                 </Box>
               )}
