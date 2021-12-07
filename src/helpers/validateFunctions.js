@@ -1,7 +1,7 @@
 
 export const validateEmail = (emailValue) => {
   if (!(typeof emailValue === "string")) return false
-  return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailValue)
+  return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(emailValue)
 }
 
 export const confirmEmailValidate = (confirmEmail, primaryEmail) => {
