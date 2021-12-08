@@ -18,6 +18,7 @@ import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
 import { setGlobalStepsData } from 'redux/actions'
 import { useHistory } from 'react-router'
+import { PaymentCheckServises } from 'components/molecules/PaymentCheckServises'
 
 const Step7 = () => {
   const steps = ['Service Selection', 'Vehicle Selection', 'Flight Details', 'Select Add-Ons', 'Contact Information', 'Billing Information']
@@ -47,9 +48,10 @@ const Step7 = () => {
           <SectionBox>
             <CongratsWrapper>
               <img src={reduceIconPath("images/CongratsCkeckmark.svg")}></img>
-              <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #{bookingId}</T>
+              {bookingId && <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #{bookingId}</T>}
               <T variant='h1' sx={{ textAlign: 'center' }}> Your Reservation has been created successfully </T>
               <T variant='h5md' sx={{ textAlign: 'center' }}> Reservation details  have been sent to your email.</T>
+              {bookingId && <PaymentCheckServises bookingId={bookingId} />}
               <Button
                 sx={{
                   paddingLeft: 6,
