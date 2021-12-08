@@ -11,9 +11,23 @@ import { RequiredStar } from "components/atoms/RequiredStar"
 import { makeStyles } from '@mui/styles'
 import { defaultMuiTheme, theme } from 'mui/theme'
 
-export const TimePicker = ({ name, r, labelErrorText, labelText }) => {
-  const { control } = useFormContext()
+export const TimePicker = ({ name, r, labelErrorText, labelText, dateToWatch }) => {
+  const { control, watch } = useFormContext()
   const [validTime, setValidTime] = useState(true)
+
+  const isNotToday = (providedDate) => {
+    if ( !providedDate ) return false
+    const today = new Date()
+    const isToday = (
+      providedDate.getFullYear() === today.getFullYear() &&
+      providedDate.getMonth() === today.getMonth() &&
+      providedDate.getDate() === today.getDate()
+    )
+    return !isToday
+  }
+
+  const choosedDate = watch(dateToWatch)
+  const choosedDateIsNotToday = isNotToday(choosedDate)
 
   return (
 
@@ -23,7 +37,13 @@ export const TimePicker = ({ name, r, labelErrorText, labelText }) => {
         name={name}
         defaultValue={null}
         shouldUnregister={true}
-        rules={{ validate: (value) => validTime, required: true }}
+        rules={{
+          validate: {
+            timeValidation: (value) => validTime || 'Time is not valid',
+            timeHasPassed: (value) => choosedDateIsNotToday || value > new Date() || 'This time has already passed'
+          },
+          required: true
+        }}
         render={({
           field: { onChange, value },
           fieldState: { invalid, error }
