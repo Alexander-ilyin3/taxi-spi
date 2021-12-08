@@ -71,6 +71,20 @@ const theme = createTheme({
             // },
           }
         },
+        {
+          props: { variant: 'buttonEffectsWrapper' },
+          style: {
+            '&:hover': {
+              backgroundColor: 'inherit',
+            },
+            // ":root": {
+            padding: '0',
+            height: 'auto',
+            width: 'auto',
+            border: 'none'
+            // },
+          }
+        },
       ],
       styleOverrides: {
         // ':not(.PrivateTimePickerToolbar-hourMinuteLabel)': {
