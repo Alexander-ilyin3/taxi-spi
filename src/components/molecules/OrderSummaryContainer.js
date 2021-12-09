@@ -212,7 +212,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
   const numberOfPassengers = pickFirst([watch('numberOfPassengers'), numberOfPassengersRedux])
   const [displayingPrice, setDisplayingPrice] = useState()
   const [numberOfCars, setNumberOfCars] = useState()
-  const [feesCount, setFeesCount] = useState()
+  const [feesCount, setFeesCount] = useState(0)
   const [totalPrice, setTotalPrice] = useState()
   const [oneSeatRuleBroken, setOneSeatRuleBroken] = useState()
   const [couponDisplayingAmount, setCouponDisplayingAmount] = useState()
@@ -231,14 +231,15 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
     setDisplayingPrice(selectedCar.price * numberOfCars + addonSummPrice)
   }, [numberOfCars, selectedCar, addonSummPrice])
 
-  useEffect(() => {
-    if (displayingPrice) {
-      setFeesCount((displayingPrice / 100 * 16))
-    }
-  }, [displayingPrice])
+  // useEffect(() => {
+  //   if (displayingPrice) {
+  //     setFeesCount((displayingPrice / 100 * 16))
+  //   }
+  // }, [displayingPrice])
 
   useEffect(() => {
-    if (!displayingPrice || !feesCount) return
+    // console.log({}, displayingPrice, feesCount )
+    if (isNaN(Number(displayingPrice)) || isNaN(Number(feesCount)) ) return
 
     setTotalPrice((displayingPrice - flatCouponAmount + feesCount).toFixed(2))
   }, [displayingPrice, feesCount, flatCouponAmount])
@@ -363,10 +364,10 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
                 </Box>
               )}
 
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h4' color='inherit'>Fees (16%)</T>
-                <T variant='h5sb' color='inherit'>${feesCount?.toFixed(2)}</T>
-              </Box>
+                <T variant='h5sb' color='inherit'>${Number(feesCount)?.toFixed(2)}</T>
+              </Box> */}
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h3' color='inherit'>TOTAL</T>
