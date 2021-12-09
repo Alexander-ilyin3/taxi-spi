@@ -5,7 +5,7 @@ var test_url = "https://sjd-taxi.requestumdemo.com/book-now/?order_id=f9c9920ab7
 
 export const getOrderId = () => {
   /*------------------------------------------------------*/
-  const link = true && process.env.NODE_ENV === 'development' ? test_url : window.location.href
+  const link = false && process.env.NODE_ENV === 'development' ? test_url : window.location.href
   /*------------------------------------------------------*/
   const url = new URL(link)
   const orderIdParameter = url.searchParams.get("order_id")
