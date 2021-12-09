@@ -3,6 +3,7 @@ import { Box, useTheme } from "@mui/system"
 import { Button } from "components/atoms/Button"
 import { useEffect, useState } from "react"
 import { Controller, useFormContext } from "react-hook-form"
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const AddonsControlButtons = ({ value = 0, onChange }) => {
   // const { palette: { primary: { blue } } } = useTheme()
@@ -53,17 +54,20 @@ const AddonsControlButtons = ({ value = 0, onChange }) => {
 export const AddOnsItemWrapper = ({ addonObject, onChange, value }) => {
 
   const { name, src, price, description, onlyForPrivatTransfers } = addonObject
-  const { palette: { primary: { blue, grey } } } = useTheme()
+  const { palette: { primary: { blue, grey } }, breakpoints: { down } } = useTheme()
   const { control } = useFormContext()
 
+  const medium = useMediaQuery(down('md'))
+  // console.log('addons is mobile ---', mobile)
   return (
     <Box
       sx={{
-        maxWidth: '100%',
-        minWidth: '240px',
+        // maxWidth: '100%',
+        width: '100%',
+        // minWidth: '240px',
         minHeight: '175px',
-        flexBasis: '45%',
-        flexGrow: '1',
+        ...(!medium && { flexBasis: '45%' })
+        // flexShrink: '1',
         // maxWidth: '45%',
         // minWidth: '260px',
         // minHeight: '175px',
