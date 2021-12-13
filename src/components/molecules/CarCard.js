@@ -65,7 +65,9 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
             marginBottom: '30px',
             justifyContent: 'center',
             backgroundImage: `url(${picturePath})`,
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
           }}
         >
           {/* <img src={picturePath}></img> */}
