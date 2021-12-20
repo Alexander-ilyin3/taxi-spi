@@ -36,6 +36,7 @@ import { getIsCustomDestination } from 'redux/selectors'
 import { booking } from 'api/bookingApi'
 import { setBookingId } from 'redux/actions'
 import { GridWrapper } from 'components/atoms/GridWrapper'
+import { PostalCodeWrapper } from 'components/molecules/PostalCodeWrapper'
 
 const Step5 = () => {
   const { watch, setValue } = useFormContext()
@@ -176,7 +177,7 @@ const Step5 = () => {
             <GridWrapper columnNumber={3}>
               <InputBox name={'city'} labelText="City" r />
               <CountryStateInputSelect labelText="State" name="state" autocompleteData={states} r />
-              <InputBox name={'postalCode'} labelText="ZIP/Postal Code" r />
+              <PostalCodeWrapper name={'postalCode'} labelText="ZIP/Postal Code" r />
             </GridWrapper>
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />

@@ -172,7 +172,7 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
             }}
             key={i}
           >
-            <T variant="h5sb">{addon.name} (x{addon.count}) </T>
+            <T variant="h5sb">{addon.name} ({addon.count}) </T>
             <T variant="h5sb" sx={{ color: blue }}>${addon.price || 0}</T>
           </Box>
         )
@@ -337,7 +337,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
               <T variant="h5sb" sx={{ color: blue, display: 'block' }}>VEHICLE SELECTION:</T>
               <T variant="h5sb">
                 {numberOfCars > 1 ? (
-                  `${selectedCar.carName} (x${numberOfCars})`
+                  `${selectedCar.carName} (${numberOfCars})`
                 ) : (
                   selectedCar.carName
                 )}

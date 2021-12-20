@@ -36,7 +36,7 @@ const Step7 = () => {
 
   const { palette: { primary: { blue, white }, secondary: { darkGrey } } } = useTheme()
   const onClick = () => {
-    history.push('step-1')
+    window.location.assign('https://www.purecabo.com')
   }
 
   return (
@@ -50,7 +50,11 @@ const Step7 = () => {
               <img src={reduceIconPath("images/CongratsCkeckmark.svg")}></img>
               {bookingId && <T variant='h5rg' sx={{ color: darkGrey }}>Reservation #{bookingId}</T>}
               <T variant='h1' sx={{ textAlign: 'center' }}> Your Reservation has been created successfully </T>
-              <T variant='h5md' sx={{ textAlign: 'center' }}> Reservation details  have been sent to your email.</T>
+              <T variant='h5rg' sx={{ textAlign: 'center' }}>
+                <T variant="bold">Looking for a fun activity while in Los Cabos? <br></br></T>
+                Use promo code ”<T variant="bold">PURESJD</T>” on any activity <br></br>
+                in the next 24 hours and save 10% off with Pure Cabo.
+              </T>
               {bookingId && <PaymentCheckServises bookingId={bookingId} />}
               <Button
                 sx={{
@@ -65,7 +69,7 @@ const Step7 = () => {
                   marginTop: 4,
                 }}
                 onClick={onClick}
-              >OK</Button>
+              >Visit Pure Cabo</Button>
             </CongratsWrapper>
           </SectionBox>
         </SectionWrapper>
