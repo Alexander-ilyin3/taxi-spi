@@ -7,14 +7,13 @@ import { AddOnsItemWrapper } from "./AddOnsItemWrapper"
 import { testAddons } from 'testData/testAddons'
 import { mapStateToAddonCards } from "helpers/mapStateToAddonCards"
 
-export const AddOnsSection = () => {
+export const AddOnsSection = ({ state }) => {
   // const cardsData = []
   const { control } = useFormContext()
   const addons = useSelector(getAddons, isEqual)
   console.log('addins ', addons, testAddons)
 
   const cardsData = mapStateToAddonCards(addons)
-
   return (
     <Box
       sx={{
@@ -29,7 +28,7 @@ export const AddOnsSection = () => {
           key={i}
           control={control}
           name={`Addon.id_${String(cardData.addon_id)}`}
-          defaultValue={{ addon_id: cardData.addon_id, count: 0 }}
+          defaultValue={{ addon_id: cardData.addon_id, count: state?.Addon && state?.Addon[`id_${String(cardData.addon_id)}`] ? state?.Addon[`id_${String(cardData.addon_id)}`].count : 0 }}
           shouldUngerister={true}
           rules={{ validate: () => true }}
           render={({
