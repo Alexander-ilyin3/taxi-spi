@@ -2,10 +2,22 @@ import { createTheme, TextField, ThemeProvider, Typography as T } from "@mui/mat
 import { Box } from "@mui/system"
 import { Controller, useFormContext } from "react-hook-form"
 import { useState } from 'react'
+import { makeStyles } from '@mui/styles'
 
 import { LabelError } from "components/atoms/LabelError"
 import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
+
+const useStyles = makeStyles(() => ({
+  timeInput: {
+    '&::-webkit-calendar-picker-indicator': {
+      position: 'absolute',
+      paddingTop: 20,
+      paddingBottom: 20,
+      paddingLeft: 'calc(100% - 60px)',
+    }
+  }
+}))
 
 export const TimePicker = ({ name, r, labelErrorText, labelText, dateToWatch }) => {
   const { control, watch } = useFormContext()
@@ -45,6 +57,7 @@ export const TimePicker = ({ name, r, labelErrorText, labelText, dateToWatch }) 
 
     return dateObject
   }
+  const classes = useStyles()
 
   return (
     <Controller
@@ -71,6 +84,9 @@ export const TimePicker = ({ name, r, labelErrorText, labelText, dateToWatch }) 
             </T>
           </Label>
           <TextField
+            inputProps={{
+              className: classes.timeInput
+            }}
             value={getInputValueFromDate(value) || ''}
             fullWidth
             variant="outlined"
