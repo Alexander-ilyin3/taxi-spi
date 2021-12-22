@@ -1,9 +1,19 @@
-import { Paper, Typography as T, Typography, Drawer, Button, SwipeableDrawer, CircularProgress } from "@mui/material"
+import {
+  Paper,
+  Typography as T,
+  Typography,
+  Drawer,
+  Button,
+  SwipeableDrawer,
+  CircularProgress,
+  IconButton
+} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 import { Box, useTheme } from "@mui/system"
-import { useEffect, useState } from "react"
+import { createRef, useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
+import { Close } from '@mui/icons-material'
 import {
   bringToFormVehicle,
   calculateAddonPrices,
@@ -39,6 +49,7 @@ import {
 import { getIsAirportStates, getSteps } from "redux/selectors"
 import { reduceIconPath } from "helpers/reduceIconPath"
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { useWindowScroll } from 'helpers/customHooks'
 
 const useStyles = makeStyles(theme => ({
   mobileTotalButton: {
@@ -289,146 +300,165 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
 
 
   const RenderTotal = ({ mobileVariant }) => (
-    <Paper elevation={page6Variant ? 0 : 10} sx={{
-      padding: page6Variant ? '30px' : [2, 4, 6, 8],
-      paddingTop: page6Variant ? 4 : 7,
-      // width: page6Variant ? '100%' : '40%',
-      // width: 100%
-      height: 'fit-content',
-      display: 'flex',
-      flexDirection: "column",
-      gap: [2, 4],
-      borderRadius: 4,
-      border: page6Variant ? `1px solid ${grey}` : 'none',
-      // flexGrow: 2,
-      flexBasis: '40%',
-      ...(mobileVariant && {
-        minHeight: '100%',
-        borderRadius: '16px 0 0 16px'
-      })
-    }}>
+    <Paper
+      elevation={page6Variant ? 0 : 10}
+      sx={{
+        maxHeight: '100vh',
+        position: 'sticky',
+        top: 0,
+        '&::-webkit-scrollbar': {
+          width: 0,
+        },
+        overflow: 'auto',
+        padding: page6Variant ? '30px' : [2, 4, 6, 8],
+        paddingTop: page6Variant ? 4 : 7,
+        // width: page6Variant ? '100%' : '40%',
+        // width: 100%
+        height: 'fit-content',
+        display: 'flex',
+        flexDirection: "column",
+        gap: [2, 4],
+        borderRadius: 4,
+        border: page6Variant ? `1px solid ${grey}` : 'none',
+        // flexGrow: 2,
+        flexBasis: '40%',
+        ...(mobileVariant && {
+          minHeight: '100%',
+          borderRadius: '16px 0 0 16px'
+        })
+      }}
+    >
       {page6Variant ? (
-        <T variant='h2' sx={{ alignSelf: 'center', color: blue }}>Order Summary</T>
+        <Box display="flex" justifyContent="space-between">
+          <T variant='h2' sx={{ alignSelf: 'center', color: blue }}>Order Summary</T>
+          {mobileVariant && <IconButton onClick={() => setMobileTotalOpen(false)}><Close fontSize="large" /></IconButton>}
+        </Box>
       ) : (
-        <T variant='h1'>Order Summary</T>
-      )}
+        <Box display="flex" justifyContent="space-between">
+          <T variant='h1'>Order Summary</T>
+          {mobileVariant && <IconButton onClick={() => setMobileTotalOpen(false)}><Close fontSize="large" /></IconButton>}
+        </Box>
+      )
+      }
       {page6Variant || plugForFirstStep ? null : <SummaryDateComponent />}
 
-      {selectedCar && !plugForFirstStep ? (
-        oneSeatRuleBroken ? (
-          <Box sx={{
-            borderRadius: '20px',
-            width: '100%',
-            padding: '26px',
-            backgroundColor: lightGrayBlue,
-          }}
-          >
-            <T variant='h4' color={warning}>Only one seat allowed for this type of vehicle</T>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: lightGrayBlue,
+      {
+        selectedCar && !plugForFirstStep ? (
+          oneSeatRuleBroken ? (
+            <Box sx={{
               borderRadius: '20px',
-              // padding: '26px 26px 0 26px'
+              width: '100%',
+              padding: '26px',
+              backgroundColor: lightGrayBlue,
             }}
-          >
+            >
+              <T variant='h4' color={warning}>Only one seat allowed for this type of vehicle</T>
+            </Box>
+          ) : (
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                padding: '26px'
-              }}
-            >
-              <T
-                variant="h5sb"
-                sx={{ flexGrow: 2 }}
-              >
-                {isRoundTrip ? 'Round-trip' : 'One way trip' + ' '}
-                from {location} to {destination}
-              </T>
-              <T variant="h5sb" sx={{ color: blue, flexGrow: 1 }}>${selectedCar.price.toFixed(2)}</T>
-            </Box>
-            <Box
-              sx={{
-                padding: '0 40px 20px'
-              }}
-            >
-              <T variant="h5sb" sx={{ color: blue, display: 'block' }}>QUANTITY OF PASSENGERS:</T>
-              {numberOfPassengers ? (
-                <T variant="h5sb">{numberOfPassengers}</T>
-              ) : (
-                <T variant="h5sb" color={warning}>Please enter the number of passengers</T>
-              )}
-              <T variant="h5sb" sx={{ color: blue, display: 'block' }}>VEHICLE SELECTION:</T>
-              <T variant="h5sb">
-                {numberOfCars > 1 ? (
-                  `${selectedCar.carName} (${numberOfCars})`
-                ) : (
-                  selectedCar.carName
-                )}
-              </T>
-            </Box>
-            <AddOnsContainer addonsToDisplay={addonsToDisplay} />
-            <Box
-              sx={{
-                backgroundColor: blue,
-                color: white,
-                padding: '20px',
+                flexDirection: 'column',
+                backgroundColor: lightGrayBlue,
                 borderRadius: '20px',
-                position: 'relative'
+                // padding: '26px 26px 0 26px'
               }}
             >
-              {isTotalLoading && (
-                <Box
-                  position="absolute"
-                  width="100%"
-                  height="100%"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  boxSizing="border-box"
-                  margin="-20px -20px"
-                  borderRadius="20px"
-                  sx={{
-                    backgroundColor: 'rgba(255, 255, 255, .38)'
-                  }}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '26px'
+                }}
+              >
+                <T
+                  variant="h5sb"
+                  sx={{ flexGrow: 2 }}
                 >
-                  {/* <T variant='h4' color='textSecondary'>Loading...</T> */}
-                  <CircularProgress />
-                </Box>
-              )}
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <T variant='h4' color='inherit'>SubTotal</T>
-                <T variant='h5sb' color='inherit'>${fee.subtotal}</T>
+                  {isRoundTrip ? 'Round-trip' : 'One way trip' + ' '}
+                  from {location} to {destination}
+                </T>
+                <T variant="h5sb" sx={{ color: blue, flexGrow: 1 }}>${selectedCar.price.toFixed(2)}</T>
               </Box>
-              
-              {couponDisplayingAmount && (
+              <Box
+                sx={{
+                  padding: '0 40px 20px'
+                }}
+              >
+                <T variant="h5sb" sx={{ color: blue, display: 'block' }}>QUANTITY OF PASSENGERS:</T>
+                {numberOfPassengers ? (
+                  <T variant="h5sb">{numberOfPassengers}</T>
+                ) : (
+                  <T variant="h5sb" color={warning}>Please enter the number of passengers</T>
+                )}
+                <T variant="h5sb" sx={{ color: blue, display: 'block' }}>VEHICLE SELECTION:</T>
+                <T variant="h5sb">
+                  {numberOfCars > 1 ? (
+                    `${selectedCar.carName} (${numberOfCars})`
+                  ) : (
+                    selectedCar.carName
+                  )}
+                </T>
+              </Box>
+              <AddOnsContainer addonsToDisplay={addonsToDisplay} />
+              <Box
+                sx={{
+                  backgroundColor: blue,
+                  color: white,
+                  padding: '20px',
+                  borderRadius: '20px',
+                  position: 'relative'
+                }}
+              >
+                {isTotalLoading && (
+                  <Box
+                    position="absolute"
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    boxSizing="border-box"
+                    margin="-20px -20px"
+                    borderRadius="20px"
+                    sx={{
+                      backgroundColor: 'rgba(255, 255, 255, .38)'
+                    }}
+                  >
+                    {/* <T variant='h4' color='textSecondary'>Loading...</T> */}
+                    <CircularProgress />
+                  </Box>
+                )}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <T variant='h4' color='inherit'>Coupon Discount</T>
-                  <T variant='h5sb' color='inherit'>- {couponDisplayingAmount}</T>
+                  <T variant='h4' color='inherit'>SubTotal</T>
+                  <T variant='h5sb' color='inherit'>${fee.subtotal}</T>
                 </Box>
-              )}
 
-              {fee && (
+                {couponDisplayingAmount && (
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <T variant='h4' color='inherit'>Coupon Discount</T>
+                    <T variant='h5sb' color='inherit'>- {couponDisplayingAmount}</T>
+                  </Box>
+                )}
+
+                {fee && (
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <T variant='h4' color='inherit'>Fees ({fee.tax_rate}%)</T>
+                    <T variant='h5sb' color='inherit'>${Number(fee.tax)?.toFixed(2)}</T>
+                  </Box>
+                )}
+
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <T variant='h4' color='inherit'>Fees ({fee.tax_rate}%)</T>
-                  <T variant='h5sb' color='inherit'>${Number(fee.tax)?.toFixed(2)}</T>
+                  <T variant='h3' color='inherit'>TOTAL</T>
+                  <T variant='h3' color='inherit'>${fee.total}</T>
                 </Box>
-              )}
-
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <T variant='h3' color='inherit'>TOTAL</T>
-                <T variant='h3' color='inherit'>${fee.total}</T>
               </Box>
             </Box>
-          </Box>
+          )
+        ) : (
+          children
         )
-      ) : (
-        children
-      )}
+      }
     </Paper >
   )
 
