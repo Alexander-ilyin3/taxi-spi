@@ -4,12 +4,37 @@ import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import { FlexBoxRow } from "components/atoms/FlexBoxRow"
-import { bringToFormVehicle, calculateAddonPrices, countCouponValueObject, findPriceForAddons, mapCouponForDisplay, pickFirst, reduceCouponToFlatValue, reduceToDate } from "helpers/orderSummaryHelpers"
+import {
+  bringToFormVehicle,
+  calculateAddonPrices,
+  countCouponValueObject,
+  findPriceForAddons,
+  mapCouponForDisplay,
+  pickFirst,
+  reduceCouponToFlatValue,
+  reduceToDate
+} from "helpers/orderSummaryHelpers"
 import { useSelector } from "react-redux"
-import { getDestination, getLocation, getNumberOfPassengers, getIsRoundTrip, summaryGetSelectedVehicle, summaryGetSelectedAddons, summaryGetCouponObject } from "redux/selectors"
+import {
+  getDestination,
+  getLocation,
+  getNumberOfPassengers,
+  getIsRoundTrip,
+  summaryGetSelectedVehicle,
+  summaryGetSelectedAddons,
+  summaryGetCouponObject,
+  getFee,
+} from "redux/selectors"
 import { isEqual } from "underscore"
 import { getAddons } from "redux/selectors/global.selectors"
-import { getArrivalDate, getArrivalTime, getBookingDate, getBookinglTime, getDepartureDate, getDepartureTime } from "redux/selectors/orderSummary.selectors"
+import {
+  getArrivalDate,
+  getArrivalTime,
+  getBookingDate,
+  getBookinglTime,
+  getDepartureDate,
+  getDepartureTime,
+} from "redux/selectors/orderSummary.selectors"
 import { getIsAirportStates, getSteps } from "redux/selectors"
 import { reduceIconPath } from "helpers/reduceIconPath"
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -196,6 +221,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
   const reduxAddonList = useSelector(getAddons)
   const reduxSelectedAddons = useSelector(summaryGetSelectedAddons)
   const couponObject = useSelector(summaryGetCouponObject, isEqual)
+  const fee = useSelector(getFee)
   //redux values -------
   const formAddons = watch('Addon')
   const formAddonsWithPrice = findPriceForAddons(formAddons, reduxAddonList)
@@ -239,7 +265,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
 
   useEffect(() => {
     // console.log({}, displayingPrice, feesCount )
-    if (isNaN(Number(displayingPrice)) || isNaN(Number(feesCount)) ) return
+    if (isNaN(Number(displayingPrice)) || isNaN(Number(feesCount))) return
 
     setTotalPrice((displayingPrice - flatCouponAmount + feesCount).toFixed(2))
   }, [displayingPrice, feesCount, flatCouponAmount])
@@ -364,10 +390,12 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
                 </Box>
               )}
 
-              {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <T variant='h4' color='inherit'>Fees (16%)</T>
-                <T variant='h5sb' color='inherit'>${Number(feesCount)?.toFixed(2)}</T>
-              </Box> */}
+              {fee && (
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <T variant='h4' color='inherit'>Fees ({fee.tax_rate}%)</T>
+                  <T variant='h5sb' color='inherit'>${Number(fee.tax)?.toFixed(2)}</T>
+                </Box>
+              )}
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h3' color='inherit'>TOTAL</T>

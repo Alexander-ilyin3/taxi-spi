@@ -7,7 +7,6 @@ import {
   Redirect
 } from "react-router-dom"
 import { CssBaseline, ThemeProvider, Typography as T } from '@mui/material'
-import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -31,59 +30,58 @@ import { ErrorPage } from 'components/organisms/ErrorPage'
 import { ErrorRedirect } from 'components/organisms/ErrorRedirect'
 import { PageLoading } from 'components/organisms/PageLoading'
 import { apiMiddleware } from 'api/instance'
+import { useFeeUpdate } from 'helpers/customHooks'
+import { useFormContext } from 'react-hook-form'
 import { useDependenceReduxStateController } from 'components/organisms/DependenceReduxStateController'
 
 // const composed = 
 // const composedEnhancer = applyMiddleware(apiMiddleware, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__)
 
 const Layout = () => {
-
-  const methods = useForm({ shouldFocusError: true })
+  const methods = useFormContext()
   useDependenceReduxStateController(methods)
+  useFeeUpdate()
   return (
-
-      <FormProvider {...methods} >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Router>
-            <div>
-              <Switch>
-                <Route exact path='/'>
-                  <Redirect to='/step-1' />
-                </Route>
-                <Route path="/step-1">
-                  <Step1 />
-                </Route>
-                <Route path="/step-2">
-                  <Step2 />
-                </Route>
-                <Route path="/step-3">
-                  <Step3 />
-                </Route>
-                <Route path="/step-4">
-                  <Step4 />
-                </Route>
-                <Route path="/step-5">
-                  <Step5 />
-                </Route>
-                <Route path="/step-6">
-                  <Step6 />
-                </Route>
-                <Route path="/step-7">
-                  <Step7 />
-                </Route>
-                <Route path="/error-page" render={(props) => <ErrorPage {...props} />} />
-              </Switch>
-            </div>
-            <ErrorRedirect />
-            <PageLoading />
-          </Router>
-        </ThemeProvider>
-        {/* TEST COMPONENT //TODO */}
-        {(process.env.NODE_ENV === 'development') && <ConsoleFormStateButton />}
-        {/* TEST COMPONENT //TODO */}
-        {/* <DependenceReduxStateController /> */}
-      </FormProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path='/'>
+              <Redirect to='/step-1' />
+            </Route>
+            <Route path="/step-1">
+              <Step1 />
+            </Route>
+            <Route path="/step-2">
+              <Step2 />
+            </Route>
+            <Route path="/step-3">
+              <Step3 />
+            </Route>
+            <Route path="/step-4">
+              <Step4 />
+            </Route>
+            <Route path="/step-5">
+              <Step5 />
+            </Route>
+            <Route path="/step-6">
+              <Step6 />
+            </Route>
+            <Route path="/step-7">
+              <Step7 />
+            </Route>
+            <Route path="/error-page" render={(props) => <ErrorPage {...props} />} />
+          </Switch>
+        </div>
+        <ErrorRedirect />
+        <PageLoading />
+      </Router>
+      {/* TEST COMPONENT //TODO */ }
+      { (process.env.NODE_ENV === 'development') && <ConsoleFormStateButton /> }
+      {/* TEST COMPONENT //TODO */ }
+      {/* <DependenceReduxStateController /> */ }
+    </ThemeProvider>
   )
 }
 

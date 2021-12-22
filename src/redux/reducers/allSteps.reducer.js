@@ -38,13 +38,13 @@ export const step3 = (state, { type, payload }) => {
   }
 }
 
-export const step4 = (state, { type, payload }) => {
+export const step4 = (state = {}, { type, payload }) => {
   switch (type) {
     case SET_STEP4_DATA:
       return { ...state, ...payload }
 
     default:
-      return { ...state }
+      return state
   }
 }
 

@@ -16,7 +16,8 @@ import {
   SET_SELECTED_COUNTRY_AND_STATE,
   SET_BOOKING_ID,
   SET_IS_CUSTOM_DESTINATION,
-  SET_VEHICLES_WERE_FETCHED
+  SET_VEHICLES_WERE_FETCHED,
+  SET_FEE
 } from "redux/constants"
 
 export const pageSteps = (state, { type, payload }) => {
@@ -71,7 +72,7 @@ export const vehicles = (state = [], { type, payload }) => {
       return payload || []
 
     default:
-      return [...state]
+      return state
   }
 }
 
@@ -173,5 +174,14 @@ export const bookingId = (state = null, { type, payload }) => {
 
     default:
       return state
+  }
+}
+
+export const fee = (state = { tax: 22.4, rate: 16 }, { type, payload }) => {
+  switch (type) {
+    case SET_FEE:
+      return payload
+  default:
+    return state
   }
 }
