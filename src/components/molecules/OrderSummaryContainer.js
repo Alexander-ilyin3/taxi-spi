@@ -1,4 +1,4 @@
-import { Paper, Typography as T, Typography, Drawer, Button, SwipeableDrawer } from "@mui/material"
+import { Paper, Typography as T, Typography, Drawer, Button, SwipeableDrawer, CircularProgress } from "@mui/material"
 import { makeStyles } from '@mui/styles'
 import { Box, useTheme } from "@mui/system"
 import { useEffect, useState } from "react"
@@ -24,6 +24,7 @@ import {
   summaryGetSelectedAddons,
   summaryGetCouponObject,
   getFee,
+  getTotalLoading,
 } from "redux/selectors"
 import { isEqual } from "underscore"
 import { getAddons } from "redux/selectors/global.selectors"
@@ -222,6 +223,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
   const reduxSelectedAddons = useSelector(summaryGetSelectedAddons)
   const couponObject = useSelector(summaryGetCouponObject, isEqual)
   const fee = useSelector(getFee)
+  const isTotalLoading = useSelector(getTotalLoading)
   //redux values -------
   const formAddons = watch('Addon')
   const formAddonsWithPrice = findPriceForAddons(formAddons, reduxAddonList)
@@ -375,14 +377,34 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
                 backgroundColor: blue,
                 color: white,
                 padding: '20px',
-                borderRadius: '20px'
+                borderRadius: '20px',
+                position: 'relative'
               }}
             >
+              {isTotalLoading && (
+                <Box
+                  position="absolute"
+                  width="100%"
+                  height="100%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  boxSizing="border-box"
+                  margin="-20px -20px"
+                  borderRadius="20px"
+                  sx={{
+                    backgroundColor: 'rgba(255, 255, 255, .38)'
+                  }}
+                >
+                  {/* <T variant='h4' color='textSecondary'>Loading...</T> */}
+                  <CircularProgress />
+                </Box>
+              )}
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h4' color='inherit'>SubTotal</T>
-                <T variant='h5sb' color='inherit'>${displayingPrice}</T>
+                <T variant='h5sb' color='inherit'>${fee.subtotal}</T>
               </Box>
-
+              
               {couponDisplayingAmount && (
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <T variant='h4' color='inherit'>Coupon Discount</T>
@@ -399,7 +421,7 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <T variant='h3' color='inherit'>TOTAL</T>
-                <T variant='h3' color='inherit'>${totalPrice}</T>
+                <T variant='h3' color='inherit'>${fee.total}</T>
               </Box>
             </Box>
           </Box>

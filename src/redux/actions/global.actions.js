@@ -16,7 +16,8 @@ import {
   SET_BOOKING_ID,
   SET_IS_CUSTOM_DESTINATION,
   SET_VEHICLES_WERE_FETCHED,
-  SET_FEE
+  SET_FEE,
+  TOTAL_LOADING,
 } from 'redux/constants'
 
 export const setSteps = (steps) => ({
@@ -161,5 +162,12 @@ export const setFee = (data) => {
   return ({
     type: SET_FEE,
     payload: data,
+  })
+}
+
+export const setTotalLoading = (loading) => {
+  return ({
+    type: TOTAL_LOADING,
+    payload: loading,
   })
 }

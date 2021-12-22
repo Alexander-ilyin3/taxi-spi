@@ -23,4 +23,5 @@ export const getSessionLocations = state => ({
 export const getIfVehiclesWereFetched = state => state.vehiclesWereFetched || false
 
 export const getFee = state => state.fee || null
-export const getSelectedAddons = state => getGlobalStepsData(state).addons || {}
+export const getSelectedAddons = state => getGlobalStepsData(state).addons || []
+export const getTotalLoading = state => state.totalLoading || false
