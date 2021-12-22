@@ -28,7 +28,7 @@ import { useResetForm } from 'helpers/resetForm'
 import { stepHistoryHelper } from 'helpers/stepsButtonHelper'
 
 const Step4 = () => {
-  const state = useSelector(getStep4)
+  const state = useSelector(getStep4, isEqual)
   const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
@@ -89,7 +89,6 @@ const Step4 = () => {
   }, [])
   
   if (!reseted) return null //TODO
-
   return (
     <>
       <SiteHeader />
@@ -99,7 +98,7 @@ const Step4 = () => {
           <SectionBox>
             <T variant='h1'> Select Add-ons </T>
             <T variant='h5md' >Have extra luggage or want to start your vacation the second you get off the plane? These add-ons are for you!</T>
-            <AddOnsSection />
+            <AddOnsSection state={state} />
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} />
         </SectionWrapper>
