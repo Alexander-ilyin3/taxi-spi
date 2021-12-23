@@ -218,7 +218,13 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
   )
 }
 
-export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, plugForFirstStep, notshowOnMobile }) => {
+export const OrderSummaryContainer = ({
+  children,
+  oneSeatAllowed,
+  page6Variant,
+  plugForFirstStep,
+  notshowOnMobile
+}) => {
   const classes = useStyles()
   const { palette: { warning: { main: warning }, secondary: { lightGrayBlue }, primary: { blue, white, grey } }, breakpoints: { down } } = useTheme()
   const { watch } = useFormContext()
@@ -299,17 +305,28 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
   const [isMobileTotalOpen, setMobileTotalOpen] = useState(false)
 
 
+  const renderCloseButton = () => (
+    <Box mt={-1}>
+      <IconButton onClick={() => setMobileTotalOpen(false)}><Close fontSize="large" /></IconButton>
+    </Box>
+  )
   const RenderTotal = ({ mobileVariant }) => (
     <Paper
       elevation={page6Variant ? 0 : 10}
       sx={{
-        maxHeight: '100vh',
-        position: 'sticky',
-        top: 0,
-        '&::-webkit-scrollbar': {
-          width: 0,
-        },
-        overflow: 'auto',
+        ...(
+          page6Variant
+          ? {}
+          : {
+            maxHeight: '100vh',
+            position: 'sticky',
+            top: 0,
+            '&::-webkit-scrollbar': {
+              width: 0,
+            },
+            overflow: 'auto',
+          }
+        ),
         padding: page6Variant ? '30px' : [2, 4, 6, 8],
         paddingTop: page6Variant ? 4 : 7,
         // width: page6Variant ? '100%' : '40%',
@@ -331,14 +348,9 @@ export const OrderSummaryContainer = ({ children, oneSeatAllowed, page6Variant, 
       {page6Variant ? (
         <Box display="flex" justifyContent="space-between">
           <T variant='h2' sx={{ alignSelf: 'center', color: blue }}>Order Summary</T>
-          {mobileVariant && <IconButton onClick={() => setMobileTotalOpen(false)}><Close fontSize="large" /></IconButton>}
+          {mobileVariant && renderCloseButton()}
         </Box>
-      ) : (
-        <Box display="flex" justifyContent="space-between">
-          <T variant='h1'>Order Summary</T>
-          {mobileVariant && <IconButton onClick={() => setMobileTotalOpen(false)}><Close fontSize="large" /></IconButton>}
-        </Box>
-      )
+      ) : (<T variant='h1'>Order Summary</T>)
       }
       {page6Variant || plugForFirstStep ? null : <SummaryDateComponent />}
 
