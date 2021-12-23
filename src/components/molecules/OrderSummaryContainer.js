@@ -306,7 +306,7 @@ export const OrderSummaryContainer = ({
 
 
   const renderCloseButton = () => (
-    <Box mt={-1}>
+    <Box mt="-7px">
       <IconButton onClick={() => setMobileTotalOpen(false)}><Close fontSize="large" /></IconButton>
     </Box>
   )
@@ -316,16 +316,16 @@ export const OrderSummaryContainer = ({
       sx={{
         ...(
           page6Variant
-          ? {}
-          : {
-            maxHeight: '100vh',
-            position: 'sticky',
-            top: 0,
-            '&::-webkit-scrollbar': {
-              width: 0,
-            },
-            overflow: 'auto',
-          }
+            ? {}
+            : {
+              maxHeight: '100vh',
+              position: 'sticky',
+              top: 0,
+              '&::-webkit-scrollbar': {
+                width: 0,
+              },
+              overflow: 'auto',
+            }
         ),
         padding: page6Variant ? '30px' : [2, 4, 6, 8],
         paddingTop: page6Variant ? 4 : 7,
@@ -346,12 +346,13 @@ export const OrderSummaryContainer = ({
       }}
     >
       {page6Variant ? (
+        <T variant='h1'>Order Summary</T>
+      ) : (
         <Box display="flex" justifyContent="space-between">
           <T variant='h2' sx={{ alignSelf: 'center', color: blue }}>Order Summary</T>
           {mobileVariant && renderCloseButton()}
         </Box>
-      ) : (<T variant='h1'>Order Summary</T>)
-      }
+      )}
       {page6Variant || plugForFirstStep ? null : <SummaryDateComponent />}
 
       {
