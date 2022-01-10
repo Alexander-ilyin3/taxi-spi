@@ -1,9 +1,15 @@
 import { Button, Typography as T, useTheme } from "@mui/material"
 import { Box } from "@mui/system"
 import { calendars } from "api/calendarsApi"
+import { useApiCall } from "helpers/customHooks"
+import { mapVehiclesToState } from "helpers/mapVehiclesToState"
 import { reduceIconPath } from "helpers/reduceIconPath"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { getBookingId, getGlobalStepsData } from "redux/selectors"
+import { setVehicles } from "redux/actions"
+import { getBookingId, getGlobalStepsData, getStep1, getVehicles } from "redux/selectors"
+import { vehicles } from 'api/vehiclesApi'
+import { isEqual } from "underscore"
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY
@@ -12,7 +18,6 @@ const SCOPES = "https://www.googleapis.com/auth/calendar"
 
 export const PaymentCheckServises = ({ bookingId }) => {
   const data = useSelector(getGlobalStepsData)
-  console.log(data)
   const {
     location,
     booking_date,
@@ -21,11 +26,27 @@ export const PaymentCheckServises = ({ bookingId }) => {
     vehicle,
     total,
     notes,
+    passengers,
   } = data
   const { palette: { primary: { blue } } } = useTheme()
 
+  const step1Data = useSelector(getStep1, isEqual)
+  const vehicles = useSelector(getVehicles, isEqual)
+
+  const createVehiclesAction = (vehiclesResult) => {
+    return setVehicles(mapVehiclesToState(vehiclesResult, step1Data.roadTripReservation))
+  }
+  const { reFetch } = useApiCall({ handler: vehicles.getVehicles, lazy: true, action: createVehiclesAction })
+  useEffect(() => {
+    if (!vehicles) {
+      reFetch()
+    }
+  }, [])
+  const vehicleType = vehicles.find(({ vehicleId }) => vehicle.vehicle_id)?.oneSeatAllowed ? 'shuttle' : 'privat'
   const date = new Date(`${booking_date}:${booking_time}`)
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+  console.log(vehicleType)
 
   const icalOnClick = async () => {
 
@@ -55,9 +76,15 @@ export const PaymentCheckServises = ({ bookingId }) => {
       .then(() => {
         console.log('creating event')
         var event = {
-          'summary': `${location?.name} - ${destination?.name}`,
+          'summary': ` Transportation ${vehicleType} in ${location?.name}`,
           'location': location?.name,
-          'description': `${vehicle?.vehicle_count} ${vehicle?.name}.\nTotal: ${total}$.\n${notes}`,
+          'description': `
+Set to the ${booking_time} on ${booking_date}\n
+One Way transfer ${vehicle?.name}, ${passengers} passengers to ${destination?.name}
+SJD Taxi, LLC | Need help?
+logistics@sjdtaxi.com | USA
+248-582-9239 | MEX 624-130-6994
+          `,
           'start': {
             'dateTime': date,
             'timeZone': timezone,
@@ -82,6 +109,10 @@ export const PaymentCheckServises = ({ bookingId }) => {
         })
       })
     })
+  }
+
+  if (!vehicleType) {
+    return null
   }
 
   return (
