@@ -42,7 +42,7 @@ export const PaymentCheckServises = ({ bookingId }) => {
       reFetch()
     }
   }, [])
-  const vehicleType = vehicles.find(({ vehicleId }) => vehicle.vehicle_id)?.oneSeatAllowed ? 'shuttle' : 'privat'
+  const vehicleType = vehicles.find(({ vehicleId }) => vehicle.vehicle_id)?.oneSeatAllowed ? 'shuttle' : 'private'
   const date = new Date(`${booking_date}:${booking_time}`)
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
