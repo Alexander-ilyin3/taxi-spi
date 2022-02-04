@@ -109,7 +109,7 @@ const Step6 = () => {
               <InputBox name={'cvcCode'} labelText="CVC" r />
             </FlexBoxRow> */}
             <CheckBoxLabelBox labelText={'I Agree to the SJD Taxi Terms & Conditions'} name="termsAndCondition" r>
-              <a href={window.sjd_inline_script?.terms_and_conditions || ''}><T variant="secondaryText">View Our Terms &amp; Conditions</T></a>
+              <a target="_blank" href={window.sjd_inline_script?.terms_and_conditions || ''}><T variant="secondaryText">View Our Terms &amp; Conditions</T></a>
             </CheckBoxLabelBox>
           </SectionBox>
           <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} nextButtonText={'Complete Reservation'}/>
