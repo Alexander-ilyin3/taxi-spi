@@ -93,7 +93,7 @@ const Step6 = () => {
         <SectionWrapper>
           <SectionBox>
             <T variant='h1'> Billing Information </T>
-            <T variant='h5md' >Please enter in address that will match the billing card you are using</T>
+            <T variant='h5md' >For billing address, please enter in the address that will match the credit card you are using</T>
             <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed} page6Variant>
               <OrderSummaryPlug />
             </OrderSummaryContainer>
