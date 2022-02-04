@@ -44,7 +44,7 @@ const Step6 = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual)
   const { handleSubmit } = useFormContext()
 
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
@@ -112,7 +112,7 @@ const Step6 = () => {
               <a target="_blank" href={window.sjd_inline_script?.terms_and_conditions || ''}><T variant="secondaryText">View Our Terms &amp; Conditions</T></a>
             </CheckBoxLabelBox>
           </SectionBox>
-          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} nextButtonText={'Complete Reservation'}/>
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} nextButtonText={'Complete Reservation'} />
         </SectionWrapper>
         <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed} notshowOnMobile>
           <OrderSummaryPlug />

@@ -44,7 +44,7 @@ export const CheckBoxLabelBox = ({ labelText, children, name, r }) => {
             }}
           >
             {children}
-            {invalid && <LabelError labelErrorText={''} />}
+            {invalid && <LabelError labelErrorText={'Agreement to Terms and Conditions required to proceed to payment'} />}
           </Box>
         </Box>
       )}
