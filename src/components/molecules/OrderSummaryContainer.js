@@ -195,7 +195,7 @@ const AddOnsContainer = ({ addonsToDisplay }) => {
         flexDirection: 'column',
         backgroundColor: lightBlue,
         borderRadius: '25px 25px 0 0',
-        padding: '16px 26px',
+        padding: '16px 30px',
         gap: 1
       }}
     >
@@ -316,16 +316,16 @@ export const OrderSummaryContainer = ({
       sx={{
         ...(
           page6Variant
-          ? {}
-          : {
-            maxHeight: '100vh',
-            position: 'sticky',
-            top: 0,
-            '&::-webkit-scrollbar': {
-              width: 0,
-            },
-            overflow: 'auto',
-          }
+            ? {}
+            : {
+              maxHeight: '100vh',
+              position: 'sticky',
+              top: 0,
+              '&::-webkit-scrollbar': {
+                width: 0,
+              },
+              overflow: 'auto',
+            }
         ),
         padding: page6Variant ? '30px' : [2, 4, 6, 8],
         paddingTop: page6Variant ? 4 : 7,
@@ -380,7 +380,7 @@ export const OrderSummaryContainer = ({
                 sx={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  padding: '26px'
+                  padding: '30px'
                 }}
               >
                 <T
@@ -394,23 +394,39 @@ export const OrderSummaryContainer = ({
               </Box>
               <Box
                 sx={{
-                  padding: '0 40px 20px'
+                  padding: '0 30px 20px'
                 }}
               >
-                <T variant="h5sb" sx={{ color: blue, display: 'block' }}>NUMBER OF PASSENGERS:</T>
-                {numberOfPassengers ? (
-                  <T variant="h5sb">{numberOfPassengers}</T>
-                ) : (
-                  <T variant="h5sb" color={warning}>Please enter the number of passengers</T>
-                )}
-                <T variant="h5sb" sx={{ color: blue, display: 'block' }}>VEHICLE SELECTION:</T>
-                <T variant="h5sb">
-                  {numberOfCars > 1 ? (
-                    `${selectedCar.carName} (${numberOfCars})`
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end',
+                  }}
+                >
+                  <T variant="h5sb" sx={{ color: blue, display: 'block' }}>Number of Passengers:</T>
+                  {numberOfPassengers ? (
+                    <T variant="h5sb">{numberOfPassengers}</T>
                   ) : (
-                    selectedCar.carName
+                    <T variant="h5sb" color={warning}>Please enter the number of passengers</T>
                   )}
-                </T>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end',
+                  }}
+                >
+                  <T variant="h5sb" sx={{ color: blue, display: 'block' }}>Vehicle Selection:</T>
+                  <T variant="h5sb">
+                    {numberOfCars > 1 ? (
+                      `${selectedCar.carName} (${numberOfCars})`
+                    ) : (
+                      selectedCar.carName
+                    )}
+                  </T>
+                </Box>
               </Box>
               <AddOnsContainer addonsToDisplay={addonsToDisplay} />
               <Box
