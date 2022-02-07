@@ -397,7 +397,7 @@ export const OrderSummaryContainer = ({
                   padding: '0 40px 20px'
                 }}
               >
-                <T variant="h5sb" sx={{ color: blue, display: 'block' }}>QUANTITY OF PASSENGERS:</T>
+                <T variant="h5sb" sx={{ color: blue, display: 'block' }}>NUMBER OF PASSENGERS:</T>
                 {numberOfPassengers ? (
                   <T variant="h5sb">{numberOfPassengers}</T>
                 ) : (
