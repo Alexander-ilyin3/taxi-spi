@@ -58,7 +58,7 @@ export const PaymentCheckServises = ({ bookingId }) => {
     window.location.assign(`${domain}/wp-content/plugins/sjd-booking/libraries/icalendar/icalendar.php?order_id=${calenderResponse?.order_id}`) //TODO
   }
 
-  const googleCalendarHandler = () => {
+  const OLD_googleCalendarHandler = () => {
     window.gapi.load('client:auth2', () => {
       console.log('loaded client')
 
@@ -73,42 +73,75 @@ export const PaymentCheckServises = ({ bookingId }) => {
       window.gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 
       window.gapi.auth2.getAuthInstance().signIn()
-      .then(() => {
-        console.log('creating event')
-        var event = {
-          'summary': ` Transportation ${vehicleType} in ${location?.name}`,
-          'location': location?.name,
-          'description': `
+        .then(() => {
+          console.log('creating event')
+          var event = {
+            'summary': ` Transportation ${vehicleType} in ${location?.name}`,
+            'location': location?.name,
+            'description': `
 Set to the ${booking_time} on ${booking_date}\n
 One Way transfer ${vehicle?.name}, ${passengers} passengers to ${destination?.name}
 SJD Taxi, LLC | Need help?
 logistics@sjdtaxi.com | USA
 248-582-9239 | MEX 624-130-6994
           `,
-          'start': {
-            'dateTime': date,
-            'timeZone': timezone,
-          },
-          'end': {
-            'dateTime': date,
-            'timeZone': timezone,
-          },
-          'reminders': {
-            'useDefault': true,
+            'start': {
+              'dateTime': date,
+              'timeZone': timezone,
+            },
+            'end': {
+              'dateTime': date,
+              'timeZone': timezone,
+            },
+            'reminders': {
+              'useDefault': true,
+            }
           }
-        }
 
-        var request = window.gapi.client.calendar.events.insert({
-          'calendarId': 'primary',
-          'resource': event,
+          var request = window.gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': event,
+          })
+          console.log({ request })
+          request.execute(event => {
+            console.log(event)
+            window.open(event.htmlLink)
+          })
         })
-        console.log({ request })
-        request.execute(event => {
-          console.log(event)
-          window.open(event.htmlLink)
-        })
-      })
     })
+  }
+
+  const googleCalendarHandler = () => {
+    const isoDate = new Date(`${booking_date} ${booking_time || '00:00'}`)?.toISOString().replace(/-|:|\.\d\d\d/g, "")
+
+    console.log({ isoDate })
+    const params =
+      new URLSearchParams({
+        action: "TEMPLATE",
+        text: ` Transportation ${vehicleType} in ${location?.name}`,
+        // date: encodeURIComponent(isoDate),
+        dates: `${isoDate}/${isoDate}`,
+        details: [
+          `Set to the ${booking_time} on ${booking_date}`,
+          `One Way transfer ${vehicle?.name}, ${passengers} passengers to ${destination?.name}`,
+          ``,
+          `SJD Taxi, LLC | Need help ?`,
+          `logistics@sjdtaxi.com | USA`,
+          `248 - 582 - 9239 | MEX 624 - 130 - 6994`
+        ].join('\n'),
+        location: location?.name || '',
+        // sf: true,
+        // output: "xml"
+      }).toString()
+
+    console.log(
+      { data },
+      booking_date,
+      new Date(booking_date)?.toISOString()
+    )
+    console.log('https://www.google.com/calendar/render?' + params)
+    // window.location.assign('https://www.google.com/calendar/render?' + params)
+    window.open('https://www.google.com/calendar/render?' + params, '_blank')
   }
 
   if (!vehicleType) {
