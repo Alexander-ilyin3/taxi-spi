@@ -28,7 +28,7 @@ export const mapVehiclesToState = (responseVehicles, isRoundTrip) => {
       numberOfSeats: parseFloat(vehicle.passenger_limit),
       picturePath: cutPrefix(vehicle.image),
       oneSeatAllowed: false, // vehicle.type === 'shuttle' ? true : false, // the rule has been cancelled 
-      noMoreThenAmountOfPeople: vehicle.type === 'shuttle' ? Number(vehicle.passenger_limit) : null
+      noMoreThenAmountOfPeople: vehicle.type === 'shuttle' ? Number(vehicle.passenger_limit) : Infinity
     }
   })
 
