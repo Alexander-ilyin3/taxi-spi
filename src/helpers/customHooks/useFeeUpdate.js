@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getSelectedVehicleIdObject, getSelectedAddons } from 'redux/selectors/global.selectors'
 import { getPassengers } from 'redux/selectors/step1.selectors'
 import { useDeepEqualMemo } from './useDeepEqualMemo'
+import { summaryGetCouponObject } from 'redux/selectors'
+import { isEqual } from 'underscore'
 
 
 export const useFeeUpdate = () => {
@@ -30,6 +32,7 @@ export const useFeeUpdate = () => {
   const passengersState = useSelector(getPassengers)
   const vehicleState = useSelector(getSelectedVehicleIdObject)
   const addonsState = useSelector(getSelectedAddons)
+  const couponObject = useSelector(summaryGetCouponObject, isEqual)
 
   const addons = useDeepEqualMemo(
     addon ? Object.values(addon).map(({ addon_id, count }) => ({ addon_id, count })).filter(({ count }) => count) : null
@@ -47,5 +50,5 @@ export const useFeeUpdate = () => {
       ...(passengersToSend ? { passengers: passengersToSend } : {}),
       ...(vehicleToSend ? { vehicle_id: vehicleToSend } : {})
     })
-  }, [passengersToSend, calculateFee, vehicleToSend, addonsToSend])
+  }, [passengersToSend, calculateFee, vehicleToSend, addonsToSend, couponObject])
 }

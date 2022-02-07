@@ -44,7 +44,7 @@ const Step6 = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual )
+  const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual)
   const { handleSubmit } = useFormContext()
 
   useApiCall({ handler: session.getSession, action: setGlobalStepsData })
@@ -93,7 +93,7 @@ const Step6 = () => {
         <SectionWrapper>
           <SectionBox>
             <T variant='h1'> Billing Information </T>
-            <T variant='h5md' >Please enter in address that will match the billing card you are using</T>
+            <T variant='h5md' >For billing address, please enter in the address that will match the credit card you are using</T>
             <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed} page6Variant>
               <OrderSummaryPlug />
             </OrderSummaryContainer>
@@ -109,10 +109,10 @@ const Step6 = () => {
               <InputBox name={'cvcCode'} labelText="CVC" r />
             </FlexBoxRow> */}
             <CheckBoxLabelBox labelText={'I Agree to the SJD Taxi Terms & Conditions'} name="termsAndCondition" r>
-              <a href={window.sjd_inline_script?.terms_and_conditions || ''}><T variant="secondaryText">View Our Terms &amp; Conditions</T></a>
+              <a target="_blank" href={window.sjd_inline_script?.terms_and_conditions || ''}><T variant="secondaryText">View Our Terms &amp; Conditions</T></a>
             </CheckBoxLabelBox>
           </SectionBox>
-          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} nextButtonText={'Complete Reservation'}/>
+          <FormControlButtons backHandle={backHandle} nextHandle={nextHandle} nextButtonText={'Complete Reservation'} />
         </SectionWrapper>
         <OrderSummaryContainer selectedCar={selectedCar} oneSeatAllowed={oneSeatAllowed} notshowOnMobile>
           <OrderSummaryPlug />
