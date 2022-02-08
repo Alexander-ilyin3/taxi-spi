@@ -1,7 +1,8 @@
 import { Button, ButtonBase, Typography as T } from '@mui/material'
 import { useFormContext } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTheme } from '@mui/system'
+import { isEqual } from 'underscore'
 
 import { SectionBox } from 'components/atoms/SectionBox'
 import { SiteHeader } from 'components/molecules/SiteHeader.js'
@@ -25,7 +26,13 @@ const Step7 = () => {
   /*//TODO display appropriate step name*/
   const { watch, formState, setValue } = useFormContext()
   const history = useHistory()
-  useApiCall({ handler: session.getSession, action: setGlobalStepsData })
+  const { reFetch, result: sessionResult } = useApiCall({ handler: session.getSession, action: setGlobalStepsData })
+
+  const memoizedSessionResult = useMemo(() => {
+    if (sessionResult && !isEqual(sessionResult, {})) {
+      return sessionResult
+    }
+  }, [sessionResult]);
 
   const bookingId = useSelector(getBookingId)
   const selectedCar = watch('selectedCar')
@@ -38,6 +45,12 @@ const Step7 = () => {
   const onClick = () => {
     window.location.assign('https://www.purecabo.com')
   }
+
+  useEffect(() => {
+    if (memoizedSessionResult) {
+      session.updateSession({ clean: true })
+    }
+  }, [memoizedSessionResult])
 
   return (
     <>
