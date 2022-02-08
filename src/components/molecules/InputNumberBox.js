@@ -23,9 +23,9 @@ const InputNumberBox = ({ labelText, labelErrorText, r, name, selectedCar }) => 
           reqularValidation: (v) => {
             return r && !!v
           },
-          seatLimit: (v) => {
-            return v > selectedCar?.noMoreThenAmountOfPeople ? 'The seat limit for the shuttle has been reached' : true
-          }
+          // seatLimit: (v) => {
+          //   return v > selectedCar?.noMoreThenAmountOfPeople ? 'The seat limit for the shuttle has been reached' : true
+          // }
         }
       }}
       render={({
