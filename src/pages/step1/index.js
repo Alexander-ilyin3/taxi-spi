@@ -20,7 +20,7 @@ import { SiteFooter } from 'components/molecules/SiteFooter'
 import { LocationInputSelect } from 'components/molecules/LocationInputSelect'
 
 import { setGlobalStepsData, setVehicles, setVehiclesWereFetched } from 'redux/actions'
-import { getIfVehiclesWereFetched, getIsCustomDestination, getIsRoundTrip, getSessionLocations, getStep1, getVehicles } from 'redux/selectors'
+import { getCustomDestination, getIfVehiclesWereFetched, getIsCustomDestination, getIsRoundTrip, getSessionLocations, getStep1, getVehicles } from 'redux/selectors'
 
 import { locations } from 'api/locationsApi'
 import { session } from 'api/sessionApi'
@@ -50,7 +50,10 @@ const Step1 = () => {
   const defaults = defaultValues[1]
   const state = useSelector(getStep1, isEqual)
   const isCustomDestinationRedux = useSelector(getIsCustomDestination, isEqual)
+  const customDestinationState = useSelector(getCustomDestination, isEqual)
   useResetForm({ state, defaults })
+
+  console.log({ customDestinationState })
 
   const locationIsAirport = watch('pickupLocation')?.is_airport === '1' ? true : false
   const formLocation = watch('pickupLocation')
@@ -71,6 +74,13 @@ const Step1 = () => {
       setValue('roadTripReservation', true)
     }
   }, [locationIsAirport])
+
+  useEffect(() => {
+    if(customDestinationState) {
+      setValue('isCustomDestination', 1)
+      setValue('customDestination', customDestinationState)
+    }
+  }, [customDestinationState])
 
   const orderId = getOrderId()
   const step1Data = useSelector(getStep1, isEqual)
