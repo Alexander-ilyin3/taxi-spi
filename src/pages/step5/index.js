@@ -53,7 +53,7 @@ const Step5 = () => {
   useResetForm({ state, defaults })
 
   useEffect(() => {
-    return () => { console.log('CLEAR SELECTED COUNTRY STATE'); return dispatch(clearSelectedCountryAndState()) }
+    return () =>  dispatch(clearSelectedCountryAndState())
   }, [])
 
   const countryToSetActive = useMemo(() => {
@@ -105,7 +105,6 @@ const Step5 = () => {
       const bookingResponse = await booking.submit()
 
       if (bookingResponse?.booking_id) {
-        console.log('response?.booking_id', bookingResponse?.booking_id)
         dispatch(setBookingId(bookingResponse.booking_id))
         history.push('step-7')
       }
@@ -119,11 +118,9 @@ const Step5 = () => {
 
   const nextHandle = () => {
     handleSubmit(onSubmit, onError)()
-    console.log('next clicked')
   }
 
   const backHandle = () => {
-    console.log('back clicked')
     stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 

@@ -32,7 +32,7 @@ export const mapVehiclesToState = (responseVehicles, isRoundTrip) => {
     }
   })
 
-  console.log('mapped -------- vehicles -------- , ', mappedVehicles)
+
   return mappedVehicles
   // image: "https://sjd-taxi.requestumdemo.com/wp-content/uploads/2021/09/land-rover-range-rover-sport-2021.jpg"
   // name: "Range Rover Sport"

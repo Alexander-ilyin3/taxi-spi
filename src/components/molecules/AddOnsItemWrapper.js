@@ -58,19 +58,12 @@ export const AddOnsItemWrapper = ({ addonObject, onChange, value }) => {
   const { control } = useFormContext()
 
   const medium = useMediaQuery(down('md'))
-  // console.log('addons is mobile ---', mobile)
   return (
     <Box
       sx={{
-        // maxWidth: '100%',
         width: '100%',
-        // minWidth: '240px',
         minHeight: '175px',
         ...(!medium && { flexBasis: '45%' })
-        // flexShrink: '1',
-        // maxWidth: '45%',
-        // minWidth: '260px',
-        // minHeight: '175px',
       }}
     >
       <Card

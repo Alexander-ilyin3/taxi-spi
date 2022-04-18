@@ -43,7 +43,6 @@ export const useFeeUpdate = () => {
   const addonsToSend = useDeepEqualMemo(addons || addonsState)
 
   useEffect(() => {
-    console.log({ passengersToSend, vehicleToSend, addonsToSend })
     dispatch(setTotalLoading(true))
     return calculateFee({
       ...(addonsToSend ? { addons: addonsToSend } : {}),

@@ -28,24 +28,13 @@ export const CarCardsSection = () => {
       })
       
       if ( carToSetAsActive ) { 
-        // const i = cardsData.indexOf(carToSetAsActive)
+
         setValue('selectedCar', {...carToSetAsActive, price: parseFloat(carToSetAsActive.price)/*, index: i*/}) //TODO hell
       }
     }
   }, [activeVehicleId, cardsData])
 
-  // useEffect(() => {
-  //   console.log('car was changed', selectedCar)
-  //   if (selectedCar) {
-  //     session.updateSession(mapStateToParams({ index: selectedCar.index }))
-  //   }
-  //   // const mappedForParams = mapStateToParams(selectedCar)
 
-  // }, [selectedCar])
-
-
-
-  // console.log('cardsData', 3333333, cardsData)
   return (
     <Controller
       control={control}

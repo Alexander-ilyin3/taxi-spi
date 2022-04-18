@@ -9,21 +9,15 @@ import { getErrorTextWithMultipleValidateFunc, validateSeveral } from 'helpers/v
 
 const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additionalOnChange, validateFunctionObject = {} }) => {
   const { control } = useFormContext()
-  // const validateFuncErrorText = validateFunctionObject?.errText
 
-  // const validateFunctions = [
-  //   v => r && !!v,
-  // ]
 
 
   const rulesObject = {
     validate: {
       ...(r && {require111: v => !!v || 'The field is required!'}),
       ...validateFunctionObject
-    } //outV => validateSeveral(outV, validateFunctions),
+    }
   }
-
-  // if (validateFunctionObject) //validateFunctions.push(validateFunctionObject.func)
 
   return (
     name ? (
@@ -37,16 +31,7 @@ const InputBox = ({ labelText, labelErrorText, r, error, disabled, name, additio
           field: { onChange, value, ref },
           fieldState: { invalid, error },
         }) => (
-          <
-            // sx={{
-            //   width: '100%',
-            //   display: 'flex',
-            //   flexDirection: 'column',
-            //   justifyContent: 'space-between',
-            //   height: 'inherit'
-            // }}
-          >
-            {/* {console.log(3333333333, 'ERRORS --- ,', error)} */}
+          <>
             {labelText ? (
               <Label sx={{ marginBottom: 2 }}>
                 {r && <RequiredStar />}

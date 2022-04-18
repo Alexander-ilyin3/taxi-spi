@@ -51,7 +51,6 @@ const Step7 = () => {
       session.updateSession({ clean: true })
     }
   }, [memoizedSessionResult])
-
   return (
     <>
       <SiteHeader />

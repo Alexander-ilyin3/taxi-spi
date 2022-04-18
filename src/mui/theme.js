@@ -311,18 +311,12 @@ theme.typography = {
     }
   },
 }
-// }
-// }
-// console.log('theme', themeReliedOnProps)
 
 const defaultMuiTheme = createTheme({
   ...theme,
   components: {
 
     MuiButton: {
-      // variants: {
-
-      // },
       styleOverrides: {
         root: {
           // '& :not(.PrivatePickersToolbar-dateTitleContainer)': {
@@ -333,28 +327,14 @@ const defaultMuiTheme = createTheme({
       }
     },
     MuiPaper: {
-      // {
-      // padding: [2, 4, 6, 8],
-      // paddingTop: 7,
-      // display: 'flex',
-      // flexDirection: "column",
-      // gap: 4,
       borderRadius: 4,
-      // ...addSx,
-      // }
+
     }
   },
 
   typography: {}
 
 })
-
-// defaultMuiTheme.typography = {
-//   ...defaultMuiTheme.typography,
-//   h3: {
-
-//   }
-// }
 
 
 export { theme, defaultMuiTheme }

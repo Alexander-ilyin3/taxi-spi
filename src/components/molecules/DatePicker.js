@@ -51,7 +51,6 @@ export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
                     variant="outlined"
                     helperText={(invalid) && <LabelError labelErrorText={'Please, enter a valid date'} />}
                     {...params}
-                    onFocus={console.log}
                     value={params.inputProps.value}
                     error={invalid}
                     onClick={() => setOpen(true)}

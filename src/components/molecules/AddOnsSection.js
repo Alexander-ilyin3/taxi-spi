@@ -8,10 +8,8 @@ import { testAddons } from 'testData/testAddons'
 import { mapStateToAddonCards } from "helpers/mapStateToAddonCards"
 
 export const AddOnsSection = ({ state }) => {
-  // const cardsData = []
   const { control } = useFormContext()
   const addons = useSelector(getAddons, isEqual)
-  console.log('addins ', addons, testAddons)
 
   const cardsData = mapStateToAddonCards(addons)
   return (
@@ -35,7 +33,7 @@ export const AddOnsSection = ({ state }) => {
             field: { onChange, value },
             fieldState: { invalid }
           }) => (
-            <AddOnsItemWrapper key={i} addonObject={cardData} onChange={(count) => {console.log(count); onChange({ addon_id: cardData.addon_id, count })}} value={value?.count || 0} />
+            <AddOnsItemWrapper key={i} addonObject={cardData} onChange={(count) =>  onChange({ addon_id: cardData.addon_id, count })} value={value?.count || 0} />
           )}
         />
       ))

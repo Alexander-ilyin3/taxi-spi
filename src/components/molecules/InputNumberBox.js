@@ -17,15 +17,11 @@ const InputNumberBox = ({ labelText, labelErrorText, r, name, selectedCar }) => 
       rules={{
         validate: {
           oneSeat: (v) => {
-            console.log({ oneSeatRule: selectedCar?.oneSeatAllowed ? parseFloat(v) === 1 || 'Only one seat allowed for this type of vehicle' : true })
             return selectedCar?.oneSeatAllowed ? parseFloat(v) === 1 || 'Only one seat allowed for this type of vehicle' : true
           },
           reqularValidation: (v) => {
             return r && !!v
           },
-          // seatLimit: (v) => {
-          //   return v > selectedCar?.noMoreThenAmountOfPeople ? 'The seat limit for the shuttle has been reached' : true
-          // }
         }
       }}
       render={({

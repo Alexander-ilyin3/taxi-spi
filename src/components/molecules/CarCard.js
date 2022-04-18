@@ -32,8 +32,7 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
   const theme = useTheme()
   const { palette: { primary: { grey, blue, white }, secondary: { lightBlue } } } = theme
   const { carName, price, numberOfSeats, picturePath, vehicleId } = cardData
-  // const activeVehicleId = useSelector(getSelectedVehicle)
-  // console.log(1111, cardData, activeVehicleId)
+
   const isCarActive = String(vehicleId) === String(activeCar?.vehicleId)
 
   const cardClick = () => {

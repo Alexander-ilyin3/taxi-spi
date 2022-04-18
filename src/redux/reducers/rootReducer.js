@@ -56,8 +56,5 @@ const rootReducer = combineReducers(
 
 export const store = createStore(
   rootReducer,
-  // undefined,
-  // { pageSteps: [] },
-  composeWithDevTools(applyMiddleware(apiMiddleware, )) // (q) => (w) => console.log(111111, q,w))
-  // composedEnhancer
+  composeWithDevTools(applyMiddleware(apiMiddleware, ))
 )

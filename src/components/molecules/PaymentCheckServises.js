@@ -46,7 +46,6 @@ export const PaymentCheckServises = ({ bookingId }) => {
   const date = new Date(`${booking_date}:${booking_time}`)
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-  console.log(vehicleType)
 
   const icalOnClick = async () => {
 
@@ -68,9 +67,6 @@ export const PaymentCheckServises = ({ bookingId }) => {
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPES,
       })
-
-
-      window.gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 
       window.gapi.auth2.getAuthInstance().signIn()
         .then(() => {
@@ -102,9 +98,7 @@ logistics@sjdtaxi.com | USA
             'calendarId': 'primary',
             'resource': event,
           })
-          console.log({ request })
           request.execute(event => {
-            console.log(event)
             window.open(event.htmlLink)
           })
         })
@@ -114,12 +108,10 @@ logistics@sjdtaxi.com | USA
   const googleCalendarHandler = () => {
     const isoDate = new Date(`${booking_date} ${booking_time || '00:00'}`)?.toISOString().replace(/-|:|\.\d\d\d/g, "")
 
-    console.log({ isoDate })
     const params =
       new URLSearchParams({
         action: "TEMPLATE",
         text: ` Transportation ${vehicleType} in ${location?.name}`,
-        // date: encodeURIComponent(isoDate),
         dates: `${isoDate}/${isoDate}`,
         details: [
           `Set to the ${booking_time} on ${booking_date}`,
@@ -130,17 +122,8 @@ logistics@sjdtaxi.com | USA
           `248 - 582 - 9239 | MEX 624 - 130 - 6994`
         ].join('\n'),
         location: location?.name || '',
-        // sf: true,
-        // output: "xml"
       }).toString()
 
-    console.log(
-      { data },
-      booking_date,
-      new Date(booking_date)?.toISOString()
-    )
-    console.log('https://www.google.com/calendar/render?' + params)
-    // window.location.assign('https://www.google.com/calendar/render?' + params)
     window.open('https://www.google.com/calendar/render?' + params, '_blank')
   }
 

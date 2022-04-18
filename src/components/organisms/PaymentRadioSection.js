@@ -16,7 +16,6 @@ export const PaymentRadioSection = () => {
         name="paymentVariant"
         render={({ field }) => (
           <RadioGroup {...field} row sx={{  gap: '16px' }}>
-            {console.log(44444444444444, field)}
             <FormControlLabel
               value="paypal"
               variant="paymentButtons"

@@ -276,14 +276,8 @@ export const OrderSummaryContainer = ({
     setDisplayingPrice(selectedCar.price * numberOfCars + addonSummPrice)
   }, [numberOfCars, selectedCar, addonSummPrice])
 
-  // useEffect(() => {
-  //   if (displayingPrice) {
-  //     setFeesCount((displayingPrice / 100 * 16))
-  //   }
-  // }, [displayingPrice])
 
   useEffect(() => {
-    // console.log({}, displayingPrice, feesCount )
     if (isNaN(Number(displayingPrice)) || isNaN(Number(feesCount))) return
 
     setTotalPrice((displayingPrice - flatCouponAmount + feesCount).toFixed(2))

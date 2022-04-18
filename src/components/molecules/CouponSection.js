@@ -21,15 +21,12 @@ export const CouponSection = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const sessionCoupon = useSelector(getSessionCoupon)
   const dispatch = useDispatch()
-  // const mobile = useMediaQuery(down('sm'))
 
-  console.log({ sessionCoupon })
 
   const checkCoupon = async () => {
-    // console.log('couponResponse', couponResponse)
+
     const couponResponse = await coupon.checkCoupon({ code: couponValue })
 
-    console.log('couponResponse', couponResponse)
 
     if (couponResponse && couponResponse.status === 1 && couponResponse.coupon_id) {
       // const mappedForParams = mapStateToParams(data)

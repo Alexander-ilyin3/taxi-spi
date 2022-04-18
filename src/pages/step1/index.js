@@ -53,8 +53,6 @@ const Step1 = () => {
   const customDestinationState = useSelector(getCustomDestination, isEqual)
   useResetForm({ state, defaults })
 
-  console.log({ customDestinationState })
-
   const locationIsAirport = watch('pickupLocation')?.is_airport === '1' ? true : false
   const formLocation = watch('pickupLocation')
   const formDestination = watch('destinationLocation')
@@ -63,7 +61,7 @@ const Step1 = () => {
   const sessionLocations = useSelector(getSessionLocations)
   const sessionIsRoundTrip = useSelector(getIsRoundTrip)
   const vehiclesWereFetched = useSelector(getIfVehiclesWereFetched)
-  // reset()
+
   const [noVehiclesError, setNoVehiclesError] = useState(false)
   const vehiclesArrayRedux = useSelector(getVehicles, isEqual)
 
@@ -89,7 +87,6 @@ const Step1 = () => {
   const { result: locationsResult = [] } = useApiCall({ handler: locations.getLocations })
   const { reFetch: refetchSession } = useApiCall({ handler: session.getSession, action: setGlobalStepsData, lazy: true })
   const { reFetch: refetchSubmitSession } = useApiCall({ handler: session.updateSession, action: setGlobalStepsData, lazy: true })
-  // const { reFetch: reFecthVehicles, result: vehiclesResult = [] } = useApiCall({ handler: vehicles.getVehicles, lazy: true })
   const isCustomDestination = watch('isCustomDestination')
 
   useEffect(() => {
@@ -107,8 +104,6 @@ const Step1 = () => {
       formIsRoundTrip: formIsRoadTripReservation,
     })
 
-    console.log({ mappedForParams })
-
     if (!isLocationsMatchingSession) {
       await refetchSubmitSession({ params: mappedForParams })
     } else {
@@ -123,46 +118,23 @@ const Step1 = () => {
 
       if (vehiclesResponse?.length > 0) {
         return stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
-        console.log(' -- hooray go to the next step --')
       }
 
       setNoVehiclesError(true)
 
-      // return reFecthVehicles({
-      //   params: {
-      //     pickup_location: data.pickupLocation.location_id,
-      //     destination: data.destinationLocation.location_id
-      //   }
-      // })
-    } else {
       setNoVehiclesError(false)
       return stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
     }
   }
 
-  // useEffect(() => {
-  //   console.log(33333333333, vehiclesArrayRedux, vehiclesWereFetched)
-  //   if (!vehiclesWereFetched) return
-  //   dispatch(setVehiclesWereFetched(false))
-
-  //   if (vehiclesArrayRedux.length === 0) {
-  //     return setNoVehiclesError(true)
-  //   }
-
-  //   // history.push('/step-3')
-  //   stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
-
-  // }, [vehiclesWereFetched])
-
   const onError = (errors, e) => console.log('error submitting', errors, e)
 
   const nextHandle = () => {
     handleSubmit(onSubmit, onError)()
-    console.log('next clicked')
   }
 
   const backHandle = () => {
-    console.log('back clicked')
+    // console.log('back clicked')
   }
 
   return (

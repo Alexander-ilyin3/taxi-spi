@@ -62,12 +62,10 @@ const Step2 = () => {
 
   const nextHandle = () => {
     handleSubmit(onSubmit, onError)()
-
-    console.log('next clicked')
   }
 
   const backHandle = () => {
-    console.log('back clicked')
+    // console.log('back clicked')
 
     stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }

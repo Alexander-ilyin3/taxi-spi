@@ -51,15 +51,11 @@ const Step6 = () => {
   useResetForm({ defaults })
 
   const onSubmit = async (data, e) => {
-    // console.log('Form Submitted', data, e)
-    // dispatch(setStep6Data(data))
 
     const bookingResponse = await booking.submit()
 
     if (bookingResponse?.booking_id) {
-      console.log('response?.booking_id', bookingResponse?.booking_id)
       dispatch(setBookingId(bookingResponse.booking_id))
-      // history.push('step-7')
     }
 
     const paymentsResponse = await payments.submitPaymentMethod({ method: data.paymentVariant })
@@ -67,24 +63,19 @@ const Step6 = () => {
     if (paymentsResponse !== false) {
       window.location.assign(paymentsResponse)
     }
-
-    console.log('submit actions', paymentsResponse)
   }
 
   const onError = (errors, e) => console.log('error submitting', errors, e)
 
   const nextHandle = () => {
     handleSubmit(onSubmit, onError)()
-    console.log('next clicked')
   }
 
   const backHandle = () => {
-    console.log('back clicked')
     stepHistoryHelper.prev(history, isCustomDestinationRedux)
   }
 
   const cardsData = testAddons
-  console.log(cardsData[0].src)
   return (
     <>
       <SiteHeader />

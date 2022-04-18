@@ -5,7 +5,6 @@ export const validateEmail = (emailValue) => {
 }
 
 export const confirmEmailValidate = (confirmEmail, primaryEmail) => {
-  console.log(44444444, 'emails --', primaryEmail, confirmEmail)
   return confirmEmail === primaryEmail
 }
 

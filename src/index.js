@@ -3,17 +3,11 @@ import ReactDOM from 'react-dom'
 import App from './App'
 
 (function (console) {
-  // var old_log = console.log
   if ( process.env.NODE_ENV !== 'development' ) {
     console.log = function() {}
     return
   }
   
-  // console.log = function() {
-  //     var d = new Date()
-  //     old_log.apply(console, [d].concat(arguments))
-  //     return d.getMilliseconds()
-  // }
 })(window.console)
 
 ReactDOM.render(
