@@ -16,7 +16,7 @@ const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
 const SCOPES = "https://www.googleapis.com/auth/calendar"
 
-export const PaymentCheckServises = ({ bookingId }) => {
+export const PaymentCheckServises = ({ bookingId, backTrip }) => {
   const data = useSelector(getGlobalStepsData)
   const {
     location,
@@ -27,6 +27,8 @@ export const PaymentCheckServises = ({ bookingId }) => {
     total,
     notes,
     passengers,
+    departure_date,
+    departure_time,
   } = data
   const { palette: { primary: { blue } } } = useTheme()
 
@@ -106,22 +108,28 @@ logistics@sjdtaxi.com | USA
   }
 
   const googleCalendarHandler = () => {
-    const isoDate = new Date(`${booking_date} ${booking_time || '00:00'}`)?.toISOString().replace(/-|:|\.\d\d\d/g, "")
+    const targetDate = backTrip ? departure_date : booking_date
+    const targetTime = backTrip ? departure_time : booking_time
 
-    const params =
+    const targetLocation = backTrip ? destination : location
+    const targetDestination = backTrip ? location : destination
+
+    const isoDate = new Date(`${targetDate} ${targetTime || '00:00'}`)?.toISOString().replace(/-|:|\.\d\d\d/g, "")
+
+    const params = 
       new URLSearchParams({
         action: "TEMPLATE",
-        text: ` Transportation ${vehicleType} in ${location?.name}`,
+        text: ` Transportation ${vehicleType} in ${targetLocation?.name}`,
         dates: `${isoDate}/${isoDate}`,
         details: [
           `${booking_time} on ${booking_date}`,
-          `One Way transfer ${vehicle?.name}, ${passengers} passengers to ${destination?.name}`,
+          `One Way transfer ${vehicle?.name}, ${passengers} passengers to ${targetDestination?.name}`,
           ``,
           `SJD Taxi, LLC | Need help ?`,
           `logistics@sjdtaxi.com | USA`,
           `248 - 582 - 9239 | MEX 624 - 130 - 6994`
         ].join('\n'),
-        location: location?.name || '',
+        location: targetLocation?.name || '',
       }).toString()
 
     window.open('https://www.google.com/calendar/render?' + params, '_blank')
@@ -149,7 +157,7 @@ logistics@sjdtaxi.com | USA
       >
         <img height="50" alt="google calendar" src={reduceIconPath('images/GoogleCalendar.png')}></img>
       </Box>
-      <T variant="h5sb" color={blue}>Add to Google Calendar</T>
+      <T variant="h5sb" color={blue}>Add {backTrip && 'back trip'} to Google Calendar</T>
     </Button>
   )
 }

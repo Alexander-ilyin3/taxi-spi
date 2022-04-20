@@ -13,7 +13,7 @@ import { CongratsWrapper } from 'components/atoms/CongratsWrapper'
 import { SiteFooter } from 'components/molecules/SiteFooter'
 import { testAddons } from 'testData/testAddons'
 import { useSelector } from 'react-redux'
-import { getBookingId } from 'redux/selectors'
+import { getBookingId, getGlobalStepsData } from 'redux/selectors'
 import { reduceIconPath } from 'helpers/reduceIconPath'
 import { useApiCall } from 'helpers/customHooks'
 import { session } from 'api/sessionApi'
@@ -35,6 +35,7 @@ const Step7 = () => {
   }, [sessionResult]);
 
   const bookingId = useSelector(getBookingId)
+  const { roundtrip } = useSelector(getGlobalStepsData)
   const selectedCar = watch('selectedCar')
   const oneSeatAllowed = selectedCar?.oneSeatAllowed
 
@@ -68,6 +69,7 @@ const Step7 = () => {
                 in the next 24 hours and save 10% off with Pure Cabo.
               </T>
               {bookingId && <PaymentCheckServises bookingId={bookingId} />}
+              {bookingId && roundtrip && <PaymentCheckServises bookingId={bookingId} backTrip />}
               <Button
                 sx={{
                   paddingLeft: 6,
