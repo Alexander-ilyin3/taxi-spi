@@ -114,7 +114,7 @@ logistics@sjdtaxi.com | USA
         text: ` Transportation ${vehicleType} in ${location?.name}`,
         dates: `${isoDate}/${isoDate}`,
         details: [
-          `Set to the ${booking_time} on ${booking_date}`,
+          `${booking_time} on ${booking_date}`,
           `One Way transfer ${vehicle?.name}, ${passengers} passengers to ${destination?.name}`,
           ``,
           `SJD Taxi, LLC | Need help ?`,
