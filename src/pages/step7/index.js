@@ -69,7 +69,7 @@ const Step7 = () => {
                 in the next 24 hours and save 10% off with Pure Cabo.
               </T>
               {bookingId && <PaymentCheckServises bookingId={bookingId} />}
-              {bookingId && roundtrip && <PaymentCheckServises bookingId={bookingId} backTrip />}
+              {(bookingId && roundtrip) ? <PaymentCheckServises bookingId={bookingId} backTrip /> : null}
               <Button
                 sx={{
                   paddingLeft: 6,
