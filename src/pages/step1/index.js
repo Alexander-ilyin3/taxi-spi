@@ -121,7 +121,7 @@ const Step1 = () => {
       }
 
       setNoVehiclesError(true)
-
+    } else {
       setNoVehiclesError(false)
       return stepHistoryHelper.next(history, isCustomDestination || isCustomDestinationRedux)
     }
