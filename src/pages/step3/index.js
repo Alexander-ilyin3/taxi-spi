@@ -63,9 +63,8 @@ const Step3 = () => {
   const onSubmit = async (data, e) => {
     const mappedForParams = mapStateToParams(data)
     const sessionResponse = await session.updateSession(mappedForParams)
-
     if (sessionResponse && sessionResponse.booking_date_error) {
-      setError("bookinglTime", {
+      setError(departureIsAirport ? 'departureTime' : 'bookinglTime', {
         type: "manual",
         message: sessionResponse.booking_date_error,
       })
