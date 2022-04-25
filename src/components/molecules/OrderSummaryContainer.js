@@ -382,8 +382,8 @@ export const OrderSummaryContainer = ({
                   variant="h5sb"
                   sx={{ flexGrow: 2 }}
                 >
-                  {isRoundTrip ? 'Round-trip' : 'One way trip' + ' '}
-                  from {location} to {destination}
+                  {isRoundTrip ? 'Round-trip' : 'One way trip'}
+                  {' '}from {location} to {destination}
                 </T>
                 <T variant="h5sb" sx={{ color: blue, flexGrow: 1 }}>${selectedCar.price.toFixed(2)}</T>
               </Box>
