@@ -1,0 +1,1 @@
+export const getMountPoint = () => document?.querySelector('sjd-form')?.shadowRoot?.querySelector('#sjd-form-root')

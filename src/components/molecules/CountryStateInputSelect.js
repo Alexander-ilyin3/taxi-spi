@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'
 import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
+import ShadowPopper from 'components/atoms/ShadowPopper'
 
 export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData }) => {
 
@@ -42,6 +43,7 @@ export const CountryStateInputSelect = ({ labelText, labelErrorText, r, disabled
             onChange={(e, value) => onChange(value)}
             isOptionEqualToValue={() => true}
             value={value || null}
+            PopperComponent={ShadowPopper}
             renderInput={(params) => {
               return (
                 <>

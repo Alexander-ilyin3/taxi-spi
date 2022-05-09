@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { LabelError } from "components/atoms/LabelError"
 import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
+import { getMountPoint } from 'helpers/shadowRoot'
 
 export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
   const { control } = useFormContext()
@@ -31,12 +32,16 @@ export const DatePicker = ({ name, r, labelErrorText, labelText }) => {
               value={value || null}
               minDate={new Date()}
               open={isOpen}
+              DialogProps={{ disablePortal: true }}
               onClose={() => setOpen(false)}
+              PopperProps={{
+                container: getMountPoint()
+              }}
               PopoverProps={{
                 disableRestoreFocus: true,
                 onClose: () => {
                   setOpen(false)
-                }
+                },
               }}
               renderInput={(params) => (
                 <Box sx={{ width: '100%' }}>

@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'
 import { Label } from "components/atoms/InputLabel"
 import { RequiredStar } from "components/atoms/RequiredStar"
 import { LabelError } from "components/atoms/LabelError"
+import ShadowPopper from 'components/atoms/ShadowPopper'
 
 export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, name, autocompleteData, additionalOnChange }) => {
 
@@ -42,6 +43,8 @@ export const LocationInputSelect = ({ labelText, labelErrorText, r, disabled, na
               onChange={(e, value) => { onChange(value); additionalOnChange() }}
               isOptionEqualToValue={() => true}
               value={value || null}
+              // disablePortal
+              PopperComponent={ShadowPopper}
               renderInput={(params) => {
                 return <TextField
                   fullWidth
