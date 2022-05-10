@@ -353,6 +353,7 @@ export const OrderSummaryContainer = ({
         selectedCar && !plugForFirstStep ? (
           oneSeatRuleBroken ? (
             <Box sx={{
+              boxSizing: 'border-box',
               borderRadius: '20px',
               width: '100%',
               padding: '26px',
