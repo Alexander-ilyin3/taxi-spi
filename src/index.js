@@ -27,14 +27,16 @@ class MyWebComponent extends HTMLElement {
   connectedCallback() {
     const shadowRoot = this.attachShadow({ mode: 'open' });
     const emotionRoot = document.createElement('style');
+    const jssRoot = document.createElement('style');
+    emotionRoot.appendChild(jssRoot)
     const mountPoint = document.createElement('div');
     mountPoint.setAttribute('id', 'sjd-form-root')
     shadowRoot.appendChild(emotionRoot);
-    const reactRoot = shadowRoot.appendChild(mountPoint);
+    shadowRoot.appendChild(mountPoint);
 
     const jss = create({
       ...jssPreset(),
-      insertionPoint: reactRoot,
+      insertionPoint: jssRoot,
     });
 
     const cache = createCache({
@@ -47,7 +49,7 @@ class MyWebComponent extends HTMLElement {
       <StylesProvider jss={jss}>
         <CacheProvider value={cache}>
           <ThemeProvider theme={theme}>
-            <App mountPoint={mountPoint} />
+            <App />
           </ThemeProvider>
         </CacheProvider>
       </StylesProvider>,
@@ -55,6 +57,8 @@ class MyWebComponent extends HTMLElement {
     );
   }
 }
-if (!customElements.get('sjd-form')) {
-  customElements.define('sjd-form', MyWebComponent);
-}
+window.addEventListener('load', () => {
+  if (!customElements.get('sjd-form')) {
+    customElements.define('sjd-form', MyWebComponent);
+  }
+})
