@@ -4,8 +4,7 @@ export const reduceIconPath = (path) => {
   if (process.env.NODE_ENV === 'development') {
     return path
   }
-
-  const url = new URL(apiHost || 'https://rebuild.sjdtaxi.com');
+  const pluginDirUrl = window.sjd_inline_script.plugin_dir_url
   
-  return `${url.origin}/wp-content/plugins/sjd-booking/app/build/${path.replace(/^\//, '')}`
+  return `${pluginDirUrl}/app/build/${path.replace(/^\//, '')}`
 }
