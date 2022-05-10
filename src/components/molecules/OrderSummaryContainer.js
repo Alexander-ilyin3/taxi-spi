@@ -50,6 +50,7 @@ import { getIsAirportStates, getSteps } from "redux/selectors"
 import { reduceIconPath } from "helpers/reduceIconPath"
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useWindowScroll } from 'helpers/customHooks'
+import { getMountPoint } from "helpers/shadowRoot"
 
 const useStyles = makeStyles(theme => ({
   mobileTotalButton: {
@@ -525,6 +526,7 @@ export const OrderSummaryContainer = ({
         onClose={() => setMobileTotalOpen(false)}
         onOpen={() => setMobileTotalOpen(true)}
         hysteresis={0.2}
+        ModalProps={{ container: getMountPoint() }}
         sx={{
           // width: '80% !important',
           // backgroundColor: 'green'

@@ -78,6 +78,7 @@ export const CarCard = ({ cardData, setSelectedCar, activeCar }) => {
             justifyContent: 'space-between',
             width: '100%',
             padding: '20px',
+            boxSizing: 'border-box',
           }}
         >
           <Box

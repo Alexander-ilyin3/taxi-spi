@@ -11,7 +11,7 @@ export const OrderSummaryPlug = () => {
       width: '100%',
       padding: '26px',
       backgroundColor: lightGrayBlue,
-
+      boxSizing: 'border-box',
     }}
 
     >
