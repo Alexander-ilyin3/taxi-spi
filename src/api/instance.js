@@ -5,13 +5,11 @@ import {
   pushRequestsQueue,
   setAxiosError,
 } from "redux/actions";
+import { apiHost } from "./apiHost";
 const axios = axiosLib.default;
 
 export const instance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "development"
-      ? process.env.REACT_APP_BASE_URL
-      : window.sjd_inline_script.api_domain,
+  baseURL: apiHost,
 });
 
 let applied = false;
