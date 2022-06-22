@@ -7,7 +7,7 @@ import { reduceIconPath } from "helpers/reduceIconPath"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { setVehicles } from "redux/actions"
-import { getBookingId, getGlobalStepsData, getStep1, getVehicles } from "redux/selectors"
+import { getBookingId, getGlobalStepsData, getIsAirportStates, getStep1, getVehicles } from "redux/selectors"
 import { vehicles } from 'api/vehiclesApi'
 import { isEqual } from "underscore"
 
@@ -30,6 +30,9 @@ export const PaymentCheckServises = ({ bookingId, backTrip }) => {
     departure_date,
     departure_time,
   } = data
+
+  const { destinationIsAirport } = useSelector(getIsAirportStates);
+
   const { palette: { primary: { blue } } } = useTheme()
 
   const step1Data = useSelector(getStep1, isEqual)
@@ -108,11 +111,11 @@ logistics@sjdtaxi.com | USA
   }
 
   const googleCalendarHandler = () => {
-    const targetDate = backTrip ? departure_date : booking_date
-    const targetTime = backTrip ? departure_time : booking_time
+    const targetDate = backTrip || destinationIsAirport ? departure_date : booking_date
+    const targetTime = backTrip || destinationIsAirport ? departure_time : booking_time
 
-    const targetLocation = backTrip ? destination : location
-    const targetDestination = backTrip ? location : destination
+    const targetLocation = backTrip || destinationIsAirport ? destination : location
+    const targetDestination = backTrip || destinationIsAirport ? location : destination
 
     const isoDate = new Date(`${targetDate} ${targetTime || '00:00'}`)?.toISOString().replace(/-|:|\.\d\d\d/g, "")
 
